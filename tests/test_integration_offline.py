@@ -34,6 +34,7 @@ def test_registry_has_eight_schemas_and_rejects_identity_args(env):
         if name == 'check_return_eligibility': args['reason'] = 'defeito'
         assert registry.dispatch(name, args).error.code == 'invalid_input'
     assert registry.dispatch('não_existe', {}).error.code == 'invalid_input'
+    assert registry.dispatch([], {}).error.code == 'invalid_input'
     assert registry.dispatch('store_status', {}).ok
 
 def test_search_quote_and_trace_with_real_store(env, tmp_path):

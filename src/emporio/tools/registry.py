@@ -50,7 +50,7 @@ class ToolRegistry:
                 for name, (schema, _) in self._tools.items()]
 
     def dispatch(self, name: str, args: dict) -> ToolResult:
-        entry = self._tools.get(name)
+        entry = self._tools.get(name) if isinstance(name, str) else None
         if entry is None:
             return ToolResult(ok=False, error=ToolError(code='invalid_input', message_for_agent='Ferramenta desconhecida.'))
         schema, function = entry
