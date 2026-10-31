@@ -63,7 +63,7 @@ def policies(pdf: Path) -> str:
         out.append('\n')
     if found != set(map(str, range(1, 11))):
         raise ValueError(f'Seções ausentes: {set(map(str, range(1, 11))) - found}')
-    return '\n'.join(out)
+    return '\n'.join(out).rstrip() + '\n'
 
 def ingest(raw: Path, database: Path, processed: Path, adr: Path) -> None:
     data = read_rows(raw)
