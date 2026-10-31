@@ -167,3 +167,32 @@ def test_clock_is_composed_from_environment(monkeypatch):
         return expected
     assert make_clock(Settings.from_env(), real_time=real_time)() == expected
     assert calls == [ZoneInfo('America/Campo_Grande')]
+
+@pytest.mark.parametrize(('table', 'field', 'value'), [
+    ('order_items', 'quantity', '0'),
+    ('order_items', 'quantity', '-1'),
+    ('products', 'status', 'unknown'),
+    ('products', 'price_brl', '10.001'),
+    ('products', 'name', ''),
+])
+def test_pydantic_rejects_invalid_rows_without_replacing_database(tmp_path, table, field, value):
+    from pydantic import ValidationError
+    original_hashes = hashes(RAW)
+    db, _ = build(tmp_path)
+    previous = db.read_bytes()
+    raw = tmp_path / 'raw'
+    shutil.copytree(RAW, raw)
+    path = locate(raw, table)
+    with path.open(newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        rows, fields = list(reader), reader.fieldnames
+    rows[0][field] = value
+    with path.open('w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    with pytest.raises(ValueError, match=rf'Linha inválida: {table}:2') as exc:
+        build(tmp_path, raw)
+    assert isinstance(exc.value.__cause__, ValidationError)
+    assert db.read_bytes() == previous
+    assert hashes(RAW) == original_hashes
