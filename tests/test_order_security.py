@@ -183,3 +183,13 @@ def test_effective_grant_expiration_near_session_boundary(env):
     assert verify(env, s, 3, owner_contact(env['repo'], 3)).error.code == 'not_verified'
     env['time'][0] += timedelta(seconds=1)
     assert env['service'].get_order(s, {'order_id':3}).error.code == 'access_denied'
+
+
+def test_order_notes_are_omitted_even_for_unknown_personal_data(env):
+    import sqlite3
+    from emporio.repository.sqlite import SQLiteRepository
+    env['repo'].close()
+    with sqlite3.connect(env['store_path']) as connection:
+        connection.execute('UPDATE orders SET notes=? WHERE order_id=3', ('Dados de terceiro: Zoë 雪, documento secreto',))
+    env['repo'] = SQLiteRepository(env['store_path'])
+    assert env['repo'].order_details(3)['notes'] == '[OBSERVAÇÃO OMITIDA]'

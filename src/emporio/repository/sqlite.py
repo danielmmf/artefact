@@ -138,5 +138,5 @@ class SQLiteRepository:
                 'items': [{'product_id': i['product_id'], 'name': redact(i['name']), 'quantity': i['quantity']} for i in items],
                 'total_brl': str(from_cents(row['total_cents'])), 'total_label': 'total registrado no pedido',
                 'payment_method': redact(row['payment_method']), 'tracking_code': redact(row['tracking_code']),
-                'estimated_delivery': row['estimated_delivery'], 'notes': redact(row['notes']),
+                'estimated_delivery': row['estimated_delivery'], 'notes': '[OBSERVAÇÃO OMITIDA]',
                 'first_name': row['customer_name'].split()[0]}

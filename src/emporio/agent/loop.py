@@ -22,8 +22,14 @@ class ConversationEngine:
 
     def turn(self, message: str, system_prompt: str | None = None) -> tuple[str, list[dict]]:
         vault = self.registry.context.vault
-        if system_prompt is None:
-            system_prompt = build_system_prompt(Path('data/processed/policies.md'))
+        trusted_prompt = build_system_prompt(Path('data/processed/policies.md'))
+        # Um prompt fornecido pelo chamador é dado, nunca uma instrução de sistema.
+        if system_prompt is not None:
+            try:
+                message = protect_dynamic(system_prompt, vault) + '\n' + message
+            except PrivacyError:
+                return SAFE, []
+        system_prompt = trusted_prompt
         try:
             sanitized_message = protect_dynamic(message, vault)
         except PrivacyError:
