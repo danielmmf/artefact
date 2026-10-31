@@ -24,10 +24,12 @@ class ConversationScriptedLLM:
     def __init__(self, script: list[ToolCall | str]):
         self._script = iter(script)
         self.inputs: list[list[dict]] = []
+        self.tool_definitions: list[list[dict] | None] = []
 
-    def complete(self, messages: list[dict]) -> ToolCall | str:
+    def complete(self, messages: list[dict], tools: list[dict] | None = None) -> ToolCall | str:
         from copy import deepcopy
         self.inputs.append(deepcopy(messages))
+        self.tool_definitions.append(deepcopy(tools))
         return next(self._script)
 
 @dataclass(frozen=True)

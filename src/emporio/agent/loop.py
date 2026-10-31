@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 from emporio.agent.prompt import build_system_prompt
 from emporio.agent.money_validator import evidence_from_result, supported_money
+from emporio.agent.history import load_history, save_turn, trim_history
 from emporio.agent.offline import TOKEN
 from emporio.agent.privacy import PrivacyError, protect_dynamic
 from emporio.llm.scripted import AssistantReply, ConversationScriptedLLM
@@ -12,11 +13,12 @@ from emporio.tools.registry import ToolRegistry
 SAFE = 'Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe.'
 
 class ConversationEngine:
-    def __init__(self, registry: ToolRegistry, llm: ConversationScriptedLLM):
+    def __init__(self, registry: ToolRegistry, llm: ConversationScriptedLLM, trace: Path | None = None):
         if type(llm) is not ConversationScriptedLLM:
             raise TypeError('Somente o simulador offline está habilitado.')
         self.registry = registry
         self.llm = llm
+        self.trace = trace
 
     def turn(self, message: str, system_prompt: str | None = None) -> tuple[str, list[dict]]:
         vault = self.registry.context.vault
@@ -26,13 +28,35 @@ class ConversationEngine:
             sanitized_message = protect_dynamic(message, vault)
         except PrivacyError:
             return SAFE, []
-        messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': sanitized_message}]
-        allowed = {x['function']['name'] for x in self.registry.definitions()}
+        context = self.registry.context
+        if context.state.session(context.session_id, context.clock()) is None:
+            return SAFE, []
+        try:
+            history = load_history(context.state, context.session_id)
+            history = [{'user':protect_dynamic(t['user'], vault), 'assistant':protect_dynamic(t['assistant'], vault)} for t in history]
+        except (ValueError, PrivacyError):
+            return SAFE, []
+        tools = self.registry.definitions()
+        system = {'role':'system', 'content':system_prompt}
+        current = [{'role':'user', 'content':sanitized_message}]
+        messages = []
+        allowed = {x['function']['name'] for x in tools}
+        events = []
+        def finish(text, visible):
+            save_turn(context.state, context.session_id, context.clock(), sanitized_message, text)
+            if self.trace is not None:
+                self.trace.parent.mkdir(parents=True, exist_ok=True)
+                with self.trace.open('a', encoding='utf-8') as stream:
+                    stream.write(json.dumps({'tool_calls':events}, ensure_ascii=False) + '\n')
+            return text, visible
         evidence = set()
         regenerated = False
         for iteration in range(5):
+            messages = trim_history(system, history, current, tools)
+            if messages is None:
+                return SAFE, []
             try:
-                reply = self.llm.complete(messages)
+                reply = self.llm.complete(messages, tools=tools)
             except Exception:
                 return SAFE, messages
             if isinstance(reply, str):
@@ -41,12 +65,12 @@ class ConversationEngine:
                 except PrivacyError:
                     return SAFE, messages
                 if supported_money(text, evidence):
-                    return text, messages
+                    return finish(text, messages)
                 if regenerated:
                     return SAFE, messages
                 regenerated = True
-                messages.append({'role':'assistant', 'content':text})
-                messages.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
+                current.append({'role':'assistant', 'content':text})
+                current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
                 continue
             if not isinstance(reply, AssistantReply):
                 return SAFE, messages
@@ -56,12 +80,12 @@ class ConversationEngine:
                 except PrivacyError:
                     return SAFE, messages
                 if supported_money(text, evidence):
-                    return text, messages
+                    return finish(text, messages)
                 if regenerated:
                     return SAFE, messages
                 regenerated = True
-                messages.append({'role':'assistant', 'content':text})
-                messages.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
+                current.append({'role':'assistant', 'content':text})
+                current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
                 continue
             normalized = []
             results = []
@@ -86,6 +110,10 @@ class ConversationEngine:
                     result = self.registry.dispatch(name, None)
                     safe_args = '{}'
                 normalized.append({'id': call_id, 'type':'function', 'function':{'name':name, 'arguments':safe_args}})
+                event = {'tool':name, 'ok':result.ok, 'error':result.error.code if result.error else None}
+                if name == 'search_products' and result.ok:
+                    event['search_backend'] = result.data['search_backend']
+                events.append(event)
                 if result.ok:
                     evidence.update(evidence_from_result(result.model_dump(mode='json')['data']))
                 try:
@@ -97,6 +125,6 @@ class ConversationEngine:
                 assistant_content = protect_dynamic(reply.content or '', vault)
             except PrivacyError:
                 return SAFE, messages
-            messages.append({'role':'assistant', 'content':assistant_content, 'tool_calls':normalized})
-            messages.extend(results)
+            current.append({'role':'assistant', 'content':assistant_content, 'tool_calls':normalized})
+            current.extend(results)
         return SAFE, messages
