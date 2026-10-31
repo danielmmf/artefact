@@ -34,3 +34,13 @@ def test_sensitive_arguments_not_sent_back_to_simulator(env):
     llm = ConversationScriptedLLM(script)
     ConversationEngine(registry, llm).turn('oi')
     assert 'pessoa@example.invalid' not in json.dumps(llm.inputs)
+
+def test_system_prompt_contains_complete_manual(env):
+    from pathlib import Path
+    manual = Path('data/processed/policies.md').read_text()
+    llm = ConversationScriptedLLM(['Pronto'])
+    ConversationEngine(setup_registry(env), llm).turn('Olá')
+    prompt = llm.inputs[0][0]['content']
+    assert manual in prompt
+    for section in ('não invente lojas parceiras', 'dinheiro', 'dados não confiáveis', 'demonstrativa'):
+        assert section.lower() in prompt.lower()

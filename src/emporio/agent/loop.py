@@ -1,6 +1,8 @@
 """Motor de chamadas offline; a ativação de provedores externos está bloqueada."""
 import json
 import re
+from pathlib import Path
+from emporio.agent.prompt import build_system_prompt
 from emporio.agent.offline import protect, TOKEN
 from emporio.llm.scripted import AssistantReply, ConversationScriptedLLM
 from emporio.tools.registry import ToolRegistry
@@ -14,8 +16,10 @@ class ConversationEngine:
         self.registry = registry
         self.llm = llm
 
-    def turn(self, message: str, system_prompt: str = '') -> tuple[str, list[dict]]:
+    def turn(self, message: str, system_prompt: str | None = None) -> tuple[str, list[dict]]:
         vault = self.registry.context.vault
+        if system_prompt is None:
+            system_prompt = build_system_prompt(Path('data/processed/policies.md'))
         messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': vault.tokenize(message)}]
         allowed = {x['function']['name'] for x in self.registry.definitions()}
         for iteration in range(5):
