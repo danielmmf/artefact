@@ -22,8 +22,8 @@ def chat_offline(root: Path, customer: int | None = None, *, clock=None, read=in
     """Executa somente cenários fixos; clock e I/O podem ser injetados em testes."""
     repo = state = None
     session = None
-    clock = clock or make_clock(Settings.from_env())
     try:
+        clock = clock or make_clock(Settings.from_env())
         if not (root / 'var/store.db').exists() or not (root / 'data/processed/policies.md').exists():
             ingest_project(root)
         repo = SQLiteRepository(root / 'var/store.db')
@@ -63,10 +63,17 @@ def chat_offline(root: Path, customer: int | None = None, *, clock=None, read=in
                 if session is not None:
                     with state.connection:
                         state.connection.execute('UPDATE sessions SET expires_at=? WHERE session_id=?', (timestamp(clock()), session))
-            finally:
+            except Exception:
+                pass
+            try:
                 state.close()
+            except Exception:
+                pass
         if repo is not None:
-            repo.close()
+            try:
+                repo.close()
+            except Exception:
+                pass
 
 
 def main() -> None:

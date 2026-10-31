@@ -20,6 +20,8 @@ def test_offline_paths_never_attempt_connections_or_subprocesses(env, monkeypatc
     monkeypatch.setattr(socket.socket, 'connect', forbidden)
     monkeypatch.setattr(socket.socket, 'connect_ex', forbidden)
     monkeypatch.setattr(socket, 'create_connection', forbidden)
+    monkeypatch.setattr(socket, 'getaddrinfo', forbidden)
+    monkeypatch.setattr(socket.socket, 'sendto', forbidden)
     monkeypatch.setattr(subprocess, 'Popen', forbidden)
     assert ConversationEngine(setup_registry(env), ConversationScriptedLLM(['Olá'])).turn('oi')[0] == 'Olá'
     entries = iter(['1', '2', 'sair'])
