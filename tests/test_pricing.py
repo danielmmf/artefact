@@ -123,3 +123,27 @@ def test_invalid_prices_promotions_duplicate_products():
         price_cart([item(), item()])
     with pytest.raises(ValueError):
         installment_options(-1)
+
+@pytest.mark.parametrize('value', [True, 1.5, -1, 0, 13, '2'])
+def test_invalid_installment_count(value):
+    from emporio.rules.pricing import minimum_installment_cents
+    with pytest.raises(ValueError):
+        minimum_installment_cents(value)
+
+@pytest.mark.parametrize('value', [True, 5.0, Decimal('Infinity'), Decimal('-1'), Decimal('101')])
+def test_invalid_discount_values(value):
+    with pytest.raises(ValueError):
+        discounted_cents(1000, value)
+    with pytest.raises(ValueError):
+        item(promotion=value)
+
+@pytest.mark.parametrize('quantity', [0, -1, True, 1.5])
+def test_invalid_quantity(quantity):
+    with pytest.raises(ValueError):
+        item(quantity=quantity)
+
+def test_rounding_happens_per_unit_and_zero_percent_promotion_blocks_pix():
+    cart = price_cart([item(price=101, quantity=3, promotion=Decimal('50'))])
+    assert cart.subtotal_cents == 153
+    zero = price_cart([item(price=10000, promotion=Decimal('0'))]).items[0]
+    assert zero.unit_pix_cents == zero.unit_final_cents == 10000

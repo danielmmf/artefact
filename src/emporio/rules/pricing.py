@@ -31,6 +31,8 @@ class CartItem:
         if self.status not in {'active', 'discontinued', 'coming_soon'}:
             raise ValueError('unknown product status')
         if self.active_promotion_percent is not None:
+            if isinstance(self.active_promotion_percent, (float, bool)):
+                raise ValueError('promotion percent must be exact')
             try:
                 percent = Decimal(str(self.active_promotion_percent))
             except (InvalidOperation, ValueError) as exc:
@@ -99,6 +101,8 @@ def discounted_cents(original_cents: int, percent: Decimal) -> int:
     """ROUND_HALF_UP per unit, never floats; preserve original unit price."""
     if isinstance(original_cents, bool) or not isinstance(original_cents, int) or original_cents < 0:
         raise ValueError('price must be nonnegative integer cents')
+    if isinstance(percent, (float, bool)):
+        raise ValueError('discount percent must be exact')
     try:
         amount = Decimal(str(percent))
     except (InvalidOperation, ValueError) as exc:
@@ -152,7 +156,7 @@ def price_cart(items: list[CartItem] | tuple[CartItem, ...]) -> CartTotals:
 
 
 def minimum_installment_cents(count: int) -> int:
-    if not 1 <= count <= 12:
+    if isinstance(count, bool) or not isinstance(count, int) or not 1 <= count <= 12:
         raise ValueError('installment count must be 1..12')
     if count == 1:
         return 0
