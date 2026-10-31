@@ -9,3 +9,10 @@ test:
 .PHONY: bench
 bench: ingest
 	uv run --locked python -m emporio.search_bench
+
+.PHONY: chat eval
+chat:
+	uv run --locked emporio chat --offline
+
+eval:
+	uv run --locked python -m emporio.eval_gate

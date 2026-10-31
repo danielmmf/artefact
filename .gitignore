@@ -6,3 +6,6 @@ __pycache__/
 .pytest_cache/
 .claude/
 docs/private/
+# Relatórios de avaliação podem conter dados privados; apenas o benchmark público é versionado.
+evals/reports/*
+!evals/reports/search.json
