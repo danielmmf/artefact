@@ -64,3 +64,17 @@ def test_history_and_prompts_do_not_persist_official_contacts(env):
         for key in ('email', 'phone'):
             if customer[key]:
                 assert all(customer[key].encode() not in artifact for artifact in artifacts)
+
+
+def test_session_expiring_during_generation_does_not_persist(env):
+    from datetime import timedelta
+    from test_order_security import NOW
+    registry = setup_registry(env)
+    llm = ConversationScriptedLLM(['não usado'])
+    def delayed(messages, tools=None):
+        env['time'][0] = NOW + timedelta(minutes=15)
+        return 'Resposta'
+    llm.complete = delayed
+    answer, _ = ConversationEngine(registry, llm).turn('Olá')
+    assert answer == SAFE
+    assert env['state'].connection.execute('SELECT COUNT(*) FROM history').fetchone()[0] == 0

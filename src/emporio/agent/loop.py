@@ -43,7 +43,10 @@ class ConversationEngine:
         allowed = {x['function']['name'] for x in tools}
         events = []
         def finish(text, visible):
-            save_turn(context.state, context.session_id, context.clock(), sanitized_message, text)
+            finished_at = context.clock()
+            if context.state.session(context.session_id, finished_at) is None:
+                return SAFE, visible
+            save_turn(context.state, context.session_id, finished_at, sanitized_message, text)
             if self.trace is not None:
                 self.trace.parent.mkdir(parents=True, exist_ok=True)
                 with self.trace.open('a', encoding='utf-8') as stream:
