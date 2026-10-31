@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS order_access (session_id TEXT NOT NULL REFERENCES ses
 CREATE TABLE IF NOT EXISTS verification_attempts (id INTEGER PRIMARY KEY, session_id TEXT NOT NULL REFERENCES sessions(session_id), order_id INTEGER NOT NULL, attempted_at TEXT NOT NULL);
 CREATE INDEX IF NOT EXISTS attempts_order ON verification_attempts(order_id);
 CREATE TABLE IF NOT EXISTS order_locks (order_id INTEGER PRIMARY KEY, locked_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS session_locks (session_id TEXT PRIMARY KEY REFERENCES sessions(session_id), locked_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS attempts_session ON verification_attempts(session_id);
 CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY, session_id TEXT NOT NULL REFERENCES sessions(session_id), created_at TEXT NOT NULL, content_tokenized TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS tickets (id INTEGER PRIMARY KEY, order_id INTEGER, category TEXT NOT NULL, summary_tokenized TEXT NOT NULL, created_at TEXT NOT NULL);
 PRAGMA user_version = 1;
@@ -49,30 +51,37 @@ class SecurityStore:
     def locked(self, order_id: int) -> bool:
         return self.connection.execute('SELECT 1 FROM order_locks WHERE order_id = ?', (order_id,)).fetchone() is not None
 
-    def record_verification(self, session_id: str, order_id: int, at: datetime, verified: bool) -> str:
+    def session_locked(self, session_id: str) -> bool:
+        return self.connection.execute('SELECT 1 FROM session_locks WHERE session_id = ?', (session_id,)).fetchone() is not None
+
+    def record_verification(self, session_id: str, order_id: int, at: datetime, verified: bool) -> tuple[str, str | None]:
         current = timestamp(at)
         self.connection.execute('BEGIN IMMEDIATE')
         try:
-            if not self.session(session_id, at):
+            session = self.session(session_id, at)
+            if not session:
                 self.connection.rollback()
-                return 'not_verified'
-            if self.locked(order_id):
+                return 'not_verified', None
+            if self.locked(order_id) or self.session_locked(session_id):
                 self.connection.rollback()
-                return 'locked'
+                return 'locked', None
             if verified:
-                expires = timestamp(at + timedelta(minutes=15))
+                session_expiry = self.connection.execute('SELECT expires_at FROM sessions WHERE session_id = ?', (session_id,)).fetchone()[0]
+                expires = min(timestamp(at + timedelta(minutes=15)), session_expiry)
                 self.connection.execute('INSERT INTO order_access VALUES (?,?,?,?) ON CONFLICT(session_id,order_id) DO UPDATE SET granted_at=excluded.granted_at, expires_at=excluded.expires_at', (session_id, order_id, current, expires))
                 self.connection.commit()
-                return 'granted'
+                return 'granted', expires
             self.connection.execute('INSERT INTO verification_attempts(session_id,order_id,attempted_at) VALUES (?,?,?)', (session_id, order_id, current))
-            count = self.connection.execute('SELECT COUNT(*) FROM verification_attempts WHERE order_id = ?', (order_id,)).fetchone()[0]
-            if count >= 3:
-                self.connection.execute('INSERT INTO order_locks VALUES (?,?)', (order_id, current))
+            order_count = self.connection.execute('SELECT COUNT(*) FROM verification_attempts WHERE order_id = ?', (order_id,)).fetchone()[0]
+            session_count = self.connection.execute('SELECT COUNT(*) FROM verification_attempts WHERE session_id = ?', (session_id,)).fetchone()[0]
+            if order_count >= 3:
+                self.connection.execute('INSERT OR IGNORE INTO order_locks VALUES (?,?)', (order_id, current))
                 self.connection.execute("INSERT INTO tickets(order_id,category,summary_tokenized,created_at) VALUES (?,'security','Bloqueio após tentativas de verificação.',?)", (order_id, current))
-                self.connection.commit()
-                return 'locked'
+            if session_count >= 3:
+                self.connection.execute('INSERT OR IGNORE INTO session_locks VALUES (?,?)', (session_id, current))
+                self.connection.execute("INSERT INTO tickets(order_id,category,summary_tokenized,created_at) VALUES (NULL,'security','Sessão bloqueada após tentativas de verificação.',?)", (current,))
             self.connection.commit()
-            return 'not_verified'
+            return ('locked' if order_count >= 3 or session_count >= 3 else 'not_verified'), None
         except BaseException:
             self.connection.rollback()
             raise

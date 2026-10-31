@@ -160,3 +160,26 @@ def test_free_text_is_redacted_before_tool_output(env):
     assert verify(env, s, 3, contact).ok
     result = env['service'].get_order(s, {'order_id':3}).model_dump_json()
     assert contact not in result and name not in result
+
+def test_session_lock_across_different_orders_persists(env):
+    s = create_session(env)
+    for order, expected in [(1, 'not_verified'), (9999, 'not_verified'), (2, 'locked')]:
+        assert verify(env, s, order, 'wrong@example.invalid').error.code == expected
+    env['state'].close()
+    env['state'] = SecurityStore(env['app_path'], store_path=env['store_path'])
+    env['service'].state = env['state']
+    assert verify(env, s, 3, owner_contact(env['repo'], 3)).error.code == 'locked'
+    assert env['state'].connection.execute('SELECT COUNT(*) FROM session_locks').fetchone()[0] == 1
+    assert env['state'].connection.execute('SELECT COUNT(*) FROM tickets').fetchone()[0] == 1
+
+def test_effective_grant_expiration_near_session_boundary(env):
+    s = create_session(env)
+    env['time'][0] = NOW + timedelta(minutes=14, seconds=59)
+    result = verify(env, s, 3, owner_contact(env['repo'], 3))
+    assert result.ok and result.data['valid_for_seconds'] == 1
+    assert env['service'].get_order(s, {'order_id':3}).ok
+    env['time'][0] = NOW + timedelta(minutes=15)
+    assert env['service'].get_order(s, {'order_id':3}).error.code == 'access_denied'
+    assert verify(env, s, 3, owner_contact(env['repo'], 3)).error.code == 'not_verified'
+    env['time'][0] += timedelta(seconds=1)
+    assert env['service'].get_order(s, {'order_id':3}).error.code == 'access_denied'

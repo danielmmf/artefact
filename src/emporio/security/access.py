@@ -25,9 +25,11 @@ class OrderAccess:
             return ToolResult(ok=False, error=ToolError(code='invalid_input', message_for_agent='Dados de verificação inválidos.'))
         contact = vault.resolve(request.contact_ref) if vault.session_id == session_id else None
         valid = contact is not None and self.store.verify_order_contact(request.order_id, contact)
-        state = self.state.record_verification(session_id, request.order_id, self.clock(), valid)
+        current = self.clock()
+        state, expires = self.state.record_verification(session_id, request.order_id, current, valid)
         if state == 'granted':
-            return ToolResult(ok=True, data={'granted': True, 'valid_for_minutes': 15, 'verification': 'demonstrativa'})
+            seconds = (datetime.fromisoformat(expires) - current).total_seconds()
+            return ToolResult(ok=True, data={'granted': True, 'valid_for_minutes': seconds / 60, 'valid_for_seconds': seconds, 'expires_at': expires, 'verification': 'demonstrativa'})
         if state == 'locked':
             return ToolResult(ok=False, error=ToolError(code='locked', message_for_agent='Verificação bloqueada; encaminhe à equipe.'))
         return ToolResult(ok=False, error=ToolError(code='not_verified', message_for_agent='Não foi possível confirmar a posse.'))
@@ -45,7 +47,7 @@ class OrderAccess:
                 owner = self.store.order_customer_id(request.order_id)
                 authorized = owner is not None and owner == session['customer_id']
             else:
-                authorized = not self.state.locked(request.order_id) and self.state.has_grant(session_id, request.order_id, current)
+                authorized = not self.state.session_locked(session_id) and not self.state.locked(request.order_id) and self.state.has_grant(session_id, request.order_id, current)
         if not authorized:
             return ToolResult(ok=False, error=ToolError(code='access_denied', message_for_agent='Acesso ao pedido não autorizado.'))
         details = self.store.order_details(request.order_id)
