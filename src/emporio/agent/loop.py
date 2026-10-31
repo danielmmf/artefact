@@ -3,6 +3,7 @@ import json
 import re
 from pathlib import Path
 from emporio.agent.prompt import build_system_prompt
+from emporio.agent.money_validator import evidence_from_result, supported_money
 from emporio.agent.offline import TOKEN
 from emporio.agent.privacy import PrivacyError, protect_dynamic
 from emporio.llm.scripted import AssistantReply, ConversationScriptedLLM
@@ -27,6 +28,8 @@ class ConversationEngine:
             return SAFE, []
         messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': sanitized_message}]
         allowed = {x['function']['name'] for x in self.registry.definitions()}
+        evidence = set()
+        regenerated = False
         for iteration in range(5):
             try:
                 reply = self.llm.complete(messages)
@@ -34,17 +37,32 @@ class ConversationEngine:
                 return SAFE, messages
             if isinstance(reply, str):
                 try:
-                    return TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply, vault)), messages
+                    text = TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply, vault))
                 except PrivacyError:
                     return SAFE, messages
+                if supported_money(text, evidence):
+                    return text, messages
+                if regenerated:
+                    return SAFE, messages
+                regenerated = True
+                messages.append({'role':'assistant', 'content':text})
+                messages.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
+                continue
             if not isinstance(reply, AssistantReply):
                 return SAFE, messages
             if not reply.tool_calls:
-                text = reply.content or ''
                 try:
-                    return TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(text, vault)), messages
+                    text = TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply.content or '', vault))
                 except PrivacyError:
                     return SAFE, messages
+                if supported_money(text, evidence):
+                    return text, messages
+                if regenerated:
+                    return SAFE, messages
+                regenerated = True
+                messages.append({'role':'assistant', 'content':text})
+                messages.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
+                continue
             normalized = []
             results = []
             used_ids = set()
@@ -68,6 +86,8 @@ class ConversationEngine:
                     result = self.registry.dispatch(name, None)
                     safe_args = '{}'
                 normalized.append({'id': call_id, 'type':'function', 'function':{'name':name, 'arguments':safe_args}})
+                if result.ok:
+                    evidence.update(evidence_from_result(result.model_dump(mode='json')['data']))
                 try:
                     data = protect_dynamic(result.model_dump(mode='json'), vault)
                 except PrivacyError:
