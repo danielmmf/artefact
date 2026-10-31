@@ -11,7 +11,7 @@ SUSPECT_DIGITS = re.compile(r'(?<!\w)(?:\+?\d|\(\d)[\d\s()./\-]{8,}\d(?!\w)')
 def protect_dynamic(value, vault: ContactVault):
     if isinstance(value, str):
         sanitized = vault.tokenize(value)
-        if '@' in sanitized or any(sum(c.isdigit() for c in m.group()) >= 10 for m in SUSPECT_DIGITS.finditer(sanitized)):
+        if '@' in sanitized or re.search(r'\barroba\b', sanitized, re.IGNORECASE) or any(sum(c.isdigit() for c in m.group()) >= 10 for m in SUSPECT_DIGITS.finditer(sanitized)):
             raise PrivacyError('Conteúdo com possível contato não reconhecido')
         return sanitized
     if isinstance(value, list):

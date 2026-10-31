@@ -18,6 +18,8 @@ def test_unknown_shipping_and_other_numeric_fields_not_evidence():
     assert not supported_money('Desconto R$ 18,00.', evidence)
     assert not supported_money('Custa mil reais.', evidence)
     assert not supported_money('Por apenas 35,00.', evidence)
+    assert not supported_money('R $ 35,00', evidence)
+    assert not supported_money('BRL 35,00', evidence)
     assert not supported_money('R$ 1000.000,000', evidence)
 
 def test_single_regeneration_and_safe_fallback(env):

@@ -6,9 +6,9 @@ MONEY_KEYS = {'price','list_price','final_price','pix_price','unit_original_cent
               'subtotal','pix_subtotal','total_with_shipping','pix_total_with_shipping','total_brl',
               'fee','valor','amounts'}
 NUM = r'(?:\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:[.,]\d{1,2})?)'
-CLAIM = re.compile(rf'(?<!\w)(?:R\$\s*(?P<prefix>{NUM})(?!\d|[.,]\d)|(?P<suffix>{NUM})\s*reais?\b)', re.IGNORECASE)
+CLAIM = re.compile(rf'(?<!\w)(?:(?:R\s*\$|BRL)\s*(?P<prefix>{NUM})(?!\d|[.,]\d)|(?P<suffix>{NUM})\s*(?:reais?|BRL)\b)', re.IGNORECASE)
 CONTEXT = re.compile(rf'\b(?:custa|preço|valor|total|frete|parcela|por)\s*(?:(?:é|de|:)\s*)?(?:apenas\s+)?(?P<amount>{NUM})(?!\d|[.,]\d|%)', re.IGNORECASE)
-MARKER = re.compile(r'R\$|\breais?\b', re.IGNORECASE)
+MARKER = re.compile(r'R\s*\$|\bBRL\b|\breais?\b', re.IGNORECASE)
 
 def parse_amount(text: str) -> Decimal:
     if ',' in text:
