@@ -34,8 +34,11 @@ Portões de calendário:
 - Fim de 01/11: Fases 1 a 3 fechadas (alvo).
 - Fim de 02/11: Fase 4 fechada, com `make eval` rodado pelo menos uma vez contra o LLM real (alvo).
 - 03/11, manhã: a Fase 5 começa de qualquer jeito. O que sobrar da Fase 4 é cortado pela linha de corte; nunca se rouba tempo da Fase 5.
-- 03/11 20:00: congelamento. Depois disso só logística de envio (sem commits) até 23:59.
-- Regra de honestidade: se o golden set não atingir as metas na janela, o resultado medido vai para o README como está; metas e casos não são alterados para "passar".
+- **03/11, manhã: ponto de estabilização.** O núcleo funcional (Fases 1–4) tem de estar pronto até lá; o resto do dia é só testes, README, CI e correções críticas.
+- **03/11 20:00 America/Sao_Paulo (horário de Brasília): congelamento**, antes do prazo oficial de 23:59. Depois disso só logística de envio (sem commits).
+- Regra de honestidade: metas e casos de avaliação (golden set, mini-eval) nunca são alterados para melhorar resultados; o resultado medido vai para o README como está.
+- Conversas reais: registradas progressivamente na Fase 4, conforme cada funcionalidade fica pronta; a Fase 5 só completa e revisa.
+- Decisões fechadas continuam valendo: loop próprio (sem benchmark de framework); Qdrant, ReplayLLM e `make demo` adiados (ADR-000 §16). Modelo padrão: `openai/gpt-oss-120b` no Groq (DEC-11). gsd-core 1.15.0, sem atualização.
 
 ## Phase Details
 
@@ -120,7 +123,8 @@ Portões de calendário:
 - §11 Agente (ScriptedLLM): 5 iterações; erro de tool estruturado; validador regenera e cai em resposta segura; orçamento preserva o manual; fora de escopo sem tool; histórico persiste.
 - T-2 no agente: com ScriptedLLM, o conteúdo enviado ao LLM após `get_product`/`search_products` de 135 etc. não contém a marca da descrição divergente (ex.: "Fender Jazz Bass" para o 135); caso no golden set com LLM real.
 - S-i no agente: a resposta para produto da lista usa "pode exigir cotação especial", nunca "exige".
-- §11 Regras "dinheiro": pergunta sobre pagamento em dinheiro não inventa regra (manual §3 lista PIX, débito, crédito e boleto); ScriptedLLM + caso no golden set. Interpretação a confirmar com o dono.
+- §11 Regras "dinheiro" (S-m, confirmada): o agente informa as formas do §3 e, perguntado sobre dinheiro, orienta confirmar com a equipe, sem afirmar que aceita nem que recusa; ScriptedLLM + caso no golden set.
+- Conversas reais: cada uma das 5 é gravada assim que sua funcionalidade fica pronta nesta fase.
 - §11 Segurança (extensão): varredura de PII sobre prompts, histórico e traces do agente; injeção em descrição não muda permissões no nível do agente; `--customer` ligado à CLI.
 - Registry: o schema de cada uma das 8 tools é gerado dos contratos Pydantic e o despacho devolve `ToolResult`.
 - Golden set (§11): ~15 casos nas categorias catálogo, preço/pagamento, pedidos, devoluções, loja, fora de escopo e adversariais; metas do §12.
