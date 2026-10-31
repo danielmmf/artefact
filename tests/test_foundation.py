@@ -147,3 +147,23 @@ def test_policies_section_7_2_numbered_items_keep_context():
         assert text in section
     markers = re.findall(r'^\[§(\d+(?:\.\d+)?) · p\.\d+\]\n(?=\d)', result, re.MULTILINE)
     assert markers == ['1', '1.1', '1.2', '2', '3', '3.1', '4', '4.1', '4.2', '4.3', '4.4', '5', '5.1', '5.2', '5.3', '6', '6.1', '6.2', '7', '7.1', '7.2', '7.3', '8', '8.1', '8.2', '8.3', '9', '10']
+
+def test_clock_is_composed_from_environment(monkeypatch):
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    from emporio.clock import make_clock
+
+    monkeypatch.setenv('EMPORIO_NOW', '2026-03-25T10:00-04:00')
+    clock = make_clock(Settings.from_env())
+    assert clock() == datetime.fromisoformat('2026-03-25T10:00-04:00')
+    monkeypatch.setenv('EMPORIO_NOW', '2026-03-25T10:00')
+    with pytest.raises(ValueError, match='fuso'):
+        make_clock(Settings.from_env())()
+    monkeypatch.delenv('EMPORIO_NOW')
+    expected = datetime(2026, 5, 1, 12, tzinfo=ZoneInfo('America/Campo_Grande'))
+    calls = []
+    def real_time(tz):
+        calls.append(tz)
+        return expected
+    assert make_clock(Settings.from_env(), real_time=real_time)() == expected
+    assert calls == [ZoneInfo('America/Campo_Grande')]
