@@ -54,3 +54,24 @@ class OrderAccess:
         if details is None:
             return ToolResult(ok=False, error=ToolError(code='access_denied', message_for_agent='Acesso ao pedido não autorizado.'))
         return ToolResult(ok=True, data=details)
+
+    def check_return_eligibility(self, session_id: str, args: dict) -> ToolResult:
+        from datetime import date
+        from typing import Literal
+        from zoneinfo import ZoneInfo
+        from emporio.rules.returns import evaluate_return
+        class ReturnInput(OrderInput):
+            reason: Literal['arrependimento', 'defeito', 'preferência', 'preferencia']
+            received_at: date | None = None
+            purchase_channel: Literal['online', 'presencial'] | None = None
+        try:
+            request = ReturnInput.model_validate(args)
+        except ValidationError:
+            return ToolResult(ok=False, error=ToolError(code='invalid_input', message_for_agent='Dados de devolução inválidos.'))
+        order = self.get_order(session_id, {'order_id': request.order_id})
+        if not order.ok:
+            return order
+        current = self.clock()
+        today = current.astimezone(ZoneInfo('America/Campo_Grande')).date()
+        reason = 'preferência' if request.reason == 'preferencia' else request.reason
+        return ToolResult(ok=True, data=evaluate_return(order.data, reason, today, request.received_at, request.purchase_channel))
