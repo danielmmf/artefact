@@ -40,3 +40,16 @@ def test_tokenization_roundtrip_and_isolation(env):
     assert b.restore(redacted) == redacted
     assert a.resolve('[EMAIL_1]') == ('email', 'pessoa.example@example.invalid')
     assert b.resolve('[EMAIL_1]') is None
+
+def test_tokenizer_covers_official_contacts_in_memory():
+    with locate(RAW, 'customers').open(encoding='utf-8') as f:
+        customers = list(csv.DictReader(f))
+    for customer in customers:
+        vault = ContactVault('test-session')
+        for key in ('email', 'phone'):
+            value = customer[key]
+            if value:
+                source = f'Contato: {value}'
+                tokenized = vault.tokenize(source)
+                assert value not in tokenized
+                assert vault.restore(tokenized) == source
