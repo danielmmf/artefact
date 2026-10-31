@@ -1,12 +1,15 @@
 """Motor de chamadas offline; a ativação de provedores externos está bloqueada."""
 import json
 import re
+import threading
+from time import perf_counter_ns
 from pathlib import Path
 from emporio.agent.prompt import build_system_prompt
-from emporio.agent.money_validator import evidence_from_result, supported_money
-from emporio.agent.history import load_history, save_turn, trim_history
+from emporio.agent.money_validator import CLAIM, CONTEXT, parse_amount, evidence_from_result, supported_money
+from emporio.agent.history import BUDGET, estimated_tokens, load_history, save_turn, trim_history
 from emporio.agent.offline import TOKEN
 from emporio.agent.privacy import PrivacyError, protect_dynamic
+from emporio.agent.trace import TurnTracer
 from emporio.llm.scripted import AssistantReply, ConversationScriptedLLM
 from emporio.tools.registry import ToolRegistry
 
@@ -19,8 +22,29 @@ class ConversationEngine:
         self.registry = registry
         self.llm = llm
         self.trace = trace
+        self._tracer = TurnTracer(registry.context.session_id, trace)
+        self._turn_lock = threading.Lock()
 
     def turn(self, message: str, system_prompt: str | None = None) -> tuple[str, list[dict]]:
+        with self._turn_lock:
+            record = self._tracer.new()
+            try:
+                answer, messages = self._turn(message, system_prompt, record)
+                if answer == SAFE:
+                    record['validator']['fallback'] = True
+                return answer, messages
+            except Exception:
+                record['errors'].append({'code': 'internal_error'})
+                record['validator']['fallback'] = True
+                return SAFE, []
+            finally:
+                try:
+                    self._tracer.write(record)
+                except OSError:
+                    # Trace indisponível não expõe exceções ou texto privado.
+                    pass
+
+    def _turn(self, message, system_prompt, record):
         vault = self.registry.context.vault
         trusted_prompt = build_system_prompt(Path('data/processed/policies.md'))
         # Um prompt fornecido pelo chamador é dado, nunca uma instrução de sistema.
@@ -33,55 +57,75 @@ class ConversationEngine:
         try:
             sanitized_message = protect_dynamic(message, vault)
         except PrivacyError:
+            record['errors'].append({'code': 'privacy_blocked'})
             return SAFE, []
         context = self.registry.context
-        if context.state.session(context.session_id, context.clock()) is None:
+        session = context.state.session(context.session_id, context.clock())
+        if session is None:
+            record['errors'].append({'code': 'session_invalid'})
             return SAFE, []
+        record['auth']['session'] = session['mode']
         try:
             history = load_history(context.state, context.session_id)
             history = [{'user':protect_dynamic(t['user'], vault), 'assistant':protect_dynamic(t['assistant'], vault)} for t in history]
         except (ValueError, PrivacyError):
+            record['errors'].append({'code': 'history_invalid'})
             return SAFE, []
         tools = self.registry.definitions()
         system = {'role':'system', 'content':system_prompt}
         current = [{'role':'user', 'content':sanitized_message}]
         messages = []
         allowed = {x['function']['name'] for x in tools}
-        events = []
+        events = record['tool_calls']
         def finish(text, visible):
             finished_at = context.clock()
             if context.state.session(context.session_id, finished_at) is None:
+                record['errors'].append({'code': 'session_expired'})
                 return SAFE, visible
             save_turn(context.state, context.session_id, finished_at, sanitized_message, text)
-            if self.trace is not None:
-                self.trace.parent.mkdir(parents=True, exist_ok=True)
-                with self.trace.open('a', encoding='utf-8') as stream:
-                    stream.write(json.dumps({'tool_calls':events}, ensure_ascii=False) + '\n')
             return text, visible
         evidence = set()
         regenerated = False
         for iteration in range(5):
+            record['iterations'] = iteration + 1
             messages = trim_history(system, history, current, tools)
             if messages is None:
+                record['errors'].append({'code': 'budget_exceeded'})
                 return SAFE, []
+            record['budget']['estimated_tokens'] = estimated_tokens(messages, tools)
+            record['budget']['history_turns_truncated'] = max(record['budget']['history_turns_truncated'], len(history) - (len(messages) - len(current) - 1) // 2)
+            started = perf_counter_ns()
             try:
                 reply = self.llm.complete(messages, tools=tools)
             except Exception:
+                record['errors'].append({'code': 'simulator_error'})
                 return SAFE, messages
+            finally:
+                elapsed = (perf_counter_ns() - started) / 1_000_000
+                llm = record['llm']
+                llm['latency_ms'] = (llm['latency_ms'] or 0) + elapsed
+                llm['calls'] += 1
             if isinstance(reply, str):
                 try:
                     text = TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply, vault))
                 except PrivacyError:
                     return SAFE, messages
                 if supported_money(text, evidence):
+                    record['validator']['approved'] += 1
+                    claims = [parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(text)]
+                    claims += [parse_amount(m.group('amount')) for m in CONTEXT.finditer(CLAIM.sub('', text))]
+                    record['validator']['approved_values_brl'] = sorted({str(v) for v in claims if v in evidence})
                     return finish(text, messages)
+                record['validator']['rejected'] += 1
                 if regenerated:
                     return SAFE, messages
                 regenerated = True
+                record['validator']['regenerations'] += 1
                 current.append({'role':'assistant', 'content':text})
                 current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
                 continue
             if not isinstance(reply, AssistantReply):
+                record['errors'].append({'code': 'invalid_simulator_reply'})
                 return SAFE, messages
             if not reply.tool_calls:
                 try:
@@ -89,10 +133,16 @@ class ConversationEngine:
                 except PrivacyError:
                     return SAFE, messages
                 if supported_money(text, evidence):
+                    record['validator']['approved'] += 1
+                    claims = [parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(text)]
+                    claims += [parse_amount(m.group('amount')) for m in CONTEXT.finditer(CLAIM.sub('', text))]
+                    record['validator']['approved_values_brl'] = sorted({str(v) for v in claims if v in evidence})
                     return finish(text, messages)
+                record['validator']['rejected'] += 1
                 if regenerated:
                     return SAFE, messages
                 regenerated = True
+                record['validator']['regenerations'] += 1
                 current.append({'role':'assistant', 'content':text})
                 current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
                 continue
@@ -107,6 +157,7 @@ class ConversationEngine:
                     call_id += '_x'
                 used_ids.add(call_id)
                 name = call.name if isinstance(call.name, str) and call.name in allowed else 'unknown'
+                started = perf_counter_ns()
                 try:
                     args = json.loads(call.arguments_json)
                     if not isinstance(args, dict):
@@ -119,9 +170,15 @@ class ConversationEngine:
                     result = self.registry.dispatch(name, None)
                     safe_args = '{}'
                 normalized.append({'id': call_id, 'type':'function', 'function':{'name':name, 'arguments':safe_args}})
-                event = {'tool':name, 'ok':result.ok, 'error':result.error.code if result.error else None}
+                code = result.error.code if result.error and result.error.code in {'invalid_input', 'not_found', 'ambiguous', 'access_denied', 'not_verified', 'locked', 'internal_error'} else None
+                event = {'tool':name, 'arguments': '[REDACTED]', 'status': 'ok' if result.ok else 'error', 'ok': result.ok, 'error': code, 'latency_ms': (perf_counter_ns() - started) / 1_000_000}
+                if name in {'get_order', 'check_return_eligibility', 'verify_order_ownership'}:
+                    record['auth']['events'].append({'tool': name, 'status': 'allowed' if result.ok else 'denied'})
                 if name == 'search_products' and result.ok:
-                    event['search_backend'] = result.data['search_backend']
+                    backend = result.data['search_backend']
+                    if backend in {'sqlite_filters', 'sqlite_fts5_bm25', 'rapidfuzz'}:
+                        event['search_backend'] = backend
+                        record['search_backend'] = backend
                 events.append(event)
                 if result.ok:
                     evidence.update(evidence_from_result(result.model_dump(mode='json')['data']))
@@ -136,4 +193,5 @@ class ConversationEngine:
                 return SAFE, messages
             current.append({'role':'assistant', 'content':assistant_content, 'tool_calls':normalized})
             current.extend(results)
+        record['errors'].append({'code': 'iteration_limit'})
         return SAFE, messages
