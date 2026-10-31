@@ -47,3 +47,23 @@ def test_trace_iteration_limit(env, tmp_path):
     assert ConversationEngine(setup_registry(env), ConversationScriptedLLM([call] * 5), path).turn('oi')[0] == SAFE
     record = json.loads(path.read_text())
     assert record['iterations'] == 5 and record['errors'] == [{'code': 'iteration_limit'}] and record['validator']['fallback']
+
+
+def test_trace_write_failure_does_not_expose_error_or_break_turn(env, monkeypatch, capsys):
+    def fail_write(record):
+        raise OSError('pessoa@example.invalid')
+    engine = ConversationEngine(setup_registry(env), ConversationScriptedLLM(['Resposta segura']))
+    monkeypatch.setattr(engine._tracer, 'write', fail_write)
+    assert engine.turn('Olá')[0] == 'Resposta segura'
+    assert 'pessoa@example.invalid' not in str(capsys.readouterr())
+
+
+def test_free_text_tool_arguments_never_enter_trace(env, tmp_path):
+    path = tmp_path / 'trace.jsonl'
+    call = FunctionCall('a', 'escalate_to_human', '{"category":"outros","summary":"pessoa@example.invalid texto livre privado"}')
+    llm = ConversationScriptedLLM([AssistantReply(tool_calls=(call,)), 'Concluído'])
+    answer, _ = ConversationEngine(setup_registry(env), llm, path).turn('Olá')
+    assert answer == 'Concluído'
+    trace = path.read_text()
+    assert 'pessoa@example.invalid' not in trace and 'texto livre privado' not in trace
+    assert json.loads(trace)['tool_calls'][0]['arguments'] == '[REDACTED]'

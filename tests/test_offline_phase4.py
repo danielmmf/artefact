@@ -40,3 +40,17 @@ def test_golden_labels_complete_before_evaluation():
     for case in golden['cases']:
         assert set(case) == {'id', 'label', 'input', 'session_context', 'expected_behavior', 'expected_tools', 'prohibitions', 'pass_criteria'}
         assert case['input'] and case['prohibitions'] and case['pass_criteria']
+
+
+def test_cli_eof_and_unexpected_error_are_safe(monkeypatch, capsys):
+    from emporio.cli import chat_offline
+    def eof(_):
+        raise EOFError()
+    output = []
+    assert chat_offline(Path.cwd(), read=eof, write=output.append) == 0
+    assert any('encerrada' in text for text in output)
+    def fail(_):
+        raise RuntimeError('privado@example.invalid')
+    output.clear()
+    assert chat_offline(Path.cwd(), read=fail, write=output.append) == 1
+    assert 'privado@example.invalid' not in str(output) + str(capsys.readouterr())
