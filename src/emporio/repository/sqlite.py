@@ -33,3 +33,23 @@ class SQLiteRepository:
                      if row['discount_percent'] is not None else None)
         return ProductPricing(product_id=row['product_id'], name=row['name'], price_cents=row['price_cents'],
                               stock_quantity=row['stock_quantity'], status=row['status'], active_promotion=promotion)
+
+    def find_product_names(self, name: str) -> list[tuple[int, str]]:
+        import unicodedata
+        def normalize(value: str) -> str:
+            return ''.join(c for c in unicodedata.normalize('NFKD', value.casefold()) if not unicodedata.combining(c))
+        query = normalize(name.strip())
+        rows = self.connection.execute('SELECT product_id, name FROM products ORDER BY product_id').fetchall()
+        matches = [(row['product_id'], row['name']) for row in rows if query in normalize(row['name'])]
+        exact = [candidate for candidate in matches if normalize(candidate[1]) == query]
+        return exact or matches
+
+    def inactive_promotions(self, product_id: int) -> list[dict]:
+        rows = self.connection.execute('SELECT description, discount_percent FROM promotions WHERE product_id = ? AND is_active = 0 ORDER BY promotion_id', (product_id,)).fetchall()
+        return [{'name': row['description'], 'discount_percent': row['discount_percent']} for row in rows]
+
+    def product_alternatives(self, product_id: int, category_id: int, price_cents: int, limit: int = 3) -> list[Product]:
+        rows = self.connection.execute('''SELECT product_id FROM products WHERE category_id = ? AND product_id != ?
+            AND status = 'active' AND stock_quantity > 0 ORDER BY ABS(price_cents - ?), product_id LIMIT ?''',
+            (category_id, product_id, price_cents, limit)).fetchall()
+        return [self.get_product(row['product_id']) for row in rows]

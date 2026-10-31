@@ -4,6 +4,7 @@ from pydantic import BaseModel, model_validator
 class ToolError(BaseModel):
     code: Literal['invalid_input', 'not_found', 'ambiguous', 'access_denied', 'not_verified', 'locked', 'internal_error']
     message_for_agent: str
+    candidates: list[dict] | None = None
 
 class ToolResult(BaseModel):
     ok: bool
