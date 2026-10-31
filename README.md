@@ -1,41 +1,79 @@
-# Empório da Música — fundação
+# Empório AI — integração demonstrativa offline
 
-Fundação da Fase 1 para ingestão local e um fluxo de teste simulado. Python 3.11+ e [uv](https://docs.astral.sh/uv/) são necessários. Após a instalação das dependências, ingestão e testes não usam serviços externos, chave, Docker ou GPU.
+Protótipo local para atendimento da Empório da Música. O agente aceita somente um simulador de respostas programadas; não há adaptador LLM real habilitado. A verificação de posse por contato é demonstrativa, e `--customer <id>` define uma identidade simulada: nenhuma das duas é autenticação de produção. A Fase 4 e o gate de privacidade permanecem abertos.
 
-```sh
-make setup
-make ingest
-make test
+## Arquitetura
+
+```text
+CLI com roteiros fixos -> ConversationEngine -> ConversationScriptedLLM
+                               |                 (sem rede)
+                               +-> ToolRegistry (8 tools, Pydantic)
+                               |    +-> regras Python -> StoreRepository -> store.db (somente leitura)
+                               |    +-> autorização -> app.db separado
+                               +-> histórico tokenizado + trace JSONL de metadados
 ```
 
-A ingestão lê `data/raw/` sem alterá-lo, valida os CSVs, cria `var/store.db` e gera `data/processed/policies.md` e `QUALITY.md`. A leitura de atendimento usa SQLite em modo somente leitura. `var/` e `.env` não são versionados; `.env.example` mostra a configuração. O relatório reproduz os fatos verificados na ADR-000 §13 e deve ser reavaliado se os arquivos oficiais mudarem.
+A identidade e o relógio vêm do contexto Python, não dos argumentos do modelo. O loop limita-se a cinco iterações, protege entradas e saídas com tokenização heurística, preserva instruções de sistema e usa uma verificação inicial de valores monetários. Descrições e resultados de ferramentas são dados não confiáveis. A autorização de pedidos é aplicada em Python a cada consulta. Consulte [decisões](docs/DECISIONS.md), [ADR-000](docs/adr/ADR-000-especificacao-consolidada.md) e [matriz de aceite](docs/ACCEPTANCE-MATRIX.md).
 
-O teste `test_tracer_no_personal_data` exercita a sequência mensagem → `ScriptedLLM` → ferramenta `get_product` → repositório SQLite → resultado → resposta → JSONL. O simulador é determinístico e não representa um LLM real. A tokenização no fluxo offline não comprova segurança para um LLM real. O trace básico usa uma lista restrita de campos e não grava mensagens, argumentos nem resultados.
+## Instalação e execução
 
-Ainda não há autenticação real nem adaptador de LLM real. A CLI offline oferece somente roteiros demonstrativos fixos. Os arquivos `.planning/` não foram atualizados; o planejamento e a coordenação permanecem com o Claude/GSD.
+Requer Python 3.11+ e `uv`. A instalação pode precisar de rede para obter dependências travadas; após instaladas, ingestão e testes não exigem chave LLM, Docker ou GPU.
 
-A ferramenta Python `quote_payment` consulta os dados atuais por `StoreRepository` e não registra compras. As parcelas e a permissão de pagamento combinado usam o subtotal dos produtos, sem frete, com a base indicada na saída: a ADR não especifica explicitamente a inclusão do frete nessas duas bases, que devem ser confirmadas na revisão. O frete é exibido separadamente; sem valor conhecido, o total com frete é nulo. A indicação `special_quote_required` é consultiva: o produto pode exigir cotação especial.
+```sh
+make setup    # uv sync --locked --extra dev
+make ingest   # emporio ingest; lê data/raw/ e cria var/store.db e data/processed/
+make test     # testes offline
+make bench    # miniavaliação local da busca
+make chat     # equivale a emporio chat --offline
+make eval     # falha explicitamente: adaptador externo bloqueado
+```
 
-A busca usa SQLite FTS5/BM25 e fallback rapidfuzz quando não há resultados no índice; filtros de categoria, preço final e disponibilidade são aplicados no SQLite. Depois de `make setup`, execute `make bench` sem rede para gerar `evals/reports/search.json`. Com os dez casos rotulados atuais, a medição local foi recall@5 **0,800** e MRR **0,750**; o conjunto pequeno e seus rótulos não exaustivos não demonstram generalização. O trace registra o backend observado nas buscas.
+A CLI é uma **demonstração offline**, não um chatbot com raciocínio real. Escolha `1` para horário, `2` para produto 90 e `sair` para encerrar. `emporio chat --offline --customer 3` configura identidade simulada, sem validar credenciais. A CLI cria os bancos quando necessário, invalida a sessão e fecha as conexões. Para reproduzir o horário, por exemplo:
 
-O frete reconhece Campo Grande e Campo Grande/MS. Falhas SQLite em `quote_payment` produzem erro genérico. As hipóteses de subtotal sem frete para parcelas e pagamento combinado, arredondamento HALF_UP por unidade e distribuição de centavos nas primeiras parcelas permanecem sujeitas à decisão comercial.
+```sh
+EMPORIO_NOW=2026-03-25T10:00:00-04:00 uv run --locked emporio chat --offline
+```
 
-A primeira entrega de segurança da Fase 3 oferece `SecurityStore`, `ContactVault` e `OrderAccess` como componentes Python, sem CLI de atendimento. `SecurityStore` usa `app.db` separado e `SQLiteRepository` mantém a loja somente leitura. O canal é responsável por criar a sessão: `simulated_authenticated` com ID de cliente é **demonstrativo**, não é autenticação real. Sessões e concessões expiram em 15 minutos; nova sessão exige nova verificação. Três falhas acumuladas por pedido bloqueiam novas verificações desse pedido; três falhas na sessão bloqueiam novas verificações dessa sessão, mesmo em pedidos diferentes. Os bloqueios criam tickets mínimos sem contato e não há desbloqueio automático. Esse mecanismo demonstrativo permite negação de serviço e requer revisão para produção.
+A ingestão é reutilizada pelo comando `emporio ingest`; os dados originais não são modificados. `store.db` é aberto somente para leitura; `app.db`, sessões, histórico e traces ficam em `var/`, ignorado pelo Git. O relógio é injetável em Python.
 
-A verificação por contato compartilhado entre clientes é negada, inclusive para o titular, até decisão sobre evidência adicional. Contatos e mapas de tokenização ficam em um cofre por sessão na memória; o tokenizador ainda não está integrado antes do LLM e não há garantia de privacidade completa. Texto de observações é redigido para contatos e nomes do cadastro, mas não é um detector geral de todas as informações pessoais. Devoluções são avaliadas apenas de forma preliminar após autorização e com dados declarados explicitamente não verificados. O escalonamento registra somente categoria e texto fixo: o resumo livre recebido é descartado, portanto a equipe não recebe detalhes dele. A integração de privacidade com um LLM real permanece pendente.
+## Ferramentas e limites
 
-A integração offline disponibiliza oito ferramentas em `ToolRegistry`, com dependências e identidade fornecidas por `ToolContext`. `run_offline` aceita exclusivamente `ConversationScriptedLLM`: tokeniza mensagens e resultados antes do simulador, não restaura tokens nas respostas e registra somente metadados no trace. O canal deve construir o contexto confiável; o modelo não informa sessão ou identidade. Os testes incluem tentativas de acesso indevido e de revelação de contatos.
+| Ferramenta | Função e limite |
+| --- | --- |
+| `search_products` | Busca lexical e filtros; retorna candidatos, não escolhe produto ambíguo. |
+| `get_product` | Detalhes e promoções; retorna ambiguidade quando necessário. |
+| `quote_payment` | Cotação, PIX, parcelas e frete; não registra compras. Bases e arredondamento aguardam revisão comercial. |
+| `store_status` | Horário local pelo relógio injetado; não cobre feriados. |
+| `verify_order_ownership` | Confirmação demonstrativa por pedido e referência de contato; não é login nem OTP. |
+| `get_order` | Exige autorização Python; total é o registrado no pedido. Observações livres são omitidas por privacidade. |
+| `check_return_eligibility` | Avaliação preliminar após autorização; não aprova devolução e pode exigir dados não disponíveis. |
+| `escalate_to_human` | Cria ticket mínimo; resumo livre é descartado, portanto não chega à equipe. |
 
-O fluxo offline não é um adaptador de LLM real nem substitui uma auditoria geral de privacidade: a detecção de contatos usa padrões e o histórico é apenas do fluxo offline. Antes de conectar um serviço externo, revisar cobertura de formatos, proteção da identidade, histórico, prompt, trace e restauração de tokens. Bloqueios persistentes podem causar negação de serviço, e contatos compartilhados continuam negados; essas políticas requerem revisão. O ticket de escalonamento mantém apenas texto fixo e não entrega o resumo livre à equipe.
+## Privacidade, trace e segurança
 
-O novo `ConversationEngine` é **somente offline**: suporta mensagens com múltiplas chamadas de ferramentas, limita o turno a cinco iterações e inclui o manual completo. O histórico de usuário e resposta é tokenizado no `app.db`, isolado por sessão; tokens em turnos antigos são mascarados ao retomar, pois seus mapas não são persistidos. O orçamento é estimado em bytes UTF-8/3 e pode diferir da contagem do modelo. O trace opcional registra metadados estruturados sem mensagens nem argumentos livres.
+O cofre de contatos fica em memória por sessão, e os contatos reconhecidos são tokenizados antes do simulador. A detecção de texto livre é heurística: não cobre garantidamente todas as formas de contato, nomes ou segredos. O prompt atual inclui o manual integral e contatos institucionais divergentes em claro; sua classificação e tratamento para uso externo aguardam decisão. Consulte [auditoria de privacidade](docs/AUDITORIA-PRIVACIDADE-FASE4.md). Não envie dados a um provedor externo antes da revisão.
 
-O validador de reais compara formatos reconhecidos com campos monetários de resultados de ferramentas do turno e regenera uma vez. Trata-se de uma primeira barreira baseada em padrões, não de uma garantia para todas as formas de expressar valores. A privacidade também depende de padrões, e o manual integral inclui contatos institucionais em texto claro cuja classificação pública está pendente. Por isso, a classe rejeita adaptadores externos; antes de habilitar rede é necessária revisão da fronteira de privacidade, da política para contatos públicos do manual e de tentativas de evasão. Não há adaptador OpenAI-compatible, smoke test ou avaliação de modelo real nesta entrega.
+O trace JSONL opcional registra hash de sessão com chave efêmera por instância, sequência e UUID de turno, iterações, ferramentas e argumentos omitidos, status, erros, tempos medidos, modelo simulado, tokens desconhecidos `null`, busca, validador, orçamento e autorização abstrata. Não grava prompts, resultados completos ou referências de contato. A sequência reinicia com a instância; erro de gravação do trace não interrompe o atendimento.
 
-## Demonstração offline e avaliação futura
+Os testes interceptam sockets, resolução de nomes e subprocessos nos caminhos offline que exercitam. Isso não demonstra isolamento universal do processo. Bloqueios persistentes podem causar negação de serviço; contatos compartilhados são negados; nenhuma autenticação real foi implementada.
 
-Execute `emporio chat --offline` (ou `make chat`) para escolher roteiros fixos de horário ou produto; não há IA real. `--customer <id>` configura identidade simulada; verificação por contato é demonstrativa, não autenticação. `EMPORIO_NOW` aceita data ISO 8601 com fuso para reprodução. A CLI inicializa os bancos quando necessário, encerra a sessão e fecha as conexões. O histórico e os traces locais ficam em `var/`, ignorado pelo Git.
+## Avaliação
 
-O trace por turno usa hash de sessão com chave efêmera por instância (sem correlação entre reinícios), UUID de turno, sequência, iterações, tool calls com argumentos omitidos, status e tempos medidos, metadados do simulador, busca, validador, orçamento, autorização abstrata e erros seguros. Tokens indisponíveis são `null`. A sequência reinicia com a instância. Falha de escrita do trace não interrompe o atendimento.
+`make bench` executa dez consultas locais rotuladas: **Recall@5 = 0,800 e MRR = 0,750**. É uma amostra pequena, não evidência de generalização. O [golden set](evals/golden_set.json) tem 16 casos rotulados antes de execução, abrangendo catálogo, preço, pedidos, loja e ataques. Nenhum caso foi avaliado com LLM real; não existem métricas reais de acerto ou recusa. `make eval` permanece bloqueado até revisão de privacidade e implementação autorizada do adaptador.
 
-`evals/golden_set.json` contém rótulos definidos antes da avaliação, não execuções reais. `make eval` falha explicitamente enquanto o adaptador externo estiver bloqueado. Os testes offline interceptam conexões de socket e criação de subprocessos nos caminhos exercitados, mas não são isolamento universal do processo: outros mecanismos, código alterado em runtime ou bibliotecas nativas exigem controles adicionais. O gate externo permanece fechado até revisão de privacidade e segurança.
+## Estratégia e uso de assistentes
+
+A ADR registra revisão de arquitetura com propostas de Claude, ChatGPT, Gemini, DeepSeek e GLM, validadas contra os dados e o manual. Claude Code com GSD foi previsto para planejamento e implementação; GPT/Codex contribuiu para integração offline, testes, trace, CLI e documentação. As decisões pertencem ao responsável pelo projeto; artefatos gerados por assistentes exigem revisão humana e não constituem validação independente de produção.
+
+## O que eu faria com mais tempo
+
+- Avaliar Qdrant e busca densa/híbrida com comparação reproduzível ao baseline lexical.
+- Adicionar ReplayLLM, `make demo` e gravações de execuções reais, mantendo-as claramente identificadas.
+- Implementar adapter Firestore opcional para `StoreRepository`.
+- Investigar LLM-as-judge após avaliação humana e revisão de segurança.
+- Criar comando `emporio trace` com controle de acesso e retenção.
+- Substituir identidade simulada por login ou OTP real.
+- Executar golden set com múltiplas repetições e análise de variância.
+- Ampliar o validador de evidências para estoque, número de pedido e nome de produto.
+
+Antes de uso externo, resolver as pendências em `docs/DECISIONS.md`, inclusive modelo, tokenizador, política de contatos, lockout, tickets e avaliação adversarial. O projeto não está pronto para produção.

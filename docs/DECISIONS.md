@@ -82,3 +82,19 @@ Qdrant e busca densa/híbrida · ReplayLLM e `make demo` · adapter Firestore ·
 - `hatchling`: construção do pacote Python.
 
 As versões exatas são registradas em `uv.lock`. Estas dependências não alteram as decisões arquiteturais anteriores.
+
+## 7. Auditoria de coerência e decisões pendentes
+
+S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não altera as interpretações aprovadas. As dependências correntes estão em `pyproject.toml` e `uv.lock`: as bibliotecas de execução listadas na seção 6 incluem `python-dotenv`; `pytest` é dependência de desenvolvimento e `hatchling` é usado no build. O mini-eval usa dez casos locais e mede recall@5 e MRR (`evals/search_queries.yaml`). A ADR §16 prevê golden set de aproximadamente 15 casos com uma repetição; §11 prevê temperatura zero quando suportada. Há 16 casos pré-rotulados em `evals/golden_set.json`, sem execução de LLM real. O modelo padrão continua pendente: nenhuma documentação de provedor foi utilizada para escolhê-lo.
+
+| Assunto | Estado | Pendência para revisão |
+| --- | --- | --- |
+| Contatos institucionais divergentes e DEC-06 | PENDENTE | Conciliar S-l e os contatos divergentes do manual com a exigência de tokenização; confirmar fonte e eventual exceção por decisão explícita. |
+| Projeção do manual para serviço externo | PENDENTE | Definir e revisar projeção segura e sua relação com DEC-03; o prompt atual contém o manual completo e contatos em claro. |
+| Subtotal sem frete para parcelas e pagamento combinado | PENDENTE | Confirmar a base usada atualmente em `quote_payment` com a área comercial. |
+| Arredondamento e distribuição de centavos | PENDENTE | Confirmar HALF_UP por unidade e distribuição dos centavos nas primeiras parcelas. |
+| Bloqueio persistente por pedido | PENDENTE | Definir desbloqueio, auditoria e mitigação de negação de serviço; o bloqueio atual não expira automaticamente. |
+| Contatos compartilhados | PENDENTE | Definir prova adicional e política para contatos compartilhados; a implementação nega a verificação por contato compartilhado. |
+| Tickets humanos | PENDENTE | Definir dados úteis e seguros: atualmente o resumo livre é descartado. |
+| Estimativa de tokens | PENDENTE | Selecionar tokenizador e margem por modelo; bytes UTF-8/3 é apenas aproximação. |
+| Modelo LLM e parâmetros de avaliação | PENDENTE | Após aprovação do gate, escolher modelo com fonte oficial e fixar parâmetros, incluindo temperatura ou exceção, repetição e critérios; não existe avaliação real nesta versão. |
