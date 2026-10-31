@@ -71,3 +71,13 @@ Todas confirmadas pelo Daniel em 2026-10-31.
 ## 5. Adiados (README, "o que eu faria com mais tempo")
 
 Qdrant e busca densa/híbrida · ReplayLLM e `make demo` · adapter Firestore · LLM-as-judge · comando `emporio trace` · login/OTP real · golden set com múltiplas repetições · validador de evidências para estoque, pedido e nome de produto.
+
+## 6. Dependências da fundação
+
+- `pydantic`: validação dos contratos e das linhas de entrada.
+- `pypdf`: extração local do manual integral, sem serviço externo.
+- `python-dotenv`: leitura opcional de configuração local; variáveis do ambiente têm precedência.
+- `pytest`: testes automatizados offline.
+- `hatchling`: construção do pacote Python.
+
+As versões exatas são registradas em `uv.lock`. Estas dependências não alteram as decisões arquiteturais anteriores.
