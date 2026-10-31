@@ -74,6 +74,7 @@ Qdrant e busca densa/híbrida · ReplayLLM e `make demo` · adapter Firestore ·
 
 ## 6. Dependências da fundação
 
+- `rapidfuzz`: fallback lexical determinístico para nomes quando FTS5 não encontra resultados.
 - `pydantic`: validação dos contratos e das linhas de entrada.
 - `pypdf`: extração local do manual integral, sem serviço externo.
 - `python-dotenv`: leitura opcional de configuração local; variáveis do ambiente têm precedência.

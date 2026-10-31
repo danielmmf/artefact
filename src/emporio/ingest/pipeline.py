@@ -17,6 +17,7 @@ CREATE TABLE orders(order_id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL R
 CREATE TABLE order_items(order_id INTEGER NOT NULL REFERENCES orders, quantity INTEGER NOT NULL, product_id INTEGER NOT NULL REFERENCES products, PRIMARY KEY(order_id,product_id));
 CREATE TABLE promotions(promotion_id INTEGER PRIMARY KEY, product_id INTEGER NOT NULL REFERENCES products, discount_percent TEXT NOT NULL, description TEXT NOT NULL, is_active INTEGER NOT NULL);
 CREATE UNIQUE INDEX one_active_promotion ON promotions(product_id) WHERE is_active=1;
+CREATE VIRTUAL TABLE products_fts USING fts5(name, description, category, tokenize='unicode61 remove_diacritics 2');
 '''
 
 def locate(raw: Path, name: str) -> Path:
@@ -92,6 +93,7 @@ def ingest(raw: Path, database: Path, processed: Path, adr: Path) -> None:
                         values['specs'] = json.dumps(values['specs'], ensure_ascii=False, sort_keys=True)
                     names = list(values)
                     con.execute(f"INSERT INTO {table} ({','.join(names)}) VALUES ({','.join('?' for _ in names)})", list(values.values()))
+            con.execute('INSERT INTO products_fts(rowid, name, description, category) SELECT p.product_id, p.name, p.description, c.name FROM products p JOIN categories c ON c.category_id = p.category_id')
             if con.execute('PRAGMA foreign_key_check').fetchall():
                 raise ValueError('Integridade referencial inválida')
         target.replace(database)

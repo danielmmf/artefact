@@ -8,6 +8,8 @@ class SQLiteRepository:
     def __init__(self, path: Path):
         self.connection = sqlite3.connect(f'{path.resolve().as_uri()}?mode=ro', uri=True)
         self.connection.row_factory = sqlite3.Row
+        from emporio.rules.pricing import discounted_cents
+        self.connection.create_function('discounted_cents', 2, discounted_cents, deterministic=True)
         self.connection.execute('PRAGMA query_only=ON')
 
     def close(self) -> None:
@@ -53,3 +55,46 @@ class SQLiteRepository:
             AND status = 'active' AND stock_quantity > 0 ORDER BY ABS(price_cents - ?), product_id LIMIT ?''',
             (category_id, product_id, price_cents, limit)).fetchall()
         return [self.get_product(row['product_id']) for row in rows]
+
+    def category_name(self, category_id: int) -> str:
+        row = self.connection.execute('SELECT name FROM categories WHERE category_id = ?', (category_id,)).fetchone()
+        if row is None:
+            raise ValueError('Categoria inexistente')
+        return row['name']
+
+    def search_product_ids(self, query: str | None, category: str | None, min_cents: int | None, max_cents: int | None, only_available: bool) -> tuple[list[int], str]:
+        import re
+        import unicodedata
+        from rapidfuzz import fuzz
+        conditions = []
+        params = []
+        if category is not None:
+            conditions.append('c.name = ? COLLATE NOCASE')
+            params.append(category)
+        if only_available:
+            conditions.append("p.status = 'active' AND p.stock_quantity > 0")
+        # Os limites são aplicados ao preço final promocional, em centavos.
+        effective = "CASE WHEN pr.discount_percent IS NULL THEN p.price_cents ELSE discounted_cents(p.price_cents, pr.discount_percent) END"
+        if min_cents is not None:
+            conditions.append(effective + ' >= ?')
+            params.append(min_cents)
+        if max_cents is not None:
+            conditions.append(effective + ' <= ?')
+            params.append(max_cents)
+        filters = ' AND '.join(conditions) if conditions else '1=1'
+        joins = ' FROM products p JOIN categories c ON c.category_id = p.category_id LEFT JOIN promotions pr ON pr.product_id = p.product_id AND pr.is_active = 1 '
+        if not query:
+            rows = self.connection.execute('SELECT p.product_id' + joins + ' WHERE ' + filters + ' ORDER BY p.product_id', params).fetchall()
+            return [r['product_id'] for r in rows], 'sqlite_filters'
+        tokens = re.findall(r'[^\W_]+', query, flags=re.UNICODE)
+        if not tokens:
+            return [], 'sqlite_fts5_bm25'
+        fts_query = ' OR '.join('"' + t + '"' for t in tokens)
+        rows = self.connection.execute('SELECT p.product_id' + joins + ' JOIN products_fts ON products_fts.rowid = p.product_id WHERE ' + filters + ' AND products_fts MATCH ? ORDER BY bm25(products_fts, 4.0, 1.0, 2.0), p.product_id', [*params, fts_query]).fetchall()
+        if rows:
+            return [r['product_id'] for r in rows], 'sqlite_fts5_bm25'
+        rows = self.connection.execute('SELECT p.product_id, p.name' + joins + ' WHERE ' + filters, params).fetchall()
+        def normalize(value):
+            return ''.join(c for c in unicodedata.normalize('NFKD', value.casefold()) if not unicodedata.combining(c))
+        ranked = [(fuzz.partial_ratio(normalize(query), normalize(r['name'])), r['product_id']) for r in rows]
+        return [i for score, i in sorted(ranked, key=lambda x: (-x[0], x[1])) if score >= 80], 'rapidfuzz'

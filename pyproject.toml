@@ -6,7 +6,12 @@ build-backend = "hatchling.build"
 name = "emporio-agent"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["pydantic>=2.10,<3", "pypdf>=5,<7", "python-dotenv>=1,<2"]
+dependencies = [
+    "pydantic>=2.10,<3",
+    "pypdf>=5,<7",
+    "python-dotenv>=1,<2",
+    "rapidfuzz>=3,<4",
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10"]
