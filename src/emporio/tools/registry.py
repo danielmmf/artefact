@@ -30,6 +30,17 @@ class ToolContext:
         if self.vault.session_id != self.session_id:
             raise ValueError('Cofre e sessão incompatíveis')
 
+DESCRIPTIONS = {
+    'search_products': 'Busque instrumentos por consulta, categoria, preço e disponibilidade; retorna candidatos, não escolhe produto ambíguo.',
+    'get_product': 'Consulte detalhes atuais de um instrumento por ID ou nome; nomes ambíguos retornam candidatos.',
+    'quote_payment': 'Cote itens por ID e quantidade, opcionalmente cidade; produtos indisponíveis não entram nos totais.',
+    'store_status': 'Consulte o horário local e a próxima abertura; não inclui feriados.',
+    'verify_order_ownership': 'Confirme demonstrativamente posse por ID do pedido e token de contato criado pelo canal; não recebe contato bruto.',
+    'get_order': 'Consulte pedido por ID somente quando a sessão confiável tiver acesso autorizado.',
+    'check_return_eligibility': 'Avalie preliminarmente devolução de pedido autorizado; declarações não são provas nem aprovação.',
+    'escalate_to_human': 'Encaminhe caso à equipe com categoria e resumo; o resumo livre não é armazenado.',
+}
+
 class ToolRegistry:
     def __init__(self, context: ToolContext):
         self.context = context
@@ -46,7 +57,7 @@ class ToolRegistry:
         }
 
     def definitions(self) -> list[dict]:
-        return [{'type':'function', 'function':{'name': name, 'description': f'Executa {name}.', 'parameters': schema.model_json_schema()}}
+        return [{'type':'function', 'function':{'name': name, 'description': DESCRIPTIONS[name], 'parameters': schema.model_json_schema()}}
                 for name, (schema, _) in self._tools.items()]
 
     def dispatch(self, name: str, args: dict) -> ToolResult:

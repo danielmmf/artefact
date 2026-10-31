@@ -29,3 +29,14 @@ class ConversationScriptedLLM:
         from copy import deepcopy
         self.inputs.append(deepcopy(messages))
         return next(self._script)
+
+@dataclass(frozen=True)
+class FunctionCall:
+    call_id: str
+    name: str
+    arguments_json: str
+
+@dataclass(frozen=True)
+class AssistantReply:
+    content: str | None = None
+    tool_calls: tuple[FunctionCall, ...] = ()
