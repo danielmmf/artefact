@@ -18,3 +18,14 @@ class ScriptedLLM:
             return result['error']['message_for_agent']
         data = result['data']
         return f"{data['name']}: R$ {data['price']} (estoque: {data['stock_quantity']})."
+
+class ConversationScriptedLLM:
+    """Sequência fixa para testar o registry; nunca contata serviço externo."""
+    def __init__(self, script: list[ToolCall | str]):
+        self._script = iter(script)
+        self.inputs: list[list[dict]] = []
+
+    def complete(self, messages: list[dict]) -> ToolCall | str:
+        from copy import deepcopy
+        self.inputs.append(deepcopy(messages))
+        return next(self._script)

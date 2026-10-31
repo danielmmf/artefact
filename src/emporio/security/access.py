@@ -1,6 +1,6 @@
 """Autorização e confirmação demonstrativa de posse; não representa login real."""
-from datetime import datetime
-from typing import Callable
+from datetime import date, datetime
+from typing import Callable, Literal
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from emporio.appdb.security_store import SecurityStore
 from emporio.repository.base import StoreRepository
@@ -13,6 +13,11 @@ class OrderInput(BaseModel):
 
 class VerifyInput(OrderInput):
     contact_ref: str = Field(min_length=1, max_length=30, strict=True)
+
+class ReturnInput(OrderInput):
+    reason: Literal['arrependimento', 'defeito', 'preferência', 'preferencia']
+    received_at: date | None = None
+    purchase_channel: Literal['online', 'presencial'] | None = None
 
 class OrderAccess:
     def __init__(self, store: StoreRepository, state: SecurityStore, clock: Callable[[], datetime]):
@@ -56,14 +61,8 @@ class OrderAccess:
         return ToolResult(ok=True, data=details)
 
     def check_return_eligibility(self, session_id: str, args: dict) -> ToolResult:
-        from datetime import date
-        from typing import Literal
         from zoneinfo import ZoneInfo
         from emporio.rules.returns import evaluate_return
-        class ReturnInput(OrderInput):
-            reason: Literal['arrependimento', 'defeito', 'preferência', 'preferencia']
-            received_at: date | None = None
-            purchase_channel: Literal['online', 'presencial'] | None = None
         try:
             request = ReturnInput.model_validate(args)
         except ValidationError:
