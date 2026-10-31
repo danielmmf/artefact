@@ -44,3 +44,13 @@ def test_system_prompt_contains_complete_manual(env):
     assert manual in prompt
     for section in ('não invente lojas parceiras', 'dinheiro', 'dados não confiáveis', 'demonstrativa'):
         assert section.lower() in prompt.lower()
+
+def test_privacy_unicode_contacts_and_suspicious_unmatched_fail_closed(env):
+    registry = setup_registry(env)
+    llm = ConversationScriptedLLM(['Pronto'])
+    answer, _ = ConversationEngine(registry, llm).turn('Meu e-mail é josé@example.com e telefone (67) 99812-3456')
+    sent = json.dumps(llm.inputs, ensure_ascii=False)
+    assert answer == 'Pronto' and 'josé@example.com' not in sent and '(67) 99812-3456' not in sent
+    blocked = ConversationScriptedLLM(['não deveria ser enviado'])
+    answer, _ = ConversationEngine(registry, blocked).turn('contato incompleto pessoa@exemplo')
+    assert answer == SAFE and blocked.inputs == []

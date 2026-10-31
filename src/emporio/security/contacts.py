@@ -3,7 +3,7 @@ import re
 
 EMAIL = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
 PHONE = re.compile(r'^\+?[\d\s().-]+$')
-CONTACT_IN_TEXT = re.compile(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|(?<!\w)(?:\+?\d|\(\d)[\d ().-]{7,}\d(?!\w)")
+CONTACT_IN_TEXT = re.compile(r"[\w.!#$%&'*+/=?^_`{|}~-]+@[\w.-]+\.[^\W\d_]{2,}|(?<!\w)(?:\+?\d|\(\d)[\d ().-]{7,}\d(?!\w)")
 
 def normalize_contact(value: str) -> tuple[str, str] | None:
     value = value.strip()

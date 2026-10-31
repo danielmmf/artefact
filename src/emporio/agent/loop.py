@@ -3,7 +3,8 @@ import json
 import re
 from pathlib import Path
 from emporio.agent.prompt import build_system_prompt
-from emporio.agent.offline import protect, TOKEN
+from emporio.agent.offline import TOKEN
+from emporio.agent.privacy import PrivacyError, protect_dynamic
 from emporio.llm.scripted import AssistantReply, ConversationScriptedLLM
 from emporio.tools.registry import ToolRegistry
 
@@ -20,7 +21,11 @@ class ConversationEngine:
         vault = self.registry.context.vault
         if system_prompt is None:
             system_prompt = build_system_prompt(Path('data/processed/policies.md'))
-        messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': vault.tokenize(message)}]
+        try:
+            sanitized_message = protect_dynamic(message, vault)
+        except PrivacyError:
+            return SAFE, []
+        messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': sanitized_message}]
         allowed = {x['function']['name'] for x in self.registry.definitions()}
         for iteration in range(5):
             try:
@@ -28,12 +33,18 @@ class ConversationEngine:
             except Exception:
                 return SAFE, messages
             if isinstance(reply, str):
-                return TOKEN.sub('[CONTATO PROTEGIDO]', vault.tokenize(reply)), messages
+                try:
+                    return TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply, vault)), messages
+                except PrivacyError:
+                    return SAFE, messages
             if not isinstance(reply, AssistantReply):
                 return SAFE, messages
             if not reply.tool_calls:
                 text = reply.content or ''
-                return TOKEN.sub('[CONTATO PROTEGIDO]', vault.tokenize(text)), messages
+                try:
+                    return TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(text, vault)), messages
+                except PrivacyError:
+                    return SAFE, messages
             normalized = []
             results = []
             used_ids = set()
@@ -49,14 +60,23 @@ class ConversationEngine:
                     args = json.loads(call.arguments_json)
                     if not isinstance(args, dict):
                         raise ValueError('Argumentos devem ser objeto')
+                    safe_args = json.dumps(protect_dynamic(args, vault), ensure_ascii=False)
                     result = self.registry.dispatch(name, args)
-                    safe_args = json.dumps(protect(args, vault), ensure_ascii=False)
+                except PrivacyError:
+                    return SAFE, messages
                 except (ValueError, TypeError):
                     result = self.registry.dispatch(name, None)
                     safe_args = '{}'
                 normalized.append({'id': call_id, 'type':'function', 'function':{'name':name, 'arguments':safe_args}})
-                data = protect(result.model_dump(mode='json'), vault)
+                try:
+                    data = protect_dynamic(result.model_dump(mode='json'), vault)
+                except PrivacyError:
+                    return SAFE, messages
                 results.append({'role':'tool', 'tool_call_id':call_id, 'content':json.dumps(data, ensure_ascii=False)})
-            messages.append({'role':'assistant', 'content':vault.tokenize(reply.content or ''), 'tool_calls':normalized})
+            try:
+                assistant_content = protect_dynamic(reply.content or '', vault)
+            except PrivacyError:
+                return SAFE, messages
+            messages.append({'role':'assistant', 'content':assistant_content, 'tool_calls':normalized})
             messages.extend(results)
         return SAFE, messages
