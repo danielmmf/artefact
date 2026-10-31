@@ -55,6 +55,7 @@ def test_privacy_unicode_contacts_and_suspicious_unmatched_fail_closed(env):
     answer, _ = ConversationEngine(registry, blocked).turn('contato incompleto pessoa@exemplo')
     assert answer == SAFE and blocked.inputs == []
     assert ConversationEngine(registry, ConversationScriptedLLM(['fim'])).turn('pessoa arroba exemplo ponto com')[0] == SAFE
+    assert ConversationEngine(registry, ConversationScriptedLLM(['fim'])).turn('pessoa [at] exemplo [dot] com')[0] == SAFE
 
 
 def test_all_eight_tools_in_one_conversation(env):
