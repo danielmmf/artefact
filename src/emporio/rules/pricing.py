@@ -197,6 +197,7 @@ def quote_shipping(cart: CartTotals, destination_city: str | None) -> ShippingQu
     special = any(line.purchasable and line.special_quote_possible for line in cart.items)
     if not city:
         return ShippingQuote(None, None, (), True, special)
-    if city.casefold() == 'campo grande':
+    normalized_city = ' '.join(city.casefold().replace('/', ' / ').split())
+    if normalized_city in {'campo grande', 'campo grande / ms'}:
         return ShippingQuote(city, 0 if cart.subtotal_cents >= 50_000 else 3_500, LOCAL_METHOD, False, special)
     return ShippingQuote(city, None, OTHER_CITY_METHODS, False, special)

@@ -106,3 +106,11 @@ def test_shipping_threshold_through_sqlite(tmp_path, price, fee):
         assert data['total_with_shipping'] == Decimal(price) / 100 + fee
     finally:
         repo.close()
+
+
+def test_city_variations_and_safe_database_error(repository):
+    assert quote(repository, [(81, 1)], ' campo grande / MS ')['shipping']['region'] == 'metro'
+    repository.close()
+    result = quote_payment(repository, {'items': [{'product_id': 81, 'quantity': 1}]})
+    assert not result.ok and result.error.code == 'internal_error'
+    assert 'sqlite' not in result.model_dump_json().lower()

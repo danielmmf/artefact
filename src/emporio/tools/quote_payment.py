@@ -1,4 +1,5 @@
 """Cotação de produtos atuais; não registra ou confirma compras."""
+import sqlite3
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 from emporio.money import from_cents
@@ -26,7 +27,7 @@ class QuotePaymentInput(BaseModel):
         return self
 
 
-def quote_payment(repository: StoreRepository, args: dict) -> ToolResult:
+def _quote_payment(repository: StoreRepository, args: dict) -> ToolResult:
     try:
         request = QuotePaymentInput.model_validate(args)
     except ValidationError:
@@ -93,3 +94,10 @@ def quote_payment(repository: StoreRepository, args: dict) -> ToolResult:
         'shipping': shipping_data,
     }
     return ToolResult(ok=True, data=result)
+
+
+def quote_payment(repository: StoreRepository, args: dict) -> ToolResult:
+    try:
+        return _quote_payment(repository, args)
+    except sqlite3.Error:
+        return ToolResult(ok=False, error=ToolError(code='internal_error', message_for_agent='Não foi possível consultar a cotação.'))
