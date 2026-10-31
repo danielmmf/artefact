@@ -53,3 +53,11 @@ def test_declared_received_is_preliminary_and_seven_day_boundary(env):
     assert result['information_sources']['purchase_channel'] == 'declaração não verificada'
     assert ask(env, session, 3, 'preferência', received_at=(NOW.date()-timedelta(days=8)).isoformat()).data['status'] == 'expired'
     assert ask(env, session, 3, 'preferência', received_at=(NOW.date()+timedelta(days=1)).isoformat()).data['status'] == 'insufficient_information'
+
+def test_verified_anonymous_return_rechecks_expiration(env):
+    from test_order_security import owner_contact, verify
+    session = create_session(env)
+    assert verify(env, session, 3, owner_contact(env['repo'], 3)).ok
+    assert ask(env, session, 3, 'defeito').ok
+    env['time'][0] = NOW + timedelta(minutes=15)
+    assert ask(env, session, 3, 'defeito').error.code == 'access_denied'
