@@ -1,0 +1,33 @@
+{
+  "source_path": "/var/www/html/teste/docs/adr/ADR-000-especificacao-consolidada.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": true,
+  "title": "ADR-000 — Especificação consolidada do Agente Empório da Música",
+  "summary": "Consolidated architecture spec for the Empório da Música agent; §16 (2026-10-31) supersedes earlier sections, deferring demo/ReplayLLM, dense search (Qdrant), Firestore, and emporio trace, and merging ADRs 001–011 into docs/DECISIONS.md.",
+  "scope": [
+    "Empório da Música agent",
+    "store.db (SQLite, read-only in service) and app.db",
+    "data ingestion with QUALITY.md validation",
+    "business rules: pricing, PIX discount, installments, shipping, returns",
+    "order access control and identity verification",
+    "PII tokenization",
+    "tool contracts (8 tools)",
+    "own function-calling loop with Pydantic contracts",
+    "CLI (chat, ingest)",
+    "search: FTS5 + rapidfuzz lexical baseline, mini-eval (make bench)",
+    "golden set eval (make eval), 1 repetition",
+    "CI (make setup && make test)",
+    "README and 5 real conversations in examples/",
+    "docs/DECISIONS.md (consolidated ADRs 001–011)",
+    "deferred per §16: Qdrant/dense/hybrid search, ReplayLLM and make demo, Firestore adapter, LLM-as-judge, emporio trace command"
+  ],
+  "cross_refs": [
+    "docs/DECISIONS.md",
+    "docs/adr/",
+    "políticas_da_loja.pdf"
+  ],
+  "locked": true,
+  "precedence": 1,
+  "notes": "Status 'Aceita' (Portuguese for Accepted) → locked. Manifest declared type ADR and precedence 1; the document contains endpoint/schema tables that could read as SPEC, but manifest type is authoritative. Section 16 prevails over earlier sections where they conflict: §7 dense search, §9 make demo/ReplayLLM/recordings, §4 dense/hybrid/replay files, §10 emporio trace, and §14 ADR table (marked historical) are superseded or deferred. Per user note, the scope summary captures this. SHA-256 hash suffix could not be computed (no shell tool available); file written with -UNHASHED suffix and needs renaming to the standard {slug}-{source_hash}.json."
+}

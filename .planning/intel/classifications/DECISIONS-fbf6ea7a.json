@@ -1,0 +1,13 @@
+{
+  "source_path": "/var/www/html/teste/docs/DECISIONS.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": true,
+  "title": "Decisões, suposições e opções rejeitadas",
+  "summary": "Registro consolidado das decisões de arquitetura (DEC-01..10), interpretações do manual da loja (S-a..S-l), tratamento de dados (T-1..T-9), opções rejeitadas e itens adiados.",
+  "scope": ["loop de function calling", "store.db", "app.db", "manual de políticas da loja", "busca FTS5/BM25", "identidade e confirmação de posse", "tokenização de LGPD", "adaptador OpenAI-compatible", "reprodutibilidade uv", "parcelamento", "frete", "PIX", "promoções", "dados da loja", "devoluções"],
+  "cross_refs": ["docs/adr/ADR-000-especificacao-consolidada.md", "data/processed/policies.md", "QUALITY.md"],
+  "locked": true,
+  "precedence": 0,
+  "notes": "Tipo ADR declarado pelo manifesto (authoritative). Locked atribuído por diretiva do usuário (decisões confirmadas pelo responsável em 2026-10-31); o arquivo não contém campo de status 'Accepted' próprio. Consolida ADRs 001-011 e, junto com ADR-000 §16, sobrepõe seções anteriores do ADR-000. Nome de arquivo sem hash: a ferramenta disponível não calcula SHA-256; o orquestrador deve renomear conforme a convenção {slug}-{hash8}.json."
+}
