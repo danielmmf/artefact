@@ -1,6 +1,6 @@
 # Qualidade dos dados
 
-Fatos documentados na ADR-000 §13; confira novamente quando os dados de origem mudarem.
+Fatos auditados na ADR-000 §13; este relatório não detecta dinamicamente todas as anomalias. Confira novamente quando os dados de origem mudarem.
 
 - Telefone (67) 3341-4444 (capa, §1.2) vs (67) 3321-4500 (§7); e-mail com e sem acento.
 - Parcelamento: tabela da §3 (mínimo R$ 100) vs faixas da §3.1; trecho ambíguo "exceto abaixo de R$ 50".

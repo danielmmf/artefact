@@ -73,7 +73,7 @@ def ingest(raw: Path, database: Path, processed: Path, adr: Path) -> None:
     text = policies(pdfs[0])
     # O relatório reproduz fatos já auditados na ADR; não inclui inferências novas.
     source = adr.read_text(encoding='utf-8')
-    quality = '# Qualidade dos dados\n\nFatos documentados na ADR-000 §13; confira novamente quando os dados de origem mudarem.\n\n' + source.split('## 13. Inconsistências conhecidas dos dados\n', 1)[1].split('\n## 14.', 1)[0].strip() + '\n'
+    quality = '# Qualidade dos dados\n\nFatos auditados na ADR-000 §13; este relatório não detecta dinamicamente todas as anomalias. Confira novamente quando os dados de origem mudarem.\n\n' + source.split('## 13. Inconsistências conhecidas dos dados\n', 1)[1].split('\n## 14.', 1)[0].strip() + '\n'
     database.parent.mkdir(parents=True, exist_ok=True)
     processed.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=database.parent) as temp:
