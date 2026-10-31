@@ -136,3 +136,14 @@ def test_layer_dependencies():
             for node in ast.walk(tree):
                 modules = [x.name for x in node.names] if isinstance(node, ast.Import) else [node.module or ''] if isinstance(node, ast.ImportFrom) else []
                 assert not any(m == 'emporio.agent' or m.startswith('emporio.agent.') or m == 'emporio.llm' or m.startswith('emporio.llm.') for m in modules), path
+
+def test_policies_section_7_2_numbered_items_keep_context():
+    import re
+    result = policies(next(RAW.glob('*.pdf')))
+    section = result.split('[§7.2 · p.6]', 1)[1].split('[§7.3 · p.7]', 1)[0]
+    assert '[§7.2 · p.7]' in section
+    assert re.findall(r'\[§[^]]+\]', section) == ['[§7.2 · p.7]']
+    for text in ('1.   Saudação:', '2.   Entendimento:', '3.   Consulta:', '4.   Resposta:', '5.   Fechamento:'):
+        assert text in section
+    markers = re.findall(r'^\[§(\d+(?:\.\d+)?) · p\.\d+\]\n(?=\d)', result, re.MULTILINE)
+    assert markers == ['1', '1.1', '1.2', '2', '3', '3.1', '4', '4.1', '4.2', '4.3', '4.4', '5', '5.1', '5.2', '5.3', '6', '6.1', '6.2', '7', '7.1', '7.2', '7.3', '8', '8.1', '8.2', '8.3', '9', '10']

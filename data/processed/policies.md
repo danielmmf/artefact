@@ -400,11 +400,7 @@ educadamente redirecionados. Sugerir lojas parceiras quando possível.
 
 [§7.2 · p.6]
 7.2 Fluxo de Atendimento Padrão
-
-[§1 · p.6]
     1.   Saudação: cumprimentar o cliente pelo nome (se disponível) e perguntar como pode ajudar.
-
-[§2 · p.6]
     2.   Entendimento: identificar a necessidade do cliente (busca de produto, dúvida, rastreamento,
          reclamação).
 
@@ -416,20 +412,14 @@ educadamente redirecionados. Sugerir lojas parceiras quando possível.
                                                        Página 6
 
 
-[§2 · p.7]
+[§7.2 · p.7]
 
 Empório da Música Manual de Políticas e Procedimentos
 
 
-
-[§3 · p.7]
     3.   Consulta: buscar no sistema as informações relevantes (produto, estoque, promoção,
          pedido).
-
-[§4 · p.7]
     4.   Resposta: apresentar as opções de forma clara e objetiva, com preços e condições.
-
-[§5 · p.7]
     5.   Fechamento: confirmar se o cliente precisa de mais alguma coisa e encerrar com
          cordialidade.
 

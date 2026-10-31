@@ -54,7 +54,7 @@ def policies(pdf: Path) -> str:
             raise ValueError(f'Página {n} sem texto extraível')
         out.append(f'[§{section} · p.{n}]\n')
         for line in content.splitlines():
-            match = re.match(r'^\s*(10|[1-9])(?:\.(\d+))?\.?(?:\s+)(\S.*)$', line)
+            match = re.match(r'^(10|[1-9])(?:\.(\d+))?\.?(?:\s+)(\S.*)$', line)
             if match:
                 section = match.group(1) + ('.' + match.group(2) if match.group(2) else '')
                 found.add(match.group(1))
