@@ -13,7 +13,7 @@ A arquitetura já foi decidida. A referência é **`docs/adr/ADR-000-especificac
 | Arquivo | Papel |
 | --- | --- |
 | `docs/adr/ADR-000-especificacao-consolidada.md` | Arquitetura, contratos, regras, testes e critérios de aceite |
-| `data/raw/desafio_tecnico_ai_eng_-_*.csv` | Dados oficiais (categories, customers, order_items, orders, products, promotions), com os nomes originais |
+| `data/raw/desafio_tecnico_ai_eng - <tabela>.csv` | Dados oficiais (categories, customers, order_items, orders, products, promotions), com os nomes originais (com espaços). O loader localiza cada arquivo pelo sufixo da tabela |
 | `data/raw/políticas_da_loja.pdf` | Manual de políticas v2.1 |
 | Enunciado do desafio | Requisitos de entrega (resumidos na seção 6 abaixo) |
 
@@ -38,6 +38,8 @@ Estes pontos diferem de versões anteriores do handoff e prevalecem:
 - **`estimated_delivery`** nunca é data de recebimento; devolução sem data ou canal retorna `insufficient_information`.
 - **Verificação por pedido + contato** é demonstrativa; identidade autenticada é simulada pelo canal (`--customer`). Login/OTP fica como requisito de produção.
 - **Firestore** fica fora do núcleo; só entra como extra após todos os critérios de aceite.
+
+**Escopo revisado em 2026-10-31:** a seção 16 da ADR-000 (prazo 2026-11-03 23:59, congelamento 20:00, no máximo 5 fases, itens simplificados e adiados) prevalece sobre as seções 6 e 7 deste kickoff. Decisões e suposições ficam em `docs/DECISIONS.md`.
 
 ## 4. Pendências que bloqueiam o planejamento
 

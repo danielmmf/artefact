@@ -1,6 +1,6 @@
 # ADR-000 — Especificação consolidada do Agente Empório da Música
 
-- **Status:** Aceita
+- **Status:** Aceita — escopo revisado em 2026-10-31 (seção 16, que prevalece sobre as seções anteriores)
 - **Data:** 2026-10-31
 - **Responsável:** Daniel Medeiros
 - **Insumos:** propostas e revisões de Claude, ChatGPT, Gemini, DeepSeek e GLM, validadas contra os CSVs oficiais e o manual `políticas_da_loja.pdf` (v2.1, jun/2025).
@@ -242,7 +242,21 @@ Trace JSONL por turno em `var/traces/`: `session` (hash), `turn`, `iteration` (m
 - Nenhuma data de recebimento nem canal de compra nos pedidos.
 - Pedidos `pending` desde mar/2026; pedido 8 `shipped` com previsão vencida.
 
+Inconsistências adicionais, verificadas contra os CSVs em 2026-10-31 (fatos dos dados, não decisões; tratamento em `docs/DECISIONS.md`):
+
+- Parcelamentos registrados fora da §3.1: pedido 9 (6x de R$ 58,32), pedido 16 (6x de R$ 71,65), pedido 18 (12x de R$ 38,32).
+- Pedidos pagos via PIX (1, 5, 10, 13, 17) registram o preço de tabela, sem o desconto de 5%.
+- Descrição divergente do nome ou das specs: 135 (nome Music Man, descrição Fender Jazz Bass, corpo Alder vs specs Ash), 136 (nome Ibanez, descrição "Precision"), 137 (nome Yamaha, descrição Ibanez 5 cordas vs specs 4), 139 (nome Yamaha, descrição Pearl Export, cascos Poplar vs specs Maple), 140 (nome Pearl, descrição Tama, cascos Birch vs specs Maple), 142 (nome Korg, descrição Roland 88 teclas vs specs 61), 144 (nome Roland, descrição Yamaha). Os produtos 138, 141 e 143 citam outro modelo da mesma marca.
+- E-mail `bruno.martins@jmail.com` repetido nos clientes 11 e 43.
+- §5.2 cita "contrabaixos" e "pianos digitais": a categoria 2 (Baixos) descreve todos os produtos como "contrabaixo"; a categoria 8 (contrabaixo acústico) está vazia; nenhum produto da categoria 4 tem tipo piano digital (todos `Synthesizer`).
+- Promoções inativas com desconto fora das faixas da §6.1: id 1 (Black Friday 10%; manual 15–30%) e id 17 (Aniversário 30%; manual 10–25%). Campanhas sem correspondência no manual: Liquidação de Inverno, Promoção de Páscoa, Oferta Especial, Desconto Exclusivo. Promoção 16 em produto descontinuado (113).
+- Chaves de `specs` variam por categoria (violões/ukuleles; guitarras/baixos; baterias; teclados).
+- `products.csv` fora de ordem (145 entre 130 e 131); 65 produtos, contra "mais de 300" no manual (§1).
+- Nomes dos arquivos com espaços: `desafio_tecnico_ai_eng - <tabela>.csv`.
+
 ## 14. ADRs
+
+> Substituída pela seção 16: as ADRs 001–011 foram consolidadas em `docs/DECISIONS.md`. A tabela abaixo fica como histórico.
 
 | ADR | Título | Status |
 | --- | --- | --- |
@@ -263,6 +277,30 @@ Opções rejeitadas (ADR-010): Firebase obrigatório, LangGraph, PydanticAI, RAG
 
 ## 15. Pendências
 
-- Prazo exato de entrega.
-- Provedor e modelo de LLM (ADR-008).
-- Confirmação das suposições: parcela mínima de R$ 50 em 2–3x; §3.1 sobre a tabela; frete grátis em R$ 500,00 e combinado em R$ 2.000,00; base do frete antes do PIX; região = Campo Grande; preferência contada do recebimento; relógio da demo.
+- ~~Prazo exato de entrega.~~ Resolvido na seção 16.
+- Provedor e modelo de LLM: provedor configurável via `.env`; modelo padrão registrado em `docs/DECISIONS.md` na fase do agente.
+- ~~Confirmação das suposições.~~ Todas confirmadas pelo Daniel em 2026-10-31 (`docs/DECISIONS.md`).
+
+## 16. Decisão de escopo (2026-10-31)
+
+**Motivo:** prazo de "2 dias úteis" a partir de 2026-10-30, com feriado em 2026-11-02. Cenário conservador: entrega em **2026-11-03 23:59 America/Sao_Paulo**; repositório congelado em **2026-11-03 20:00**. Dias de trabalho: 31/10, 01/11, 02/11 e 03/11.
+
+Esta seção prevalece sobre as anteriores onde houver conflito.
+
+| Tratamento | Itens |
+| --- | --- |
+| **Mantém** | Ingestão com validação e `QUALITY.md`; regras de negócio com testes de limite; acesso a pedidos com verificação, expiração e bloqueio; tokenização de PII com teste de varredura; loop próprio + manual no prompt + as 8 tools; CLI; 5 conversas reais em `examples/`; README; `make test` sem chave na CI |
+| **Simplifica** | ADRs 001–011 viram um único `docs/DECISIONS.md` (decisões, suposições, rejeitados); busca só FTS5 + rapidfuzz, com mini-eval de ~10 consultas (`make bench`, sem download); golden set de ~15 casos com 1 repetição (`make eval`); validador de evidências só para valores em R$; traces em JSONL básico |
+| **Adia** (README, "o que eu faria com mais tempo") | Qdrant/busca densa e híbrida; ReplayLLM e `make demo`; Firestore; LLM-as-judge; comando `emporio trace` |
+
+Efeito nas seções anteriores:
+
+- §2 D9 e §7: sem backend denso nem `auto`/`hybrid`; o mini-eval mede recall@5 e MRR do backend lexical e o resultado vai para `evals/reports/` e para o README. Nenhum resultado é presumido.
+- §3 A4, §9 (`make demo`, ReplayLLM, `recordings/`) e §11 "Demo": fora do escopo.
+- §4: sem `search/dense.py`, `search/hybrid.py`, `llm/replay.py`, `recordings/`; decisões em `docs/DECISIONS.md`.
+- §8: o validador de evidências checa apenas valores em R$ citados contra os resultados de tools do turno.
+- §10: trace JSONL com os mesmos campos essenciais, sem o comando `emporio trace`.
+- §12: o primeiro critério passa a ser `make setup && make test` verdes na CI; o critério "demo sem embedding" sai; "toda interpretação tem ADR" passa a "toda interpretação está em `docs/DECISIONS.md` com o trecho do manual"; "benchmark P2" passa a "mini-eval de busca medido".
+- LLM (D11): provedor configurável por `LLM_BASE_URL`, `LLM_MODEL` e `LLM_API_KEY` no `.env`. O modelo padrão é escolhido na fase do agente, consultando a documentação oficial.
+
+Planejamento: no máximo 5 fases, tracer bullet na fase 1, e a última fase (5 conversas reais + README) não pode ser comprimida. Se uma fase atrasar, corta-se refinamento, nunca a entrega.
