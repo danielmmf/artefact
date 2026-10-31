@@ -147,3 +147,16 @@ def test_privacy_and_store_integrity(env):
                 assert value not in rendered
         assert customer['name'] not in rendered
     assert hashlib.sha256(env['store_path'].read_bytes()).digest() == original
+
+def test_free_text_is_redacted_before_tool_output(env):
+    contact = owner_contact(env['repo'], 3)
+    name = env['repo'].connection.execute('SELECT c.name FROM customers c JOIN orders o ON o.customer_id=c.customer_id WHERE o.order_id=3').fetchone()[0]
+    env['repo'].close()
+    with sqlite3.connect(env['store_path']) as c:
+        c.execute('UPDATE orders SET notes=?, tracking_code=? WHERE order_id=3', (name + ' ' + contact, contact))
+    env['repo'] = SQLiteRepository(env['store_path'])
+    env['service'].store = env['repo']
+    s = create_session(env)
+    assert verify(env, s, 3, contact).ok
+    result = env['service'].get_order(s, {'order_id':3}).model_dump_json()
+    assert contact not in result and name not in result

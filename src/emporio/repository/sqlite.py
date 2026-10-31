@@ -47,18 +47,16 @@ class SQLiteRepository:
             return None
         items = self.connection.execute('''SELECT p.product_id, p.name, i.quantity FROM order_items i
                                            JOIN products p ON p.product_id=i.product_id WHERE i.order_id = ? ORDER BY p.product_id''', (order_id,)).fetchall()
-        notes = row['notes']
-        # Dados livres não devem reproduzir contato nem nomes completos do cadastro.
-        for customer in self.connection.execute('SELECT name, email, phone FROM customers'):
-            for field in ('name', 'email', 'phone'):
-                value = customer[field]
-                if value:
-                    notes = re.sub(re.escape(value), '[DADO REDIGIDO]', notes, flags=re.IGNORECASE)
-        notes = re.sub(r'[^\s@]+@[^\s@]+\.[^\s@]+', '[EMAIL]', notes)
-        notes = re.sub(r'(?<!\w)(?:\+?\d[\d ()-]{8,}\d)(?!\w)', '[TELEFONE]', notes)
+        private_values = [customer[field] for customer in self.connection.execute('SELECT name, email, phone FROM customers')
+                          for field in ('name', 'email', 'phone') if customer[field]]
+        def redact(value: str) -> str:
+            for private in private_values:
+                value = re.sub(re.escape(private), '[DADO REDIGIDO]', value, flags=re.IGNORECASE)
+            value = re.sub(r'[^\s@]+@[^\s@]+\.[^\s@]+', '[EMAIL]', value)
+            return re.sub(r'(?<!\w)(?:\+?\d[\d ()-]{8,}\d)(?!\w)', '[TELEFONE]', value)
         return {'order_id': row['order_id'], 'status': row['status'], 'order_date': row['order_date'],
-                'items': [{'product_id': i['product_id'], 'name': i['name'], 'quantity': i['quantity']} for i in items],
+                'items': [{'product_id': i['product_id'], 'name': redact(i['name']), 'quantity': i['quantity']} for i in items],
                 'total_brl': str(from_cents(row['total_cents'])), 'total_label': 'total registrado no pedido',
-                'payment_method': row['payment_method'], 'tracking_code': row['tracking_code'],
-                'estimated_delivery': row['estimated_delivery'], 'notes': notes,
+                'payment_method': redact(row['payment_method']), 'tracking_code': redact(row['tracking_code']),
+                'estimated_delivery': row['estimated_delivery'], 'notes': redact(row['notes']),
                 'first_name': row['customer_name'].split()[0]}
