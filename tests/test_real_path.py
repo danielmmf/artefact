@@ -288,3 +288,16 @@ def test_prompt_requires_listing_the_returned_products_and_not_echoing_unconfirm
     system = llm.calls[0][0]['content']
     assert 'Liste de fato os produtos retornados (nome e preço)' in system
     assert 'Não repita valores em reais que o cliente informou e que as ferramentas não confirmaram' in system
+
+
+def test_price_difference_computed_by_the_model_is_rejected_and_the_prompt_forbids_it(env, tmp_path):
+    """699,90 - 599,90 = 100,00: o número não vem de ferramenta nem é valor do manual no tema certo."""
+    search = AssistantReply(tool_calls=(FunctionCall('g1', 'get_product', '{"name":"Yamaha C40"}'), FunctionCall('g2', 'get_product', '{"name":"Yamaha F310"}')))
+    bad = 'O C40 custa R$ 599,90 e o F310 custa R$ 699,90, uma diferença de R$ 100,00.'
+    llm = FakeProviderLLM([search, AssistantReply(content=bad), AssistantReply(content=bad)])
+    assert ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Diferença entre o C40 e o F310?')[0] == SAFE
+    ok = FakeProviderLLM([search, AssistantReply(content='O C40 custa R$ 599,90 e o F310 custa R$ 699,90.')])
+    assert 'R$ 699,90' in ConversationEngine(setup_registry(env), ok, tmp_path / 'u.jsonl').turn('Diferença entre o C40 e o F310?')[0]
+    system = ok.calls[0][0]['content']
+    assert 'nunca a diferença ou a soma entre eles' in system
+    assert 'nem cite diferenças ou somas' in llm.calls[2][-1]['content']  # 3ª chamada: depois da rejeição
