@@ -73,4 +73,4 @@ uv run python -m emporio.eval_runner --set evals/holdout_set.json  # validação
 uv run python -m emporio.eval_runner --rescore evals/reports/holdout-20261101T220856Z.json  # reavaliação offline
 ```
 
-Base de comparação: commit `e3bddf0` no `main`.
+Base de comparação: a tag `v1.0-mvp` no `main`.
