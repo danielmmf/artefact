@@ -8,24 +8,24 @@
 
 _Ferramentas consultadas: `check_return_eligibility` (ok)_
 
-**Atendente:** Claro, posso te ajudar com isso! Só preciso de duas informações pra avaliar a devolução por arrependimento:
+**Atendente:** Claro, posso verificar isso pra você! Só preciso de duas informações pra fazer a análise preliminar:
 
-- A compra foi **online** ou **presencial** na loja?
-- Você **já recebeu** o produto? Se sim, em que data?
+1. A compra foi **online** ou **presencial** na loja?
+2. Em que data você **recebeu** o produto?
 
-Ah, e vale lembrar: o direito de arrependimento (7 dias corridos após o recebimento) vale para compras online. Me conta esses detalhes que eu verifico aqui pra você.
+Só lembrando que o prazo de arrependimento é de 7 dias corridos após o recebimento, e a análise é preliminar - a equipe confirma depois.
 
 **Cliente:** Recebi no dia 20/03/2026 e comprei pelo site.
 
 _Ferramentas consultadas: `check_return_eligibility` (ok)_
 
-**Atendente:** Boa notícia: pela análise preliminar, seu pedido 7 está dentro do prazo de arrependimento - o limite é **27/03/2026**, ou seja, restam 2 dias. ⏳
+**Atendente:** Fiz a análise preliminar do pedido 7 e ele aparece como **elegível** para devolução por arrependimento, com prazo até **27/03/2026** (restam 2 dias). Mas tem um ponto que preciso te contar com transparência:
 
-Só lembrando que isso é uma avaliação inicial, tá? A equipe ainda precisa conferir as condições. Pra devolução ser aceita, o produto deve estar:
+A data de recebimento que você informou (20/03/2026) é bem posterior à previsão de entrega registrada no pedido, que era 17/02/2026 - uma diferença de 31 dias. Isso não nega o pedido, mas a equipe vai conferir essa informação. A análise segue preliminar, tá?
 
-- Na embalagem original, sem sinais de uso
-- Com todos os acessórios e manuais
+Também vale lembrar as condições:
+- Produto na embalagem original, sem sinais de uso, com todos os acessórios e manuais
+- O frete de devolução fica por conta da loja nesse caso de arrependimento
+- Reembolso na mesma forma de pagamento original, em até 10 dias úteis
 
-Também não valem itens personalizados/ajustados sob encomenda, produtos de promoção com aviso de "venda final" e boquilhas de instrumentos de sopro.
-
-Quer que eu encaminhe seu caso pra equipe dar seguimento à devolução?
+Quer que eu encaminhe pra equipe dar seguimento à devolução?
