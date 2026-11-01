@@ -99,7 +99,7 @@ def test_rescore_keeps_the_original_report_and_shows_both_readings(tmp_path):
     assert result['corrigido']['tool_accuracy'] == result['original']['tool_accuracy']  # ferramentas não mudam
 
 
-def test_the_committed_holdout_cases_are_byte_identical_to_the_pre_execution_commit():
-    import subprocess
-    original = subprocess.run(['git', 'show', '662dfed:evals/holdout_set.json'], capture_output=True, cwd=ROOT).stdout
-    assert original and (ROOT / 'evals/holdout_set.json').read_bytes() == original
+def test_the_holdout_cases_are_byte_identical_to_the_pre_execution_commit():
+    """SHA-256 de evals/holdout_set.json em 662dfed (commit anterior à execução); não depende do histórico git (CI usa checkout raso)."""
+    import hashlib
+    assert hashlib.sha256((ROOT / 'evals/holdout_set.json').read_bytes()).hexdigest() == 'cda78637955d98a585ab40a16305a3985339d5ec7fb91ea447a8ab71c7bbfbd1'
