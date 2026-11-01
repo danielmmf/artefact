@@ -1,0 +1,12 @@
+[
+  {"group":"nome", "query":"Yamaha C40 Nylon Natural", "relevant":[81]},
+  {"group":"nome", "query":"Takamine GD20", "relevant":[95]},
+  {"group":"nome", "query":"Ohana CK-20 Concert", "relevant":[121]},
+  {"group":"intencao", "query":"violão nylon estudante", "relevant":[81]},
+  {"group":"intencao", "query":"bateria acústica Yamaha", "relevant":[139]},
+  {"group":"intencao", "query":"teclado sintetizador Nord", "relevant":[143]},
+  {"group":"ambiguas", "query":"Yamaha C", "relevant":[81,82]},
+  {"group":"ambiguas", "query":"bateria acústica", "relevant":[139,140]},
+  {"group":"ambiguas", "query":"ukulele concert Ohana", "relevant":[121]},
+  {"group":"ambiguas", "query":"contrabaixo Yamaha", "relevant":[137]}
+]

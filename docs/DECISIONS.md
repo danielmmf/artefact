@@ -71,3 +71,38 @@ Todas confirmadas pelo Daniel em 2026-10-31.
 ## 5. Adiados (README, "o que eu faria com mais tempo")
 
 Qdrant e busca densa/híbrida · ReplayLLM e `make demo` · adapter Firestore · LLM-as-judge · comando `emporio trace` · login/OTP real · golden set com múltiplas repetições · validador de evidências para estoque, pedido e nome de produto.
+
+## 6. Dependências da fundação
+
+- `rapidfuzz`: fallback lexical determinístico para nomes quando FTS5 não encontra resultados.
+- `pydantic`: validação dos contratos e das linhas de entrada.
+- `pypdf`: extração local do manual integral, sem serviço externo.
+- `python-dotenv`: leitura opcional de configuração local; variáveis do ambiente têm precedência.
+- `pytest`: testes automatizados offline.
+- `hatchling`: construção do pacote Python.
+
+As versões exatas são registradas em `uv.lock`. Estas dependências não alteram as decisões arquiteturais anteriores.
+
+## 7. Auditoria de coerência e decisões pendentes
+
+S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não altera as interpretações aprovadas. As dependências correntes estão em `pyproject.toml` e `uv.lock`: as bibliotecas de execução listadas na seção 6 incluem `python-dotenv`; `pytest` é dependência de desenvolvimento e `hatchling` é usado no build. O mini-eval usa dez casos locais e mede recall@5 e MRR (`evals/search_queries.yaml`). A ADR §16 prevê golden set de aproximadamente 15 casos com uma repetição; §11 prevê temperatura zero quando suportada. Há 16 casos pré-rotulados em `evals/golden_set.json`, sem execução de LLM real. O modelo padrão continua pendente: nenhuma documentação de provedor foi utilizada para escolhê-lo.
+
+| Assunto | Estado | Pendência para revisão |
+| --- | --- | --- |
+| Contatos institucionais divergentes e DEC-06 | RESOLVIDO | Telefone, e-mail e endereço da loja são dados institucionais públicos, não pessoais (§8 abaixo); só contatos de clientes são tokenizados. |
+| Projeção do manual para serviço externo | RESOLVIDO | Sem projeção: o manual vai inteiro no prompt (DEC-03), incluindo contatos institucionais (§8 abaixo). |
+| Subtotal sem frete para parcelas e pagamento combinado | PENDENTE | Confirmar a base usada atualmente em `quote_payment` com a área comercial. |
+| Arredondamento e distribuição de centavos | PENDENTE | Confirmar HALF_UP por unidade e distribuição dos centavos nas primeiras parcelas. |
+| Bloqueio persistente por pedido | PENDENTE | Definir desbloqueio, auditoria e mitigação de negação de serviço; o bloqueio atual não expira automaticamente. |
+| Contatos compartilhados | PENDENTE | Definir prova adicional e política para contatos compartilhados; a implementação nega a verificação por contato compartilhado. |
+| Tickets humanos | PENDENTE | Definir dados úteis e seguros: atualmente o resumo livre é descartado. |
+| Estimativa de tokens | PENDENTE | Selecionar tokenizador e margem por modelo; bytes UTF-8/3 é apenas aproximação. |
+| Modelo LLM e parâmetros de avaliação | RESOLVIDO | DEC-11 abaixo; golden set com temperature 0 e 1 repetição, casos e metas inalterados. |
+
+## 8. Decisão do responsável (2026-11-01)
+
+- **Privacidade (ADR-000 §8 e D10, nada além):** e-mails e telefones de clientes são tokenizados antes do LLM; o restante do texto do usuário vai normalmente; argumentos e resultados das tools vão completos, como nos contratos (as tools só devolvem o primeiro nome do cliente). O manual vai inteiro no prompt, com telefone, e-mail e endereço da loja, que são dados institucionais públicos (lista em `emporio.security.contacts.INSTITUTIONAL`).
+- **Revisão de egress descartada** por exceder a ADR-000: removidos `src/emporio/egress/`, seus testes e os documentos `EGRESS-REVIEW`, `FUNCTIONAL-EGRESS-STATUS` e `ADAPTADOR-INATIVO`; a admissão por texto exato do golden set violava a regra de honestidade da avaliação.
+- **DEC-11 (modelo padrão):** Groq `openai/gpt-oss-120b` (`LLM_BASE_URL=https://api.groq.com/openai/v1`); alternativa documentada `openai/gpt-oss-20b`; modelos em preview não são usados. Parâmetros: `temperature=0`, `reasoning_effort=low` (modelos gpt-oss), `max_tokens=2048` (o raciocínio consome do mesmo orçamento), timeout de 60 s e 2 retentativas em 429/5xx/timeout com backoff de 1 s e 3 s, respeitando a espera sugerida pelo provedor (teto de 70 s). Transporte pela biblioteca padrão (`urllib`), sem dependência nova. Verificado em 2026-11-01: o plano gratuito do Groq limita esse modelo a 8.000 tokens/min, o que torna cada turno lento (cerca de 1 min).
+- **Evidência de valores:** a faixa de preço (`min_price`/`max_price`) que o modelo envia à busca conta como evidência, porque repete o filtro pedido pelo cliente; qualquer outro valor em R$ precisa vir de resultado de tool do turno.
+
