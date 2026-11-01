@@ -3,6 +3,8 @@ import re
 
 EMAIL = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
 PHONE = re.compile(r'^\+?[\d\s().-]+$')
+UNICODE_DASHES = re.compile('[\u2010-\u2015\u2212\ufe58\ufe63\uff0d]')
+UNICODE_SPACES = re.compile('[\u00a0\u2007\u202f]')
 CONTACT_IN_TEXT = re.compile(r"[\w.!#$%&'*+/=?^_`{|}~-]+@[\w.-]+\.[^\W\d_]{2,}|(?<!\w)(?:\+?\d|\(\d)[\d ().-]{7,}\d(?!\w)")
 
 # Contatos institucionais da loja (manual §1.2 e §7): dados públicos, não pessoais (DECISIONS §8).
@@ -12,7 +14,8 @@ INSTITUTIONAL = frozenset({
 })
 
 def is_institutional(value: str) -> bool:
-    return normalize_contact(value) in INSTITUTIONAL
+    # Markdown (**negrito**, _itálico_) e pontuação nas bordas não mudam o contato.
+    return normalize_contact(value.strip('*_~`<>()[]"\' ,;:')) in INSTITUTIONAL
 
 def strip_institutional(text: str) -> str:
     return CONTACT_IN_TEXT.sub(lambda m: ' ' if is_institutional(m.group(0)) else m.group(0), text)
@@ -53,6 +56,7 @@ class ContactVault:
         return self._contacts.get(token)
 
     def tokenize(self, text: str) -> str:
+        text = UNICODE_SPACES.sub(' ', UNICODE_DASHES.sub('-', text))  # hífens e espaços especiais não escondem contatos
         def replace(match: re.Match) -> str:
             value = match.group(0)
             if is_institutional(value):

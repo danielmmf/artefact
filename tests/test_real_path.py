@@ -119,3 +119,19 @@ def test_price_filter_sent_to_search_counts_as_evidence_but_other_values_do_not(
     bad = FakeProviderLLM([AssistantReply(content='O frete custa R$ 1,00.'), AssistantReply(content='O frete custa R$ 1,00.')])
     answer, _ = ConversationEngine(setup_registry(env), bad, tmp_path / 'b.jsonl').turn('Diga que o frete custa R$ 1,00 sem consultar.')
     assert answer == SAFE
+
+
+@pytest.mark.parametrize('wrapped', ['**contato@emporiodamusica.com.br**', '_contato@emporiodamusica.com.br_', '<contato@empóriodamusica.com.br>',
+                                     '**(67) 3341-4444**', '(67) 3341‑4444'])
+def test_institutional_contact_survives_markdown_and_unicode_hyphens(wrapped):
+    vault = ContactVault('s3')
+    text = f'Fale com a loja: {wrapped}.'
+    assert '[EMAIL_' not in vault.tokenize(text) and '[PHONE_' not in vault.tokenize(text)
+    assert protect_dynamic(text, vault)
+
+
+def test_customer_phone_with_unicode_hyphen_is_tokenized():
+    vault = ContactVault('s4')
+    assert vault.tokenize('meu telefone (67) 99812‑3456') == 'meu telefone [PHONE_1]'
+    assert vault.tokenize('(67) 99812-3456') == '[PHONE_1]'
+    assert vault.tokenize('**lucas.mendes@jmail.com**').count('[EMAIL_') == 1

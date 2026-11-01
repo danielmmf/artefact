@@ -35,7 +35,7 @@ DESCRIPTIONS = {
     'get_product': 'Consulte detalhes atuais de um instrumento por ID ou nome; nomes ambíguos retornam candidatos.',
     'quote_payment': 'Cote itens por ID e quantidade, opcionalmente cidade; produtos indisponíveis não entram nos totais.',
     'store_status': 'Consulte o horário local e a próxima abertura; não inclui feriados.',
-    'verify_order_ownership': 'Confirme demonstrativamente posse por ID do pedido e token de contato criado pelo canal; não recebe contato bruto.',
+    'verify_order_ownership': 'Confirme demonstrativamente a posse de um pedido. order_id é o número do pedido; contact_ref é o token [EMAIL_n] ou [PHONE_n] que o canal gera quando o cliente digita o e-mail ou o telefone do pedido (nunca um código inventado); não recebe contato bruto.',
     'get_order': 'Consulte pedido por ID somente quando a sessão confiável tiver acesso autorizado.',
     'check_return_eligibility': 'Avalie preliminarmente devolução de pedido autorizado; declarações não são provas nem aprovação.',
     'escalate_to_human': 'Encaminhe caso à equipe com categoria e resumo; o resumo livre não é armazenado.',

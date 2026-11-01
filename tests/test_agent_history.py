@@ -17,7 +17,7 @@ def test_history_continuity_isolation_and_no_contact_on_disk(env):
     assert any(m['role']=='assistant' and m['content']=='Olá!' for m in llm.inputs[1])
     assert b'usuario@example.invalid' not in env['app_path'].read_bytes()
     assert 'usuario@example.invalid' not in json.dumps(llm.inputs)
-    assert all('[EMAIL_1]' not in m['content'] for m in llm.inputs[1] if isinstance(m.get('content'), str))
+    assert all('[EMAIL_1]' not in m['content'] for m in llm.inputs[1] if m['role'] != 'system' and isinstance(m.get('content'), str))  # o prompt de sistema cita o formato do token como exemplo
     second = ConversationEngine(setup_registry(env), ConversationScriptedLLM(['Oi']))
     _, messages = second.turn('Oi')
     assert not any(m.get('content') == 'Olá!' for m in messages)
