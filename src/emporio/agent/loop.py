@@ -131,7 +131,7 @@ class ConversationEngine:
                 regenerated = True
                 record['validator']['regenerations'] += 1
                 current.append({'role':'assistant', 'content':text})
-                current.append({'role':'user', 'content':'Reescreva a resposta ao cliente, em tom de conversa, usando como valores em reais apenas os das ferramentas deste turno ou do manual. Se faltar um valor (parcelas, total, desconto, frete), chame quote_payment em vez de calcular. Não copie dados técnicos.'})
+                current.append({'role':'user', 'content':'Reescreva a resposta ao cliente, em tom de conversa, usando como valores em reais apenas os das ferramentas deste turno ou do manual. Se um valor não veio das ferramentas deste turno (mesmo que tenha aparecido antes na conversa), chame a ferramenta (get_product, search_products ou quote_payment) antes de citá-lo; não calcule você mesmo. Não copie dados técnicos.'})
                 continue
             if not isinstance(reply, AssistantReply):
                 record['errors'].append({'code': 'invalid_llm_reply'})
@@ -153,7 +153,7 @@ class ConversationEngine:
                 regenerated = True
                 record['validator']['regenerations'] += 1
                 current.append({'role':'assistant', 'content':text})
-                current.append({'role':'user', 'content':'Reescreva a resposta ao cliente, em tom de conversa, usando como valores em reais apenas os das ferramentas deste turno ou do manual. Se faltar um valor (parcelas, total, desconto, frete), chame quote_payment em vez de calcular. Não copie dados técnicos.'})
+                current.append({'role':'user', 'content':'Reescreva a resposta ao cliente, em tom de conversa, usando como valores em reais apenas os das ferramentas deste turno ou do manual. Se um valor não veio das ferramentas deste turno (mesmo que tenha aparecido antes na conversa), chame a ferramenta (get_product, search_products ou quote_payment) antes de citá-lo; não calcule você mesmo. Não copie dados técnicos.'})
                 continue
             normalized = []
             results = []

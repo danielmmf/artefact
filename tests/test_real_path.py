@@ -267,3 +267,16 @@ def test_escalation_prompt_asks_for_protocol_and_deadline_without_saying_the_tea
     assert answer.startswith('Registrei sua solicitação com o protocolo') and 'já está com a equipe' not in answer
     description = next(d for d in setup_registry(env).definitions() if d['function']['name'] == 'escalate_to_human')['function']['description']
     assert 'ticket_id' in description and 'response_time' in description
+
+
+def test_values_from_earlier_turns_do_not_count_and_the_retry_asks_for_the_tool(env, tmp_path):
+    """Valor citado do histórico, sem ferramenta neste turno: reprova e a reformulação manda consultar a ferramenta."""
+    llm = FakeProviderLLM([AssistantReply(content='O Yamaha C40 custa R$ 599,90.'),                  # do histórico, sem tool
+                           AssistantReply(tool_calls=(FunctionCall('g1', 'get_product', '{"name":"Yamaha C40"}'),)),
+                           AssistantReply(content='O Yamaha C40 Nylon Natural custa R$ 599,90.')])    # agora com evidência
+    answer, _ = ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Quanto custa o Yamaha C40?')
+    assert answer == 'O Yamaha C40 Nylon Natural custa R$ 599,90.'
+    retry = llm.calls[1][-1]['content']
+    assert 'mesmo que tenha aparecido antes na conversa' in retry and 'chame a ferramenta' in retry
+    system = llm.calls[0][0]['content']
+    assert 'Valores de turnos anteriores da conversa não valem' in system
