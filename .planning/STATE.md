@@ -1,9 +1,9 @@
 ---
 gsd_state_version: '1.0'
-status: planning
+status: executing
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 4
   total_plans: 0
   completed_plans: 0
   percent: 0
@@ -16,16 +16,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-31)
 
 **Core value:** O avaliador clona o repositório público e `make setup && make ingest && make test` rodam verdes sem chave, Docker, GPU ou rede (com chave, `make chat` e `make eval`), e o agente nunca erra preço, estoque, status nem acesso a pedido.
-**Current focus:** Phase 1 — Fundação e tracer bullet
+**Current focus:** Phase 5 — Entrega (golden set final, 5 conversas reais, validação do commit final)
 
 ## Current Position
 
-Phase: 1 of 5 (Fundação e tracer bullet)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-10-31 — Roadmap criado (5 fases, 63/63 requisitos mapeados)
+Phase: 5 of 5 (Entrega)
+Plan: n/a — as fases 1 a 4 foram implementadas fora do fluxo GSD
+Status: Em andamento; bloqueada por chave do LLM inválida (401)
+Last activity: 2026-11-01 — PR #5 integrado ao main (ca1b48f); README e documentos alinhados
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [████████░░] 80%
+
+### Reconciliação (2026-11-01)
+
+As fases 1 a 4 **não foram executadas pelo GSD**: foram implementadas por GPT/Codex em ramos `feat/gpt-*` e integradas por Claude Code (PR #5, 59 commits). O GSD produziu apenas o planejamento (`PROJECT`, `REQUIREMENTS`, `ROADMAP`, `intel/`). O `01-01-PLAN.md` em `.planning/phases/` ficou como rascunho não executado e não versionado. A evidência está no histórico Git, em `docs/ACCEPTANCE-MATRIX.md` e em `evals/reports/`.
 
 ## Performance Metrics
 

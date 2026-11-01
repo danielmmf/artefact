@@ -154,8 +154,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Fundação e tracer bullet | 0/TBD | Not started | - |
-| 2. Regras de negócio e ferramentas de catálogo | 0/TBD | Not started | - |
-| 3. Pedidos e segurança | 0/TBD | Not started | - |
-| 4. Agente | 0/TBD | Not started | - |
-| 5. Entrega | 0/TBD | Not started | - |
+| 1. Fundação e tracer bullet | n/a (sem PLAN.md executado) | Entregue fora do fluxo GSD (GPT/Codex, ramo `feat/gpt-phase1`); integrada ao `main` pelo PR #5 | 2026-11-01 |
+| 2. Regras de negócio e ferramentas de catálogo | n/a (sem PLAN.md executado) | Entregue fora do fluxo GSD (GPT/Codex); integrada pelo PR #5 | 2026-11-01 |
+| 3. Pedidos e segurança | n/a (sem PLAN.md executado) | Entregue fora do fluxo GSD (GPT/Codex); integrada pelo PR #5 | 2026-11-01 |
+| 4. Agente | n/a (sem PLAN.md executado) | Entregue (GPT/Codex offline + Claude Code caminho real); integrada pelo PR #5; golden set parcial | 2026-11-01 |
+| 5. Entrega | n/a | Em andamento: README e documentos prontos; golden set final e 5 conversas reais pendentes (chave do LLM inválida) | - |
