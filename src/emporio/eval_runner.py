@@ -17,7 +17,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from emporio.agent.loop import ConversationEngine, SAFE
-from emporio.agent.money_validator import CLAIM, evidence_from_result, parse_amount
+from emporio.agent.money_validator import CLAIM, evidence_from_manual, evidence_from_result, parse_amount
 from emporio.cli import configured, open_registry
 from emporio.config import Settings
 from emporio.llm.openai_compat import OpenAICompatibleAdapter
@@ -48,7 +48,8 @@ def money_in(answer: str) -> set:
 
 
 def evidence(results: list[dict]) -> set:
-    found = set()
+    # Mesma regra do motor: valores das ferramentas + valores do manual (parte confiável do prompt).
+    found = set(evidence_from_manual(Path('data/processed/policies.md').read_text(encoding='utf-8')))
     for r in results:
         if r['result'].get('ok'):
             found |= evidence_from_result(r['result']['data'])

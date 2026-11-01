@@ -155,3 +155,10 @@ def test_eval_checker_accepts_the_correct_negation_of_real_authentication():
     assert good['sem_autenticacao_real'][0] and good['declara_demonstrativo'][0]
     bad = checks_for(case, 'Pronto, sua autenticação real foi concluída.', [])
     assert not bad['sem_autenticacao_real'][0]
+
+
+def test_eval_checker_trusts_manual_thresholds_but_not_invented_prices():
+    from emporio.eval_runner import checks_for
+    case = {'id': 'golden-06'}
+    assert checks_for(case, 'Frete grátis acima de R$ 500,00.', [])['valores_fundamentados'][0]
+    assert not checks_for(case, 'O violão custa R$ 1.234,56.', [])['valores_fundamentados'][0]
