@@ -89,12 +89,20 @@ S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não alter
 
 | Assunto | Estado | Pendência para revisão |
 | --- | --- | --- |
-| Contatos institucionais divergentes e DEC-06 | PENDENTE | Conciliar S-l e os contatos divergentes do manual com a exigência de tokenização; confirmar fonte e eventual exceção por decisão explícita. |
-| Projeção do manual para serviço externo | PENDENTE | Definir e revisar projeção segura e sua relação com DEC-03; o prompt atual contém o manual completo e contatos em claro. |
+| Contatos institucionais divergentes e DEC-06 | RESOLVIDO | Telefone, e-mail e endereço da loja são dados institucionais públicos, não pessoais (§8 abaixo); só contatos de clientes são tokenizados. |
+| Projeção do manual para serviço externo | RESOLVIDO | Sem projeção: o manual vai inteiro no prompt (DEC-03), incluindo contatos institucionais (§8 abaixo). |
 | Subtotal sem frete para parcelas e pagamento combinado | PENDENTE | Confirmar a base usada atualmente em `quote_payment` com a área comercial. |
 | Arredondamento e distribuição de centavos | PENDENTE | Confirmar HALF_UP por unidade e distribuição dos centavos nas primeiras parcelas. |
 | Bloqueio persistente por pedido | PENDENTE | Definir desbloqueio, auditoria e mitigação de negação de serviço; o bloqueio atual não expira automaticamente. |
 | Contatos compartilhados | PENDENTE | Definir prova adicional e política para contatos compartilhados; a implementação nega a verificação por contato compartilhado. |
 | Tickets humanos | PENDENTE | Definir dados úteis e seguros: atualmente o resumo livre é descartado. |
 | Estimativa de tokens | PENDENTE | Selecionar tokenizador e margem por modelo; bytes UTF-8/3 é apenas aproximação. |
-| Modelo LLM e parâmetros de avaliação | PENDENTE | Após aprovação do gate, escolher modelo com fonte oficial e fixar parâmetros, incluindo temperatura ou exceção, repetição e critérios; não existe avaliação real nesta versão. |
+| Modelo LLM e parâmetros de avaliação | RESOLVIDO | DEC-11 abaixo; golden set com temperature 0 e 1 repetição, casos e metas inalterados. |
+
+## 8. Decisão do responsável (2026-11-01)
+
+- **Privacidade (ADR-000 §8 e D10, nada além):** e-mails e telefones de clientes são tokenizados antes do LLM; o restante do texto do usuário vai normalmente; argumentos e resultados das tools vão completos, como nos contratos (as tools só devolvem o primeiro nome do cliente). O manual vai inteiro no prompt, com telefone, e-mail e endereço da loja, que são dados institucionais públicos (lista em `emporio.security.contacts.INSTITUTIONAL`).
+- **Revisão de egress descartada** por exceder a ADR-000: removidos `src/emporio/egress/`, seus testes e os documentos `EGRESS-REVIEW`, `FUNCTIONAL-EGRESS-STATUS` e `ADAPTADOR-INATIVO`; a admissão por texto exato do golden set violava a regra de honestidade da avaliação.
+- **DEC-11 (modelo padrão):** Groq `openai/gpt-oss-120b` (`LLM_BASE_URL=https://api.groq.com/openai/v1`); alternativa documentada `openai/gpt-oss-20b`; modelos em preview não são usados. Parâmetros: `temperature=0`, `reasoning_effort=low` (modelos gpt-oss), `max_tokens=2048` (o raciocínio consome do mesmo orçamento), timeout de 60 s e 2 retentativas em 429/5xx/timeout com backoff de 1 s e 3 s, respeitando a espera sugerida pelo provedor (teto de 70 s). Transporte pela biblioteca padrão (`urllib`), sem dependência nova. Verificado em 2026-11-01: o plano gratuito do Groq limita esse modelo a 8.000 tokens/min, o que torna cada turno lento (cerca de 1 min).
+- **Evidência de valores:** a faixa de preço (`min_price`/`max_price`) que o modelo envia à busca conta como evidência, porque repete o filtro pedido pelo cliente; qualquer outro valor em R$ precisa vir de resultado de tool do turno.
+
