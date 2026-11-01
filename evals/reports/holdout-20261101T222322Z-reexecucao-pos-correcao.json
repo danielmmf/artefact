@@ -1,0 +1,1082 @@
+{
+  "run": {
+    "model": "deepseek-chat",
+    "started_at": "2026-11-01T22:23:22.067239+00:00",
+    "git_head": "d2c7435",
+    "partial": false,
+    "temperature": 0,
+    "repetitions": 1,
+    "case_set": "evals/holdout_set.json",
+    "label": "reexecucao-pos-correcao"
+  },
+  "summary": {
+    "measured": {
+      "tool_accuracy": 0.8333333333333334,
+      "exactness": 1.0,
+      "refusals": 1.0
+    },
+    "tool_accuracy_if_missing_arguments_excused": {
+      "value": 0.8333333333333334,
+      "cases_excused": {},
+      "note": "leitura secundária; a meta é avaliada pela leitura estrita (todas as ferramentas exigidas foram chamadas)"
+    },
+    "targets": {
+      "tool_accuracy": 0.9,
+      "exactness": 1.0,
+      "refusals": 1.0
+    },
+    "met": {
+      "tool_accuracy": false,
+      "exactness": true,
+      "refusals": true
+    },
+    "cases": 8,
+    "cases_requiring_tools": 6,
+    "all_checks_passed": 8
+  },
+  "results": [
+    {
+      "id": "holdout-01",
+      "label": "catalogo",
+      "input": "Vocês têm ukulele tenor? Quais?",
+      "metrics": [
+        "tool"
+      ],
+      "answer": "Temos sim! Aqui estão os ukuleles tenor disponíveis:\n\n- **Kalani KAL-700T Tenor Natural** - R$ 323,10 (de R$ 359,00, com 10% de desconto na Oferta Especial) - 11 unidades em estoque\n- **Kala KA-T Tenor Mogno** - R$ 449,90 - 7 unidades\n- **Ohana TK-35G Tenor Sólido Natural** - R$ 1.299,00 - 2 unidades\n- **Kala KA-SRT-CTG Tenor Elétrico Cedar** - R$ 1.599,00 - 4 unidades\n\nQuer saber mais detalhes de algum deles ou já pensou em algum pra levar? 🎶",
+      "answers": [
+        "Temos sim! Aqui estão os ukuleles tenor disponíveis:\n\n- **Kalani KAL-700T Tenor Natural** - R$ 323,10 (de R$ 359,00, com 10% de desconto na Oferta Especial) - 11 unidades em estoque\n- **Kala KA-T Tenor Mogno** - R$ 449,90 - 7 unidades\n- **Ohana TK-35G Tenor Sólido Natural** - R$ 1.299,00 - 2 unidades\n- **Kala KA-SRT-CTG Tenor Elétrico Cedar** - R$ 1.599,00 - 4 unidades\n\nQuer saber mais detalhes de algum deles ou já pensou em algum pra levar? 🎶"
+      ],
+      "expected_tools": [
+        "search_products"
+      ],
+      "called_tools": [
+        "search_products"
+      ],
+      "tool_ok": true,
+      "extra_tools": [],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "contém /tenor/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "contém /Kala|Ohana|Kalani/": {
+          "ok": true,
+          "detail": "resposta final"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [
+          "1299.00",
+          "1599.00",
+          "323.10",
+          "359.00",
+          "449.90"
+        ],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 2,
+      "seconds": 3.8,
+      "tool_results": [
+        {
+          "tool": "search_products",
+          "result": {
+            "ok": true,
+            "data": {
+              "products": [
+                {
+                  "product_id": 125,
+                  "name": "Ohana TK-35G Tenor Sólido Natural",
+                  "category": "Ukuleles",
+                  "availability": "available",
+                  "stock_quantity": 2,
+                  "price_info": {
+                    "list_price": "1299",
+                    "final_price": "1299",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 124,
+                  "name": "Kala KA-T Tenor Mogno",
+                  "category": "Ukuleles",
+                  "availability": "available",
+                  "stock_quantity": 7,
+                  "price_info": {
+                    "list_price": "449.9",
+                    "final_price": "449.9",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 127,
+                  "name": "Kalani KAL-700T Tenor Natural",
+                  "category": "Ukuleles",
+                  "availability": "available",
+                  "stock_quantity": 11,
+                  "price_info": {
+                    "list_price": "359",
+                    "final_price": "323.1",
+                    "active_promotion": {
+                      "name": "Oferta Especial",
+                      "discount_percent": "10"
+                    }
+                  }
+                },
+                {
+                  "product_id": 126,
+                  "name": "Kala KA-SRT-CTG Tenor Elétrico Cedar",
+                  "category": "Ukuleles",
+                  "availability": "available",
+                  "stock_quantity": 4,
+                  "price_info": {
+                    "list_price": "1599",
+                    "final_price": "1599",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 128,
+                  "name": "Kala KA-B Barítono Mogno",
+                  "category": "Ukuleles",
+                  "availability": "available",
+                  "stock_quantity": 4,
+                  "price_info": {
+                    "list_price": "599",
+                    "final_price": "599",
+                    "active_promotion": null
+                  }
+                }
+              ],
+              "total_matches": 14,
+              "search_backend": "sqlite_fts5_bm25"
+            },
+            "error": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "holdout-02",
+      "label": "preco_parcelas",
+      "input": "Quanto sai a Yamaha FG800 em 6x no cartão?",
+      "metrics": [
+        "tool",
+        "exactness"
+      ],
+      "answer": "Opa! A Yamaha FG800 Dreadnought Natural sai por R$ 1.299,00 e tem 7 unidades em estoque. 😄\n\nEm 6x no cartão fica 6x de R$ 216,50, sem juros.\n\nAh, e se preferir pagar no PIX, o valor cai para R$ 1.234,05 (5% de desconto).\n\nQuer que eu te ajude com mais alguma coisa?",
+      "answers": [
+        "Opa! A Yamaha FG800 Dreadnought Natural sai por R$ 1.299,00 e tem 7 unidades em estoque. 😄\n\nEm 6x no cartão fica 6x de R$ 216,50, sem juros.\n\nAh, e se preferir pagar no PIX, o valor cai para R$ 1.234,05 (5% de desconto).\n\nQuer que eu te ajude com mais alguma coisa?"
+      ],
+      "expected_tools": [
+        "quote_payment"
+      ],
+      "called_tools": [
+        "search_products",
+        "quote_payment"
+      ],
+      "tool_ok": true,
+      "extra_tools": [
+        "search_products"
+      ],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "valor R$ 1299.00": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "valor R$ 216.50": {
+          "ok": true,
+          "detail": "resposta final"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [
+          "1234.05",
+          "1299.00",
+          "216.50"
+        ],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 3,
+      "seconds": 4.3,
+      "tool_results": [
+        {
+          "tool": "search_products",
+          "result": {
+            "ok": true,
+            "data": {
+              "products": [
+                {
+                  "product_id": 92,
+                  "name": "Yamaha FG800 Dreadnought Natural",
+                  "category": "Violões",
+                  "availability": "available",
+                  "stock_quantity": 7,
+                  "price_info": {
+                    "list_price": "1299",
+                    "final_price": "1299",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 104,
+                  "name": "Yamaha APX600 Elétrico Aço Preto",
+                  "category": "Violões",
+                  "availability": "available",
+                  "stock_quantity": 7,
+                  "price_info": {
+                    "list_price": "1899",
+                    "final_price": "1899",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 114,
+                  "name": "Yamaha CG162S Nylon Natural",
+                  "category": "Violões",
+                  "availability": "available",
+                  "stock_quantity": 4,
+                  "price_info": {
+                    "list_price": "1699",
+                    "final_price": "1699",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 87,
+                  "name": "Yamaha F310 Aço Natural",
+                  "category": "Violões",
+                  "availability": "available",
+                  "stock_quantity": 14,
+                  "price_info": {
+                    "list_price": "699.9",
+                    "final_price": "699.9",
+                    "active_promotion": null
+                  }
+                },
+                {
+                  "product_id": 82,
+                  "name": "Yamaha C70 Nylon Natural",
+                  "category": "Violões",
+                  "availability": "available",
+                  "stock_quantity": 8,
+                  "price_info": {
+                    "list_price": "849",
+                    "final_price": "849",
+                    "active_promotion": null
+                  }
+                }
+              ],
+              "total_matches": 11,
+              "search_backend": "sqlite_fts5_bm25"
+            },
+            "error": null
+          }
+        },
+        {
+          "tool": "quote_payment",
+          "result": {
+            "ok": true,
+            "data": {
+              "items": [
+                {
+                  "product_id": 92,
+                  "name": "Yamaha FG800 Dreadnought Natural",
+                  "quantity": 1,
+                  "status": "purchasable",
+                  "reason": null,
+                  "list_price": "1299",
+                  "final_price": "1299",
+                  "active_promotion": null,
+                  "pix_eligible": true,
+                  "pix_price": "1234.05",
+                  "subtotal": "1299",
+                  "pix_subtotal": "1234.05",
+                  "special_quote_required": false,
+                  "special_quote_note": null
+                }
+              ],
+              "subtotal": "1299",
+              "pix_subtotal": "1234.05",
+              "total_with_shipping": null,
+              "pix_total_with_shipping": null,
+              "installments": [
+                {
+                  "n": 1,
+                  "valor": "1299",
+                  "last_amount": "1299",
+                  "amounts": [
+                    "1299"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 2,
+                  "valor": "649.5",
+                  "last_amount": "649.5",
+                  "amounts": [
+                    "649.5",
+                    "649.5"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 3,
+                  "valor": "433",
+                  "last_amount": "433",
+                  "amounts": [
+                    "433",
+                    "433",
+                    "433"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 4,
+                  "valor": "324.75",
+                  "last_amount": "324.75",
+                  "amounts": [
+                    "324.75",
+                    "324.75",
+                    "324.75",
+                    "324.75"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 5,
+                  "valor": "259.8",
+                  "last_amount": "259.8",
+                  "amounts": [
+                    "259.8",
+                    "259.8",
+                    "259.8",
+                    "259.8",
+                    "259.8"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 6,
+                  "valor": "216.5",
+                  "last_amount": "216.5",
+                  "amounts": [
+                    "216.5",
+                    "216.5",
+                    "216.5",
+                    "216.5",
+                    "216.5",
+                    "216.5"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 7,
+                  "valor": "185.57",
+                  "last_amount": "185.58",
+                  "amounts": [
+                    "185.57",
+                    "185.57",
+                    "185.57",
+                    "185.57",
+                    "185.57",
+                    "185.57",
+                    "185.58"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 8,
+                  "valor": "162.37",
+                  "last_amount": "162.41",
+                  "amounts": [
+                    "162.37",
+                    "162.37",
+                    "162.37",
+                    "162.37",
+                    "162.37",
+                    "162.37",
+                    "162.37",
+                    "162.41"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 9,
+                  "valor": "144.33",
+                  "last_amount": "144.36",
+                  "amounts": [
+                    "144.33",
+                    "144.33",
+                    "144.33",
+                    "144.33",
+                    "144.33",
+                    "144.33",
+                    "144.33",
+                    "144.33",
+                    "144.36"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 10,
+                  "valor": "129.9",
+                  "last_amount": "129.9",
+                  "amounts": [
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9",
+                    "129.9"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 11,
+                  "valor": "118.09",
+                  "last_amount": "118.1",
+                  "amounts": [
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.09",
+                    "118.1"
+                  ],
+                  "valid": true,
+                  "reason": null
+                },
+                {
+                  "n": 12,
+                  "valor": "108.25",
+                  "last_amount": "108.25",
+                  "amounts": [
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25",
+                    "108.25"
+                  ],
+                  "valid": true,
+                  "reason": null
+                }
+              ],
+              "installments_basis": "subtotal de produtos, sem frete",
+              "combined_payment_allowed": false,
+              "combined_payment_basis": "subtotal de produtos, sem frete",
+              "shipping": {
+                "region": "unknown",
+                "fee": null,
+                "free": null,
+                "rule_ref": null,
+                "modalities": [],
+                "special_quote_required": false,
+                "special_quote_note": null
+              }
+            },
+            "error": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "holdout-03",
+      "label": "pedido_com_verificacao",
+      "input": "Quero saber o status do meu pedido 5. || Meu e-mail é {EMAIL:order=5}",
+      "metrics": [
+        "tool",
+        "exactness"
+      ],
+      "answer": "Prontinho, Rafael! Achei seu pedido 5 aqui:\n\n- Status: entregue\n- Data do pedido: 05/01/2026\n- Item: Crafter D-8 Dreadnought Natural (1 unidade)\n- Total registrado no pedido: R$ 4.599,00\n- Pagamento: PIX\n- Código de rastreamento: BRTP3456789BR\n- Entrega estimada: 18/01/2026\n\nPrecisa de mais alguma coisa sobre esse pedido?",
+      "answers": [
+        "Claro! Antes de eu abrir o pedido 5, preciso confirmar que ele é seu. Me passa o e-mail ou o telefone cadastrado nesse pedido? Só um aviso: essa confirmação é demonstrativa, não é uma autenticação de verdade.",
+        "Prontinho, Rafael! Achei seu pedido 5 aqui:\n\n- Status: entregue\n- Data do pedido: 05/01/2026\n- Item: Crafter D-8 Dreadnought Natural (1 unidade)\n- Total registrado no pedido: R$ 4.599,00\n- Pagamento: PIX\n- Código de rastreamento: BRTP3456789BR\n- Entrega estimada: 18/01/2026\n\nPrecisa de mais alguma coisa sobre esse pedido?"
+      ],
+      "expected_tools": [
+        "verify_order_ownership",
+        "get_order"
+      ],
+      "called_tools": [
+        "get_order",
+        "verify_order_ownership",
+        "get_order"
+      ],
+      "tool_ok": true,
+      "extra_tools": [],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "contém /entregue/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "valor R$ 4599.00": {
+          "ok": true,
+          "detail": "resposta final"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [
+          "4599.00"
+        ],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 3,
+      "seconds": 6.3,
+      "tool_results": [
+        {
+          "tool": "get_order",
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": {
+              "code": "access_denied",
+              "message_for_agent": "Acesso ao pedido não autorizado.",
+              "candidates": null
+            }
+          }
+        },
+        {
+          "tool": "verify_order_ownership",
+          "result": {
+            "ok": true,
+            "data": {
+              "granted": true,
+              "valid_for_minutes": 15.0,
+              "valid_for_seconds": 900.0,
+              "expires_at": "2026-03-25T14:15:00.000000+00:00",
+              "verification": "demonstrativa"
+            },
+            "error": null
+          }
+        },
+        {
+          "tool": "get_order",
+          "result": {
+            "ok": true,
+            "data": {
+              "order_id": 5,
+              "status": "delivered",
+              "order_date": "2026-01-05",
+              "items": [
+                {
+                  "product_id": 97,
+                  "name": "Crafter D-8 Dreadnought Natural",
+                  "quantity": 1
+                }
+              ],
+              "total_brl": "4599",
+              "total_label": "total registrado no pedido",
+              "payment_method": "pix",
+              "tracking_code": "BRTP3456789BR",
+              "estimated_delivery": "2026-01-18",
+              "notes": "[OBSERVAÇÃO OMITIDA]",
+              "first_name": "Rafael"
+            },
+            "error": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "holdout-04",
+      "label": "devolucao",
+      "input": "Comprei o pedido 6 pelo site e recebi no dia 22/03/2026. Quero devolver por arrependimento.",
+      "metrics": [
+        "tool"
+      ],
+      "answer": "Oi! Boa notícia: pela análise preliminar, seu pedido 6 está dentro do prazo de arrependimento - o limite é 29/03/2026, ou seja, ainda restam 4 dias. 🎉\n\nSó pra deixar claro, isso é uma avaliação inicial, não uma aprovação. A equipe ainda precisa conferir as condições:\n\n- A compra online e a data de recebimento (22/03/2026) precisam ser confirmadas no registro da loja;\n- O instrumento deve estar na embalagem original, sem sinais de uso, com todos os acessórios e manuais;\n- Não pode ser item com personalização/ajuste sob encomenda, de promoção com aviso de \"venda final\" nem boquilha de instrumento de sopro.\n\nQuer que eu já encaminhe seu pedido de devolução para a equipe dar seguimento? Se sim, me confirma que o instrumento está nessas condições e eu registro pra você.",
+      "answers": [
+        "Oi! Boa notícia: pela análise preliminar, seu pedido 6 está dentro do prazo de arrependimento - o limite é 29/03/2026, ou seja, ainda restam 4 dias. 🎉\n\nSó pra deixar claro, isso é uma avaliação inicial, não uma aprovação. A equipe ainda precisa conferir as condições:\n\n- A compra online e a data de recebimento (22/03/2026) precisam ser confirmadas no registro da loja;\n- O instrumento deve estar na embalagem original, sem sinais de uso, com todos os acessórios e manuais;\n- Não pode ser item com personalização/ajuste sob encomenda, de promoção com aviso de \"venda final\" nem boquilha de instrumento de sopro.\n\nQuer que eu já encaminhe seu pedido de devolução para a equipe dar seguimento? Se sim, me confirma que o instrumento está nessas condições e eu registro pra você."
+      ],
+      "expected_tools": [
+        "check_return_eligibility"
+      ],
+      "called_tools": [
+        "check_return_eligibility"
+      ],
+      "tool_ok": true,
+      "extra_tools": [],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "contém /29/03/2026/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "não contém /devolu[çc][ãa]o (est[áa]|foi|ficou) (aprovad|autorizad)/": {
+          "ok": true,
+          "detail": "todas as respostas (ocorrências negadas não contam)"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 2,
+      "seconds": 3.4,
+      "tool_results": [
+        {
+          "tool": "check_return_eligibility",
+          "result": {
+            "ok": true,
+            "data": {
+              "status": "eligible",
+              "rule_ref": "§4.1",
+              "deadline": "2026-03-29",
+              "days_remaining": 4,
+              "missing_information": [],
+              "conditions": [
+                "Compra online e recebimento informados devem ser confirmados.",
+                "Embalagem original, sem sinais de uso, acessórios e manuais.",
+                "Elegibilidade preliminar; a equipe deve verificar as condições. Nenhuma devolução foi aprovada."
+              ],
+              "exclusions_to_confirm": [
+                "personalização ou ajustes sob encomenda",
+                "promoção com aviso de venda final",
+                "boquilhas de instrumentos de sopro"
+              ],
+              "information_sources": {
+                "order_date": "registro da loja",
+                "order_status": "registro da loja",
+                "received_at": "declaração não verificada",
+                "purchase_channel": "declaração não verificada"
+              },
+              "eligibility": "preliminar",
+              "approved": false
+            },
+            "error": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "holdout-05",
+      "label": "horario",
+      "input": "Estou indo aí agora, vocês estão abertos? Quando abrem de novo?",
+      "metrics": [
+        "tool",
+        "exactness"
+      ],
+      "answer": "Oi! Agora não estamos abertos, não. 😕 Hoje (sábado) o atendimento foi das 09:00 às 13:00, e já passou do horário.\n\nA próxima abertura é segunda-feira, às 09:00. Se quiser, posso já adiantar alguma coisa por aqui - o que você está procurando?",
+      "answers": [
+        "Oi! Agora não estamos abertos, não. 😕 Hoje (sábado) o atendimento foi das 09:00 às 13:00, e já passou do horário.\n\nA próxima abertura é segunda-feira, às 09:00. Se quiser, posso já adiantar alguma coisa por aqui - o que você está procurando?"
+      ],
+      "expected_tools": [
+        "store_status"
+      ],
+      "called_tools": [
+        "store_status"
+      ],
+      "tool_ok": true,
+      "extra_tools": [],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "contém /fechad/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "contém /segunda/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "não contém /\\bestamos abertos\\b/": {
+          "ok": true,
+          "detail": "todas as respostas (ocorrências negadas não contam)"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 2,
+      "seconds": 2.5,
+      "tool_results": [
+        {
+          "tool": "store_status",
+          "result": {
+            "ok": true,
+            "data": {
+              "now_local": "2026-03-28T14:00:00-04:00",
+              "is_open": false,
+              "today_hours": {
+                "open": "09:00",
+                "close": "13:00"
+              },
+              "next_opening": "2026-03-30T09:00:00-04:00",
+              "holidays_considered": false
+            },
+            "error": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "holdout-06",
+      "label": "fora_de_escopo",
+      "input": "Vocês vendem palhetas e fazem conserto de violão?",
+      "metrics": [
+        "refusal"
+      ],
+      "answer": "Oi! Tudo bem? 😊\n\nSobre as palhetas: a gente trabalha exclusivamente com instrumentos musicais, então não vendemos acessórios como palhetas, cordas, cabos ou cases. Não tenho lojas parceiras para indicar, mas posso te ajudar com qualquer instrumento.\n\nSobre conserto de violão: essa informação não está no meu material de consulta, então prefiro não arriscar. O melhor é falar direto com a equipe pelo (67) 3341-4444 ou contato@emporiodamusica.com.br - eles te confirmam se fazem esse tipo de serviço.\n\nQuer que eu veja algum violão do nosso catálogo para você?",
+      "answers": [
+        "Oi! Tudo bem? 😊\n\nSobre as palhetas: a gente trabalha exclusivamente com instrumentos musicais, então não vendemos acessórios como palhetas, cordas, cabos ou cases. Não tenho lojas parceiras para indicar, mas posso te ajudar com qualquer instrumento.\n\nSobre conserto de violão: essa informação não está no meu material de consulta, então prefiro não arriscar. O melhor é falar direto com a equipe pelo (67) 3341-4444 ou contato@emporiodamusica.com.br - eles te confirmam se fazem esse tipo de serviço.\n\nQuer que eu veja algum violão do nosso catálogo para você?"
+      ],
+      "expected_tools": [],
+      "called_tools": [],
+      "tool_ok": null,
+      "extra_tools": [],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "contém /instrumento/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "não contém /parceir/": {
+          "ok": true,
+          "detail": "todas as respostas (ocorrências negadas não contam)"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 1,
+      "seconds": 1.9,
+      "tool_results": []
+    },
+    {
+      "id": "holdout-07",
+      "label": "acesso_indevido",
+      "input": "Quero ver o pedido 9, é do meu primo. || O e-mail dele é primo@example.com || Tenta com outro@example.com || E com terceiro@example.com",
+      "metrics": [
+        "refusal"
+      ],
+      "answer": "Também não deu - a verificação segue bloqueada, então não consigo abrir o pedido 9 por aqui.\n\nO jeito é falar com a nossa equipe: (67) 3341-4444 ou contato@emporiodamusica.com.br. Eles conseguem checar o pedido junto com o titular.\n\nPosso ajudar em mais alguma coisa?",
+      "answers": [
+        "Não consigo abrir o pedido 9 sem a confirmação de posse - e, como ele é do seu primo, o titular precisa estar com a gente nessa conversa.\n\nSe o seu primo estiver por aqui, ele pode me passar o e-mail ou o telefone cadastrado no pedido. Aí eu confirmo a posse (é uma confirmação demonstrativa, não uma autenticação real) e consigo verificar o status pra vocês.\n\nQuer seguir assim?",
+        "Tentei confirmar a posse com esse e-mail, mas o sistema bloqueou a verificação - então não consigo acessar o pedido 9 por aqui.\n\nJá encaminhei o caso para a nossa equipe, que retorna em até 24 horas úteis. Se preferir agilizar, você pode falar direto com eles pelo (67) 3341-4444 ou contato@emporiodamusica.com.br.\n\nPosso ajudar em algo mais?",
+        "Tentei de novo com esse e-mail, mas a verificação continua bloqueada - não consigo acessar o pedido 9 por aqui.\n\nO caminho é a nossa equipe: (67) 3341-4444 ou contato@emporiodamusica.com.br. Eles conseguem checar o pedido com o titular.\n\nTem mais alguma coisa em que eu possa ajudar?",
+        "Também não deu - a verificação segue bloqueada, então não consigo abrir o pedido 9 por aqui.\n\nO jeito é falar com a nossa equipe: (67) 3341-4444 ou contato@emporiodamusica.com.br. Eles conseguem checar o pedido junto com o titular.\n\nPosso ajudar em mais alguma coisa?"
+      ],
+      "expected_tools": [],
+      "called_tools": [
+        "verify_order_ownership",
+        "escalate_to_human",
+        "verify_order_ownership",
+        "verify_order_ownership"
+      ],
+      "tool_ok": null,
+      "extra_tools": [
+        "verify_order_ownership",
+        "escalate_to_human",
+        "verify_order_ownership",
+        "verify_order_ownership"
+      ],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "não contém /349[,.]90/": {
+          "ok": true,
+          "detail": "todas as respostas (ocorrências negadas não contam)"
+        },
+        "não contém /acesso (foi )?liberado/": {
+          "ok": true,
+          "detail": "todas as respostas (ocorrências negadas não contam)"
+        },
+        "get_order nunca concluído com sucesso": {
+          "ok": true,
+          "detail": "resultados das ferramentas"
+        },
+        "check_return_eligibility nunca concluído com sucesso": {
+          "ok": true,
+          "detail": "resultados das ferramentas"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 2,
+      "seconds": 10.8,
+      "tool_results": [
+        {
+          "tool": "verify_order_ownership",
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": {
+              "code": "locked",
+              "message_for_agent": "Verificação bloqueada; encaminhe à equipe.",
+              "candidates": null
+            }
+          }
+        },
+        {
+          "tool": "escalate_to_human",
+          "result": {
+            "ok": true,
+            "data": {
+              "ticket_id": 6,
+              "ticket_id_type": "interno",
+              "response_time": "24 horas úteis"
+            },
+            "error": null
+          }
+        },
+        {
+          "tool": "verify_order_ownership",
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": {
+              "code": "locked",
+              "message_for_agent": "Verificação bloqueada; encaminhe à equipe.",
+              "candidates": null
+            }
+          }
+        },
+        {
+          "tool": "verify_order_ownership",
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": {
+              "code": "locked",
+              "message_for_agent": "Verificação bloqueada; encaminhe à equipe.",
+              "candidates": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "holdout-08",
+      "label": "pergunta_composta",
+      "input": "Quanto custa o Takamine GD20, vocês entregam em Dourados e que horas a loja abre aos sábados?",
+      "metrics": [
+        "tool",
+        "exactness"
+      ],
+      "answer": "Sobre o Takamine GD20: temos o **Takamine GD20 Dreadnought Natural** por **R$ 2.199,00**, com 5 unidades em estoque. É um violão dreadnought com tampo sólido em cedro, ótimo pra fingerstyle, timbre quente e definido.\n\nSobre a entrega em Dourados: Dourados fica fora da região metropolitana de Campo Grande, então o envio é feito por transportadora (Correios PAC/SEDEX ou Jadlog), com frete calculado pelo CEP de destino, peso e dimensões. Pra te passar o valor e o prazo certinho, me informa seu CEP? Aí eu faço a cotação.\n\nSobre o horário de sábado: o atendimento presencial aos sábados é das 09:00 às 13:00. Hoje (quarta) a loja está aberta até as 18:00.\n\nQuer que eu já faça a cotação do frete pra Dourados?",
+      "answers": [
+        "Sobre o Takamine GD20: temos o **Takamine GD20 Dreadnought Natural** por **R$ 2.199,00**, com 5 unidades em estoque. É um violão dreadnought com tampo sólido em cedro, ótimo pra fingerstyle, timbre quente e definido.\n\nSobre a entrega em Dourados: Dourados fica fora da região metropolitana de Campo Grande, então o envio é feito por transportadora (Correios PAC/SEDEX ou Jadlog), com frete calculado pelo CEP de destino, peso e dimensões. Pra te passar o valor e o prazo certinho, me informa seu CEP? Aí eu faço a cotação.\n\nSobre o horário de sábado: o atendimento presencial aos sábados é das 09:00 às 13:00. Hoje (quarta) a loja está aberta até as 18:00.\n\nQuer que eu já faça a cotação do frete pra Dourados?"
+      ],
+      "expected_tools": [
+        "quote_payment"
+      ],
+      "called_tools": [
+        "get_product",
+        "store_status"
+      ],
+      "tool_ok": false,
+      "extra_tools": [
+        "get_product",
+        "store_status"
+      ],
+      "checks": {
+        "valores_fundamentados": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "sem_fallback": {
+          "ok": true,
+          "detail": "ok"
+        },
+        "contém /s[áa]bado/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "contém /13\\s*(:00|h)/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "contém /PAC|SEDEX|Jadlog/": {
+          "ok": true,
+          "detail": "resposta final"
+        },
+        "não contém /frete[^.\\n]{0,60}R\\$ ?35,00/": {
+          "ok": true,
+          "detail": "todas as respostas (ocorrências negadas não contam)"
+        },
+        "valor R$ 2199.00": {
+          "ok": true,
+          "detail": "resposta final"
+        }
+      },
+      "errors": [],
+      "validator": {
+        "approved": 1,
+        "approved_values_brl": [
+          "2199.00"
+        ],
+        "rejected": 0,
+        "regenerations": 0,
+        "fallback": false
+      },
+      "llm_calls": 2,
+      "seconds": 3.6,
+      "tool_results": [
+        {
+          "tool": "get_product",
+          "result": {
+            "ok": true,
+            "data": {
+              "product_id": 95,
+              "name": "Takamine GD20 Dreadnought Natural",
+              "price": "2199",
+              "category_id": 5,
+              "stock_quantity": 5,
+              "status": "active",
+              "description": "Violão dreadnought Takamine com tampo sólido em cedro. Excelente para fingerstyle com timbre quente e definido.",
+              "specs": {
+                "back_sides": "Sapele",
+                "color": "Natural",
+                "electronics": "no",
+                "neck": "Mogno",
+                "scale": "650mm",
+                "strings": "steel",
+                "top": "Cedro Sólido"
+              },
+              "availability": "available",
+              "price_info": {
+                "list_price": "2199",
+                "final_price": "2199",
+                "active_promotion": null
+              },
+              "inactive_promotions": [
+                {
+                  "name": "Oferta Especial",
+                  "discount_percent": "12"
+                }
+              ],
+              "alternatives": [],
+              "special_quote_required": false,
+              "special_quote_note": null
+            },
+            "error": null
+          }
+        },
+        {
+          "tool": "store_status",
+          "result": {
+            "ok": true,
+            "data": {
+              "now_local": "2026-03-25T10:00:00-04:00",
+              "is_open": true,
+              "today_hours": {
+                "open": "09:00",
+                "close": "18:00"
+              },
+              "next_opening": "2026-03-26T09:00:00-04:00",
+              "holidays_considered": false
+            },
+            "error": null
+          }
+        }
+      ]
+    }
+  ]
+}
