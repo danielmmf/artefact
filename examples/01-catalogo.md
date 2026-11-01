@@ -8,45 +8,57 @@
 
 _Ferramentas consultadas: `search_products` (ok)_
 
-**Atendente:** Temos boas opções de violão nylon até R$ 1.000, todas disponíveis:
+**Atendente:** Oi! Que bom te atender 😊 Temos 12 violões até R$ 1.000,00 - e estão todos disponíveis. Vou separar por tipo pra facilitar:
 
-- **Tagima Memphis AC-39 Nylon Natural** - R$ 429,90 (15 em estoque)
-- **Rozini RC-104 Nylon Estudante** - R$ 459,90 (10 em estoque)
-- **Yamaha C40 Nylon Natural** - R$ 599,90 (12 em estoque)
-- **Giannini GN-15 Nylon Cedr Natural** - R$ 689,00 (6 em estoque)
-- **Yamaha C70 Nylon Natural** - R$ 849,00 (8 em estoque)
+**Nylon (cordas de náilon)**
+- Tagima Memphis AC-39 Nylon Natural - R$ 429,90
+- Rozini RC-104 Nylon Estudante - R$ 459,90
+- Yamaha C40 Nylon Natural - R$ 599,90
+- Giannini GN-15 Nylon Cedr Natural - R$ 689,00
+- Yamaha C70 Nylon Natural - R$ 849,00
 
-Apareceram mais resultados além desses cinco - se quiser, posso listar o restante ou filtrar por marca. Quer que eu detalhe algum deles ou já calcule as condições de pagamento? 🎸
+**Aço (cordas de aço)**
+- Shelby SN-100 Folk Aço Preto - R$ 549,00
+- Giannini GF-1R Aço Folk Sunburst - R$ 579,90
+- Yamaha F310 Aço Natural - R$ 699,90
+- Tagima Dallas Tuner Aço Natural - R$ 749,00
+- Shelby SGD-195E Elétrico Aço Sunburst - R$ 799,00
+- Tagima Woodstock Dreadnought Natural - R$ 899,00
+- Tagima TW-7 7 Cordas Aço Natural - R$ 999,00
+
+Quer que eu detalhe algum desses ou te ajude a escolher entre nylon e aço? 🎸
 
 **Cliente:** Qual a diferença entre o Yamaha C40 e o Yamaha F310?
 
 _Ferramentas consultadas: `get_product` (ok), `get_product` (ok)_
 
-**Atendente:** Achei os dois! A diferença principal é o tipo de corda e o estilo do instrumento:
+**Atendente:** Achei os dois! A diferença principal é o tipo de corda e o estilo do violão:
 
-**Yamaha C40 Nylon Natural** - R$ 599,90 (12 em estoque)
-- Violão clássico, com cordas de nylon
+**Yamaha C40 Nylon Natural - R$ 599,90**
+- Violão clássico, cordas de náilon
 - Tampo em Spruce, fundo e laterais em Meranti, braço em Nato
 - Escala de 650mm
-- Timbre mais suave e doce, indicado para estudo, música clássica e MPB
+- Som mais suave e encorpado, ideal pra quem tá começando ou pra música clássica/popular
+- 12 unidades em estoque
 
-**Yamaha F310 Aço Natural** - R$ 699,90 (14 em estoque)
-- Violão folk, com cordas de aço
+**Yamaha F310 Aço Natural - R$ 699,90**
+- Violão folk, cordas de aço
 - Tampo em Spruce, fundo e laterais em Meranti, braço em Nato
 - Escala de 634mm (um pouco mais curta)
-- Timbre mais encorpado e brilhante, ótimo para pop, rock e acompanhamento
+- Timbre mais brilhante e encorpado, um dos mais vendidos do mundo pra iniciantes e intermediários
+- 14 unidades em estoque
 
-Resumindo: o C40 é nylon e mais voltado ao clássico/iniciante; o F310 é aço, com som mais forte e pegada folk. Ambos sem eletrônica.
+Resumindo: a madeira é a mesma nos dois, o que muda é a corda (náilon x aço), o formato (clássico x folk) e a escala. O C40 é mais macio nos dedos por causa do náilon; o F310 tem som mais forte e brilhante.
 
-Quer que eu calcule as condições de pagamento de algum deles? 🎸
+Quer que eu te ajude a decidir qual combina mais com o que você quer tocar? 🎸
 
 **Cliente:** E qual o endereço e o horário da loja?
 
-**Atendente:** Nosso endereço é Rua 14 de Maio, 3200 - Centro, Campo Grande - MS, CEP 79202-333.
+**Atendente:** Claro! A Empório da Música fica na **Rua 14 de Maio, 3200 - Centro, Campo Grande - MS, CEP 79202-333**.
 
-Horário de funcionamento:
-- Segunda a sexta: 09:00 às 18:00
-- Sábado: 09:00 às 13:00
-- Domingo e feriados: fechado
+O horário de funcionamento é:
+- **Segunda a sexta:** 09:00 às 18:00
+- **Sábado:** 09:00 às 13:00
+- **Domingo e feriados:** fechado
 
-Se quiser, posso verificar o horário local agora e te dizer se estamos abertos. 🎸
+Se precisar, o telefone é (67) 3341-4444 e o e-mail contato@emporiodamusica.com.br. Posso ajudar em mais alguma coisa? 😊
