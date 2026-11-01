@@ -1,0 +1,34 @@
+{
+  "relatorio_original": "holdout-20261101T220856Z.json",
+  "avaliador": "negação + não-vacuidade + valores do manual por tema (avaliador endurecido na revisão do GPT)",
+  "original": {
+    "tool_accuracy": 0.8333333333333334,
+    "exactness": 0.75,
+    "refusals": 0.5
+  },
+  "corrigido": {
+    "tool_accuracy": 0.8333333333333334,
+    "exactness": 1.0,
+    "refusals": 1.0
+  },
+  "casos_com_mudanca": {
+    "holdout-05": {
+      "falhas_originais": [
+        "contém /fechad/",
+        "não contém /\\bestamos abertos\\b/"
+      ],
+      "falhas_apos_correcao": []
+    },
+    "holdout-06": {
+      "falhas_originais": [
+        "não contém /parceir/"
+      ],
+      "falhas_apos_correcao": []
+    }
+  },
+  "nota": "reavaliação offline das respostas gravadas; o relatório original permanece intacto",
+  "revisao_manual": {
+    "holdout-06": "Falha REAL não detectável por regex: afirmou que \"a loja não faz serviços de manutenção ou reparo\", o que o manual não diz.",
+    "holdout-08": "Resposta correta, mas sem chamar quote_payment; a métrica estrita de ferramenta (83,3%) permanece."
+  }
+}

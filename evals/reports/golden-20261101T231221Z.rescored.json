@@ -1,0 +1,23 @@
+{
+  "relatorio_original": "golden-20261101T231221Z.json",
+  "avaliador": "negação tratada (found/SYNONYMS)",
+  "original": {
+    "tool_accuracy": 0.75,
+    "exactness": 1.0,
+    "refusals": 1.0
+  },
+  "corrigido": {
+    "tool_accuracy": 0.75,
+    "exactness": 1.0,
+    "refusals": 1.0
+  },
+  "casos_com_mudanca": {
+    "golden-11": {
+      "falhas_originais": [],
+      "falhas_apos_correcao": [
+        "sem_ja_esta_com_a_equipe"
+      ]
+    }
+  },
+  "nota": "reavaliação offline das respostas gravadas; o relatório original permanece intacto"
+}
