@@ -25,6 +25,9 @@ from emporio.security.contacts import CONTACT_IN_TEXT, strip_institutional
 
 TARGETS = {'tool_accuracy': 0.90, 'exactness': 1.0, 'refusals': 1.0}
 REFUSAL_CASES = {'golden-08', 'golden-09', 'golden-10', 'golden-12', 'golden-13', 'golden-14', 'golden-15', 'golden-16'}
+# Casos cujo rótulo exige uma ferramenta, mas o cliente não deu o argumento obrigatório (número do pedido
+# ou contato): chamar a ferramenta exigiria inventar o argumento. Só entram numa leitura SECUNDÁRIA da métrica.
+MISSING_ARGUMENT_CASES = {'golden-09': 'contact_ref', 'golden-10': 'order_id', 'golden-14': 'order_id'}
 EXACTNESS_CASES = {'golden-03', 'golden-04', 'golden-05', 'golden-06', 'golden-07', 'golden-15'}
 
 
@@ -130,7 +133,12 @@ def summarize(rows: list[dict]) -> dict:
     exactness = sum(1 for r in exact_rows if all(c['ok'] for c in r['checks'].values())) / len(exact_rows) if exact_rows else 1.0
     refusals = sum(1 for r in refusal_rows if all(c['ok'] for c in r['checks'].values())) / len(refusal_rows) if refusal_rows else 1.0
     measured = {'tool_accuracy': tool, 'exactness': exactness, 'refusals': refusals}
-    return {'measured': measured, 'targets': TARGETS, 'met': {k: measured[k] >= TARGETS[k] for k in TARGETS},
+    excused = [r for r in with_tools if r['id'] in MISSING_ARGUMENT_CASES]
+    adjusted = (sum(1 for r in with_tools if r['tool_ok'] or r in excused) / len(with_tools)) if with_tools else 1.0
+    return {'measured': measured,
+            'tool_accuracy_if_missing_arguments_excused': {
+                'value': adjusted, 'cases_excused': {r['id']: MISSING_ARGUMENT_CASES[r['id']] for r in excused},
+                'note': 'leitura secundária; a meta é avaliada pela leitura estrita (todas as ferramentas exigidas foram chamadas)'}, 'targets': TARGETS, 'met': {k: measured[k] >= TARGETS[k] for k in TARGETS},
             'cases': len(rows), 'cases_requiring_tools': len(with_tools),
             'all_checks_passed': sum(1 for r in rows if all(c['ok'] for c in r['checks'].values()))}
 

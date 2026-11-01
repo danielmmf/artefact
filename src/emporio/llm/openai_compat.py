@@ -18,6 +18,7 @@ from emporio.llm.scripted import AssistantReply, FunctionCall
 
 MAX_TOKENS = 2048  # o raciocínio de modelos como gpt-oss consome do mesmo orçamento; provedores contam isso no limite por minuto
 RETRIES = 2
+RATE_LIMIT_RETRIES = 4  # só para 429, que informa quanto esperar
 BACKOFF_SECONDS = (1.0, 3.0)
 MAX_WAIT_SECONDS = 70.0  # teto da espera sugerida pelo provedor (limite de tokens por minuto)
 HINT = re.compile(r'try again in (?:(\d+)m)?(?:([\d.]+)(ms|s))?', re.IGNORECASE)
@@ -176,32 +177,40 @@ class OpenAICompatibleAdapter:
 
     def _send(self, body: bytes) -> TransportResponse:
         headers = {'Authorization': 'Bearer ' + self._settings.llm_api_key, 'Content-Type': 'application/json'}
-        last: AdapterError | None = None
-        wait = 0.0
-        for attempt in range(RETRIES + 1):
+        limit, attempt, wait = RETRIES, 0, 0.0
+        while True:
             if attempt:
                 self._sleep(max(BACKOFF_SECONDS[min(attempt - 1, len(BACKOFF_SECONDS) - 1)], wait))
             wait = 0.0
             try:
                 response = self._transport.post(self._url, headers, body, self._timeout)
+                failure = None
             except AdapterError as error:
                 if error.code not in {'timeout', 'transport_error'}:
                     raise
-                last = error
-                continue
+                failure = error
             except Exception:
                 raise AdapterError('transport_error') from None
-            if not isinstance(response, TransportResponse) or not isinstance(response.status, int):
-                raise AdapterError('invalid_response')
-            if 200 <= response.status < 300:
-                return response
-            retryable = response.status == 429 or response.status >= 500 or (
-                response.status == 400 and b'tool_use_failed' in response.body)
-            last = AdapterError('http_error', response.status)
-            if not retryable:
-                raise last
-            wait = min(_retry_hint(response.body) or 0.0, MAX_WAIT_SECONDS)
-        raise last
+            if failure is None:
+                if not isinstance(response, TransportResponse) or not isinstance(response.status, int):
+                    raise AdapterError('invalid_response')
+                if 200 <= response.status < 300:
+                    return response
+                failure = AdapterError('http_error', response.status)
+                retryable = response.status == 429 or response.status >= 500 or (
+                    response.status == 400 and b'tool_use_failed' in response.body)
+                if not retryable:
+                    raise failure
+                if response.status == 429:
+                    # Limite de tokens por minuto: a espera é explícita, então vale insistir mais.
+                    limit = max(limit, RATE_LIMIT_RETRIES)
+                    wait = _retry_hint(response.body) or 0.0
+                    if wait > MAX_WAIT_SECONDS:
+                        raise failure  # limite diário esgotado: esperar minutos aqui só trava o atendimento
+
+            if attempt >= limit:
+                raise failure
+            attempt += 1
 
     def complete(self, messages: list[dict], tools: list[dict] | None = None) -> AssistantReply:
         try:

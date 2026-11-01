@@ -116,19 +116,30 @@ def test_retries_429_and_5xx_with_backoff_then_succeeds():
 
 
 def test_retries_are_bounded_and_failure_carries_status_only():
-    adapter, transport = setup_adapter([SimulatedResponse(status=429, body=b'segredo-super-privado')] * 3)
+    adapter, transport = setup_adapter([SimulatedResponse(status=503, body=b'segredo-super-privado')] * 3)
     with pytest.raises(AdapterError) as error:
         adapter.complete([{'role': 'user', 'content': 'oi'}])
-    assert (error.value.code, error.value.status, str(error.value)) == ('http_error', 429, 'http_error')
+    assert (error.value.code, error.value.status, str(error.value)) == ('http_error', 503, 'http_error')
     assert len(transport.payloads) == 3  # 1 tentativa + 2 retries
 
 
-def test_rate_limit_hint_from_provider_is_honored_up_to_the_cap():
+def test_rate_limit_gets_more_retries_because_the_provider_says_how_long_to_wait():
+    adapter, transport = setup_adapter([SimulatedResponse(status=429, body=b'segredo-super-privado')] * 5)
+    with pytest.raises(AdapterError) as error:
+        adapter.complete([{'role': 'user', 'content': 'oi'}])
+    assert (error.value.code, error.value.status) == ('http_error', 429)
+    assert len(transport.payloads) == 5  # 1 tentativa + 4 retries
+
+
+def test_rate_limit_hint_from_provider_is_honored_and_long_waits_fail_fast():
     hint = b'{"error":{"message":"Rate limit reached ... Please try again in 46.065s. Need more tokens?"}}'
-    adapter, _ = setup_adapter([SimulatedResponse(status=429, body=hint), SimulatedResponse(status=429, body=b'try again in 3m10s'),
-                                reply({'role': 'assistant', 'content': 'ok'})])
+    adapter, _ = setup_adapter([SimulatedResponse(status=429, body=hint), reply({'role': 'assistant', 'content': 'ok'})])
     assert adapter.complete([{'role': 'user', 'content': 'oi'}]).content == 'ok'
-    assert adapter.slept == [46.065, openai_compat.MAX_WAIT_SECONDS]
+    assert adapter.slept == [46.065]
+    daily, transport = setup_adapter([SimulatedResponse(status=429, body=b'tokens per day (TPD) ... try again in 21m29.088s')])
+    with pytest.raises(AdapterError) as error:
+        daily.complete([{'role': 'user', 'content': 'oi'}])
+    assert error.value.status == 429 and len(transport.payloads) == 1 and daily.slept == []
 
 
 def test_client_errors_are_not_retried():
