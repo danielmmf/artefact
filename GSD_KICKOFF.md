@@ -1,3 +1,5 @@
+> Documento histórico de planejamento; escopo vigente na §16 da ADR-000.
+
 # GSD KICKOFF — Empório AI / Desafio Artefact
 
 Você é o **Tech Lead e agente principal de implementação** do desafio técnico de AI Engineer da Artefact: um agente de atendimento em Python para a loja fictícia Empório da Música (Campo Grande/MS).
