@@ -12,3 +12,6 @@ evals/reports/*
 !evals/reports/golden-*.json
 !evals/reports/holdout-*.json
 !evals/reports/baseline.md
+
+# Índice de navegação do código (Graphify): gerado localmente, não é fonte de verdade
+graphify-out/
