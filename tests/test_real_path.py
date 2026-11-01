@@ -211,3 +211,18 @@ def test_prompt_tells_the_model_to_mention_return_date_divergences_without_denyi
     system = llm.calls[0][0]['content']
     assert 'check_return_eligibility trouxer divergences' in system and 'sem acusá-lo nem negar o pedido' in system
     assert 'a equipe vai conferir' in system
+
+
+def test_revisao_gpt_invented_price_filter_does_not_make_the_value_true(env, tmp_path):
+    """O modelo inventa max_price=17 e cita 'R$ 17,00': sem o cliente ter dito 17, reprova."""
+    call = AssistantReply(tool_calls=(FunctionCall('c1', 'search_products', '{"category":"violão","max_price":17}'),))
+    llm = FakeProviderLLM([call, AssistantReply(content='Violões até R$ 17,00: nenhum.'), AssistantReply(content='Violões até R$ 17,00: nenhum.')])
+    assert ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Quais violões vocês têm?')[0] == SAFE
+
+
+def test_revisao_gpt_manual_value_as_a_product_price_is_rejected(env, tmp_path):
+    """'O preço do produto é R$ 500,00' sem ferramenta: 500 é o limite de frete do manual, não preço de produto."""
+    llm = FakeProviderLLM([AssistantReply(content='O preço do produto é R$ 500,00.')] * 2)
+    assert ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Quanto custa o GD20?')[0] == SAFE
+    ok = FakeProviderLLM([AssistantReply(content='O frete é grátis acima de R$ 500,00 e custa R$ 35,00 abaixo disso.')])
+    assert 'R$ 500,00' in ConversationEngine(setup_registry(env), ok, tmp_path / 'u.jsonl').turn('Qual a regra do frete?')[0]

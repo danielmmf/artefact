@@ -34,20 +34,67 @@ def evidence_from_result(value, key: str = '') -> set[Decimal]:
             pass
     return result
 
-def supported_money(text: str, evidence: set[Decimal]) -> bool:
-    claims = list(CLAIM.finditer(text))
+# Valores do manual (parte confiável do prompt) só contam em frases do tema a que pertencem; nunca como preço de produto.
+_FRETE = re.compile(r'frete|entrega|envio', re.IGNORECASE)
+_PARCELA = re.compile(r'parcel|m[íi]nim', re.IGNORECASE)
+_PAGAMENTO = re.compile(r'combin|formas? de pagamento|pagamento (misto|combinado)', re.IGNORECASE)  # o R$ 2.000 do manual é só do pagamento combinado
+MANUAL_CONTEXT = {Decimal('35'): (_FRETE,), Decimal('500'): (_FRETE,),
+                  Decimal('50'): (_PARCELA,), Decimal('80'): (_PARCELA,), Decimal('100'): (_PARCELA,),
+                  Decimal('2000'): (_PAGAMENTO,)}
+
+
+def _sentence(text: str, position: int) -> str:
+    """Frase que contém `position`; o ponto de '1.234,56' não encerra a frase (só ponto seguido de espaço/fim)."""
+    ends = [m.end() for m in re.finditer(r'[.!?](?=\s|$)|\n', text[:position])]
+    start = ends[-1] if ends else 0
+    stop = re.search(r'[.!?](?=\s|$)|\n', text[position:])
+    return text[start:position + stop.start()] if stop else text[start:]
+
+
+def _allowed(value: Decimal, evidence: set[Decimal], manual, sentence: str) -> bool:
+    if value in evidence:
+        return True
+    return value in manual and any(rule.search(sentence) for rule in MANUAL_CONTEXT.get(value, ()))
+
+
+def unsupported_amounts(text: str, evidence: set[Decimal], manual=frozenset()) -> list[Decimal]:
+    """Valores em R$ do texto sem respaldo: nem em resultado de tool do turno, nem em valor do manual no tema certo."""
+    bad = [parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(text)
+           if not _allowed(parse_amount(m.group('prefix') or m.group('suffix')), evidence, manual, _sentence(text, m.start()))]
     remaining = CLAIM.sub('', text)
-    if MARKER.search(remaining):
+    bad += [parse_amount(m.group('amount')) for m in CONTEXT.finditer(remaining)
+            if not _allowed(parse_amount(m.group('amount')), evidence, manual, _sentence(remaining, m.start()))]
+    return bad
+
+
+def supported_money(text: str, evidence: set[Decimal], manual=frozenset()) -> bool:
+    if MARKER.search(CLAIM.sub('', text)):
         return False
-    values = [parse_amount(m.group('prefix') or m.group('suffix')) for m in claims]
-    values.extend(parse_amount(m.group('amount')) for m in CONTEXT.finditer(remaining))
-    return all(value in evidence for value in values)
+    return not unsupported_amounts(text, evidence, manual)
 
 
 FILTER_KEYS = {'min_price', 'max_price'}
+_BOUND = r'(?:at[ée]|abaixo de|menos de|no m[áa]ximo|m[áa]ximo de|acima de|mais de|a partir de|no m[íi]nimo|m[íi]nimo de)'
+_AMOUNT = re.compile(rf'\b{_BOUND}\s*(?:R\s*\$\s*)?(?P<n>{NUM})(?P<mil>\s*mil\b)?', re.IGNORECASE)
+_BETWEEN = re.compile(rf'\bentre\s*(?:R\s*\$\s*)?(?P<a>{NUM})\s*e\s*(?:R\s*\$\s*)?(?P<b>{NUM})', re.IGNORECASE)
 
-def evidence_from_filters(arguments) -> set[Decimal]:
-    """Faixa de preço pedida pelo cliente e enviada à busca: repeti-la na resposta não é valor inventado."""
+
+def amounts_in_message(message: str) -> set[Decimal]:
+    """Valores que o cliente citou como preço: com R$/reais, depois de 'até/acima de/entre…' ou 'N mil'. Número solto não conta."""
+    found = {parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(message)}
+    for m in _AMOUNT.finditer(message):
+        found.add(parse_amount(m.group('n')) * (1000 if m.group('mil') else 1))
+    for m in _BETWEEN.finditer(message):
+        found |= {parse_amount(m.group('a')), parse_amount(m.group('b'))}
+    found |= {Decimal(m.group(1)) * 1000 for m in re.finditer(r'\b(\d+)\s*mil\s+reais\b', message, re.IGNORECASE)}
+    if re.search(r'\bmil\s+reais\b', message, re.IGNORECASE):
+        found.add(Decimal(1000))
+    return found
+
+
+def evidence_from_filters(arguments, message: str) -> set[Decimal]:
+    """Faixa de preço enviada à busca só vale como evidência se o cliente a disse neste turno; valor inventado não vale."""
+    said = amounts_in_message(message)
     found = set()
     if isinstance(arguments, dict):
         for key in FILTER_KEYS:
@@ -57,7 +104,7 @@ def evidence_from_filters(arguments) -> set[Decimal]:
                     amount = Decimal(str(value))
                 except InvalidOperation:
                     continue
-                if amount.is_finite() and amount >= 0:
+                if amount.is_finite() and amount >= 0 and amount in said:
                     found.add(amount)
     return found
 

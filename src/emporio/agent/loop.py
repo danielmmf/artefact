@@ -88,7 +88,8 @@ class ConversationEngine:
                 return SAFE, visible
             save_turn(context.state, context.session_id, finished_at, sanitized_message, text)
             return text, visible
-        evidence = evidence_from_manual(Path('data/processed/policies.md').read_text(encoding='utf-8'))
+        evidence = set()
+        manual = evidence_from_manual(Path('data/processed/policies.md').read_text(encoding='utf-8'))
         regenerated = False
         for iteration in range(5):
             record['iterations'] = iteration + 1
@@ -118,7 +119,7 @@ class ConversationEngine:
                     text = TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply, vault))
                 except PrivacyError:
                     return SAFE, messages
-                if supported_money(text, evidence):
+                if supported_money(text, evidence, manual):
                     record['validator']['approved'] += 1
                     claims = [parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(text)]
                     claims += [parse_amount(m.group('amount')) for m in CONTEXT.finditer(CLAIM.sub('', text))]
@@ -140,7 +141,7 @@ class ConversationEngine:
                     text = TOKEN.sub('[CONTATO PROTEGIDO]', protect_dynamic(reply.content or '', vault))
                 except PrivacyError:
                     return SAFE, messages
-                if supported_money(text, evidence):
+                if supported_money(text, evidence, manual):
                     record['validator']['approved'] += 1
                     claims = [parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(text)]
                     claims += [parse_amount(m.group('amount')) for m in CONTEXT.finditer(CLAIM.sub('', text))]
@@ -172,7 +173,7 @@ class ConversationEngine:
                         raise ValueError('Argumentos devem ser objeto')
                     safe_args = json.dumps(protect_dynamic(args, vault), ensure_ascii=False)
                     if name == 'search_products':
-                        evidence.update(evidence_from_filters(args))
+                        evidence.update(evidence_from_filters(args, sanitized_message))
                     result = self.registry.dispatch(name, args)
                 except PrivacyError:
                     return SAFE, messages
