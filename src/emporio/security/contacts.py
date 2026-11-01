@@ -5,6 +5,18 @@ EMAIL = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
 PHONE = re.compile(r'^\+?[\d\s().-]+$')
 CONTACT_IN_TEXT = re.compile(r"[\w.!#$%&'*+/=?^_`{|}~-]+@[\w.-]+\.[^\W\d_]{2,}|(?<!\w)(?:\+?\d|\(\d)[\d ().-]{7,}\d(?!\w)")
 
+# Contatos institucionais da loja (manual §1.2 e §7): dados públicos, não pessoais (DECISIONS §8).
+INSTITUTIONAL = frozenset({
+    ('phone', '6733414444'), ('phone', '6733214500'),
+    ('email', 'contato@emporiodamusica.com.br'), ('email', 'contato@empóriodamusica.com.br'),
+})
+
+def is_institutional(value: str) -> bool:
+    return normalize_contact(value) in INSTITUTIONAL
+
+def strip_institutional(text: str) -> str:
+    return CONTACT_IN_TEXT.sub(lambda m: ' ' if is_institutional(m.group(0)) else m.group(0), text)
+
 def normalize_contact(value: str) -> tuple[str, str] | None:
     value = value.strip()
     if EMAIL.fullmatch(value):
@@ -43,6 +55,8 @@ class ContactVault:
     def tokenize(self, text: str) -> str:
         def replace(match: re.Match) -> str:
             value = match.group(0)
+            if is_institutional(value):
+                return value
             return self.add(value) if normalize_contact(value) is not None else value
         return CONTACT_IN_TEXT.sub(replace, text)
 
