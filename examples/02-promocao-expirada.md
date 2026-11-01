@@ -8,17 +8,15 @@
 
 _Ferramentas consultadas: `get_product` (ok)_
 
-**Atendente:** Oi! Verifiquei aqui e essa promoção de 12% não está mais ativa, não. 😕
+**Atendente:** Oi! Consultei aqui e o Takamine GD20 Dreadnought Natural está saindo por R$ 2.199,00, sem promoção ativa no momento - aquela oferta de 12% já não está vigente. Tem 5 unidades em estoque.
 
-O Takamine GD20 Dreadnought Natural está saindo pelo preço cheio de R$ 2.199,00 no momento. Ele tem 5 unidades em estoque e está disponível.
-
-Se quiser, posso te passar as condições de pagamento (PIX, parcelamento) ou te mostrar outros violões na faixa de preço parecida. É só falar!
+Quer que eu veja as condições de pagamento ou algum outro violão pra comparar?
 
 **Cliente:** Então quanto fica no cartão, e em quantas vezes posso parcelar?
 
-_Ferramentas consultadas: `quote_payment` (not_found), `search_products` (ok), `quote_payment` (ok)_
+_Ferramentas consultadas: `get_product` (ok), `quote_payment` (ok)_
 
-**Atendente:** No cartão de crédito o Takamine GD20 Dreadnought Natural fica em R$ 2.199,00, e dá pra parcelar em até 12x sem juros:
+**Atendente:** No cartão de crédito o Takamine GD20 Dreadnought Natural sai por R$ 2.199,00, e dá pra parcelar em até 12x sem juros:
 
 - 1x de R$ 2.199,00
 - 2x de R$ 1.099,50
@@ -33,4 +31,6 @@ _Ferramentas consultadas: `quote_payment` (not_found), `search_products` (ok), `
 - 11x de R$ 199,90, sendo a última de R$ 200,00
 - 12x de R$ 183,25
 
-Ah, e se preferir PIX, o valor cai para R$ 2.089,05 (5% de desconto). Quer que eu siga com alguma dessas opções?
+Ah, e no PIX fica R$ 2.089,05, com o desconto de 5%.
+
+Quer que eu siga com alguma dessas opções?
