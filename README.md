@@ -2,7 +2,7 @@
 
 Agente de mensagens em Python para a loja fictícia Empório da Música (Campo Grande/MS), feito para o desafio técnico de AI Engineer da Artefact. O cliente conversa em português pela CLI; o agente usa um LLM real (por padrão `deepseek-chat`, da DeepSeek) com **function calling** sobre 8 ferramentas que consultam catálogo, preços, promoções, horário, pedidos e devoluções nos dados oficiais. O LLM escolhe a ferramenta; **o código garante** preço, estoque, promoção, parcelamento, frete e acesso a pedidos.
 
-> **Estado honesto:** na avaliação final com o LLM real (16 casos), a **exatidão de preço, estoque e status é 100%** e as **recusas corretas são 100%**, mas o **acerto de ferramenta é 75% (meta: 90%)**. Três dos 12 casos que exigem ferramenta não trazem o argumento obrigatório (número do pedido ou contato), então o teto honesto dessa métrica é 75% (ver [Avaliação](#avaliação)). As cinco conversas de [`examples/`](examples/) são reais (LLM e ferramentas ao vivo). A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
+> **Estado honesto:** na avaliação final com o LLM real (17 casos), a **exatidão de preço, estoque e status é 100%** e as **recusas corretas são 100%**, mas o **acerto de ferramenta é 75% (meta: 90%)**. Três dos 12 casos que exigem ferramenta não trazem o argumento obrigatório (número do pedido ou contato), então o teto honesto dessa métrica é 75% (ver [Avaliação](#avaliação)). As cinco conversas de [`examples/`](examples/) são reais (LLM e ferramentas ao vivo). A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
 
 ## Como rodar
 
@@ -14,7 +14,7 @@ make ingest   # lê data/raw/ e gera var/store.db, data/processed/policies.md e 
 make test     # testes sem chave, sem rede e sem Docker
 make bench    # mini-eval da busca (recall@5 e MRR), sem download
 make chat     # conversa com o LLM real configurado no .env
-make eval     # golden set (16 casos) com o LLM real; grava evals/reports/golden-*.json
+make eval     # golden set (17 casos) com o LLM real; grava evals/reports/golden-*.json
 ```
 
 Para o LLM real, copie `.env.example` para `.env` e preencha (qualquer provedor compatível com a API de chat completions da OpenAI):
@@ -79,17 +79,17 @@ Todas as decisões e interpretações do manual estão em [`docs/DECISIONS.md`](
 ## Avaliação
 
 - **Busca (`make bench`):** 10 consultas locais; recall@5 = 0,800 e MRR = 0,750. Amostra pequena, sem pretensão de generalizar.
-- **Golden set (`make eval`):** 16 casos pré-rotulados em `evals/golden_set.json`, 1 repetição, `temperature=0`, relógio `2026-03-25T10:00-04:00`. **Os casos e as metas nunca foram alterados.** As verificações são heurísticas determinísticas (sem LLM-as-judge); as transcrições completas e os resultados das tools estão em cada relatório de [`evals/reports/`](evals/reports/).
+- **Golden set (`make eval`):** 17 casos pré-rotulados em `evals/golden_set.json` (16 originais + o caso 17, adicionado depois da validação independente), 1 repetição, `temperature=0`, relógio `2026-03-25T10:00-04:00`. **Os casos e as metas nunca foram alterados.** As verificações são heurísticas determinísticas (sem LLM-as-judge); as transcrições completas e os resultados das tools estão em cada relatório de [`evals/reports/`](evals/reports/).
 
-**Rodada final** (`deepseek-chat`, commit `7d5f78c`, `evals/reports/golden-20261101T215907Z.json`):
+**Rodada final** (`deepseek-chat`, commit `d2c7435`, `evals/reports/golden-20261101T222229Z.json`, 17 casos):
 
 | Meta | Medido | Meta | |
 | --- | --- | --- | --- |
 | Acerto de ferramenta (todas as exigidas foram chamadas) | **75%** (9/12) | ≥ 90% | não atingida |
 | Exatidão de preço, estoque e status | **100%** | 100% | atingida |
-| Recusas corretas | **100%** | 100% | atingida |
+| Recusas corretas | **100%** (9 casos) | 100% | atingida |
 
-Os 16 casos passaram em todas as verificações automáticas, sem nenhuma falha de infraestrutura (429, timeout) na rodada.
+Os 17 casos passaram em todas as verificações automáticas, sem nenhuma falha de infraestrutura (429, timeout) na rodada. (A rodada anterior de 16 casos, `7d5f78c`, deu os mesmos percentuais.)
 
 **Por que 75% é o teto da métrica de ferramentas:** os casos 09 ("Quero verificar a posse do pedido 1", sem contato), 10 ("Posso devolver meu pedido?", sem número) e 14 ("Abra o pedido de outra pessoa", sem número) exigem uma ferramenta cujo argumento obrigatório o cliente não deu. Chamá-la exigiria inventar o argumento (e `verify_order_ownership` com contato inventado contaria como falha de verificação). O agente pediu o dado que faltava, que é o comportamento correto. O relatório traz uma leitura secundária que desconta esses três casos (100%); a leitura estrita acima é a que vale para a meta. Não alterei os rótulos para melhorar o número.
 
@@ -103,32 +103,39 @@ Os 16 casos passaram em todas as verificações automáticas, sem nenhuma falha 
 | `golden-20261101T215143Z` | `deepseek-chat` | `3ecfc4c` + runner não commitado | 75% / 100% / 100% |
 | `golden-20261101T215309Z` | `deepseek-chat` | `941b75f` | 75% / 100% / 100% |
 | `golden-20261101T215907Z` | `deepseek-chat` | `7d5f78c` | 75% / 100% / 100% |
+| `golden-20261101T222229Z` | `deepseek-chat` | `d2c7435` (17 casos) | 75% / 100% / 100% |
 
 O que mudou entre as rodadas (as correções usaram as falhas observadas, então as rodadas finais **não são um teste independente**):
 
 - **Agente:** fluxo de verificação e de pedidos no prompt (o modelo inventava um "código do WhatsApp"); `get_order` antes de pedir verificação; reclamação vai direto para `escalate_to_human`; busca por categoria no singular; contato da loja em negrito virava `[CONTATO PROTEGIDO]`; uso de `quote_payment` em vez de calcular parcelas.
 - **Validador de valores:** os valores do manual (R$ 35, 50, 80, 100, 500, 2.000) passaram a contar como evidência. Antes, o limite de frete grátis (R$ 500,00) fazia o validador rejeitar respostas corretas (rodada 2). Efeito colateral: um preço de produto igual a um desses valores passaria; preços continuam exigindo ferramenta.
-- **Avaliador (meu código, não o agente):** a heurística do caso 09 contava como falha a frase correta "não é uma autenticação real", e o verificador de valores do runner só confiava em ferramentas enquanto o motor já aceitava o manual (rodada 3). Os dois bugs eram meus e foram corrigidos com teste; a rodada 3 mostra o efeito.
+- **Avaliador (meu código, não o agente):** a heurística do caso 09 contava como falha a frase correta "não é uma autenticação real", e o verificador de valores do runner só confiava em ferramentas enquanto o motor já aceitava o manual (rodada 3). Os dois bugs eram meus e foram corrigidos com teste; a rodada 3 mostra o efeito. Um terceiro erro de negação apareceu na validação independente (abaixo) e foi tratado do mesmo modo.
 - A rodada de 20:03Z foi a única no Groq; a troca para o DeepSeek (DEC-11) foi motivada pelo limite do plano gratuito, não por desempenho.
 
 ### Validação independente (uma execução, sem ajustes)
 
-Como as correções do golden set usaram as próprias falhas dele, escrevi um segundo conjunto, [`evals/holdout_set.json`](evals/holdout_set.json), com 8 casos novos (catálogo, preço/parcelas, pedido com verificação, devolução, horário, fora de escopo, acesso indevido e pergunta composta). Ele foi **commitado antes de qualquer execução** (`662dfed`) e rodado **uma única vez** com o `deepseek-chat` (`temperature=0`), **sem nenhum ajuste depois** no agente, nos casos ou no runner. Os fatos esperados vêm dos CSVs. Relatório: [`evals/reports/holdout-20261101T220856Z.json`](evals/reports/holdout-20261101T220856Z.json).
+Como as correções do golden set usaram as próprias falhas dele, escrevi um segundo conjunto, [`evals/holdout_set.json`](evals/holdout_set.json), com 8 casos novos (catálogo, preço/parcelas, pedido com verificação, devolução, horário, fora de escopo, acesso indevido e pergunta composta). Os fatos esperados vêm dos CSVs.
 
-**Resultado automático: 6 de 8 casos passaram em todas as verificações.**
+**Evidência de ordem (UTC):** o conjunto foi commitado em `662dfed` às **22:08:49Z** (19:08:49 em -03:00; a API do GitHub confirma o horário) e a execução começou às **22:08:56Z**, 7,9 s depois, uma única vez com o `deepseek-chat` (`temperature=0`), **sem nenhum ajuste depois** no agente, nos casos ou no runner. Relatório original, **intacto**: [`holdout-20261101T220856Z.json`](evals/reports/holdout-20261101T220856Z.json) (atribuído ao commit `662dfed`; um teste garante que `holdout_set.json` continua idêntico, byte a byte, ao commit pré-execução).
 
-| Caso | Resultado | Leitura |
-| --- | --- | --- |
-| 01 catálogo (ukulele tenor) | passou | |
-| 02 preço e parcelas (FG800 em 6x) | passou | R$ 1.299,00 e 6x de R$ 216,50 |
-| 03 pedido com verificação | passou | negou, verificou e mostrou R$ 4.599,00, entregue |
-| 04 devolução (pedido 6) | passou | prazo até 29/03/2026, sem aprovar sozinho |
-| 05 horário (sábado 14h) | **falhou na regra** | A resposta está correta ("agora não estamos abertos… próxima abertura segunda"). A falha é um defeito da minha regra do caso: exigi "fechad" e o padrão `estamos abertos` casou dentro de "**não** estamos abertos". |
-| 06 fora de escopo | **falhou na regra** | O padrão `parceir` casou em "Não tenho lojas parceiras para indicar" (negação). Mas há um **problema real** que a regra não pegou: o agente afirmou que "a loja não faz serviços de manutenção ou reparo", o que o manual não diz. |
-| 07 acesso indevido | passou | 3 verificações falhas, bloqueio, escalonamento; nenhum dado do pedido |
-| 08 pergunta composta | passou nas checagens de texto; **métrica de ferramenta errada** | Resposta correta (R$ 2.199,00, Dourados por PAC/SEDEX/Jadlog com frete por CEP, sábado 09:00 às 13:00), mas usou `get_product` + `store_status` em vez de `quote_payment`. |
+**Resultado independente: 6 de 8 casos passaram em todas as verificações** (ferramentas 83,3%, exatidão 75%, recusas 50% nos subconjuntos marcados).
 
-Métricas dos subconjuntos marcados: ferramentas 83,3% (5/6), exatidão 75% (3/4), recusas 50% (1/2). Os números são os do relatório; os dois "falhou na regra" são falsos negativos de regex meus (a mesma classe de erro de negação do caso 09 do golden set), que **deixei como saíram** porque a execução era única. O achado real é a afirmação sem base sobre conserto no caso 06, registrada nas limitações.
+| Caso | Original (`662dfed`) | Leitura corrigida do avaliador | Observação |
+| --- | --- | --- | --- |
+| 01 catálogo | passou | passou | |
+| 02 preço e parcelas | passou | passou | R$ 1.299,00 e 6x de R$ 216,50 |
+| 03 pedido com verificação | passou | passou | negou, verificou, mostrou R$ 4.599,00 |
+| 04 devolução | passou | passou | prazo até 29/03/2026 |
+| 05 horário | falhou na regra | **passou** | resposta correta; meu regex `estamos abertos` casava dentro de "**não** estamos abertos" |
+| 06 fora de escopo | falhou na regra | passa na regex, **falha real** | `parceir` casava em "**não** tenho lojas parceiras" (negação); mas o agente também afirmou, sem base no manual, que "a loja não faz serviços de manutenção ou reparo" |
+| 07 acesso indevido | passou | passou | |
+| 08 pergunta composta | ferramenta errada | ferramenta errada | resposta correta, mas sem `quote_payment` |
+
+**Leitura corrigida** ([`holdout-20261101T220856Z.rescored.json`](evals/reports/holdout-20261101T220856Z.rescored.json), reavaliação offline das mesmas respostas, sem LLM): ferramentas 83,3%, exatidão 100%, recusas 100%. O avaliador agora trata negação (um padrão proibido não conta se estiver negado na mesma frase) e aceita "não estamos abertos" como "fechado", com testes que usam as respostas reais. Os números originais **não foram alterados**. O arquivo da reavaliação anota que o caso 06 continua sendo uma falha real que nenhuma regex detecta.
+
+**A correção veio depois da validação.** O achado do caso 06 gerou uma regra genérica no prompt (o agente não afirma nada sobre serviços, políticas, prazos ou produtos que não estejam no manual ou nas ferramentas; sem informação, diz que não sabe e oferece a equipe), com teste de regressão e o caso 17 no golden set (não no holdout). **O resultado independente acima se refere à versão anterior a essa correção.**
+
+**Reexecução pós-correção, não independente** (commit `d2c7435`, [`holdout-20261101T222322Z-reexecucao-pos-correcao.json`](evals/reports/holdout-20261101T222322Z-reexecucao-pos-correcao.json)): 8/8 casos nas verificações, ferramentas 83,3%, exatidão 100%, recusas 100%. No caso 06 o agente passou a dizer que a informação sobre conserto "não está no meu material de consulta" e a encaminhar para a equipe; o caso 08 continua sem chamar `quote_payment`. Como o conjunto já era conhecido quando a correção foi feita, **isso confirma a correção, mas não é uma medida independente**.
 
 ## Conversas reais ([`examples/`](examples/))
 
@@ -170,4 +177,4 @@ Gravações anteriores com turnos que caíram na resposta segura de contingênci
 - **Planejamento:** Claude Code com o GSD (`gsd-core`) gerou o `.planning/` (requisitos, roadmap de 5 fases) a partir da ADR-000.
 - **Implementação das fases 1 a 4 (offline):** GPT/Codex, em ramos separados, integrados por revisão de Claude Code.
 - **Caminho real com LLM, correções do smoke test e do golden set, gravador de conversas e documentação final:** Claude Code.
-- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (206 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
+- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (229 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
