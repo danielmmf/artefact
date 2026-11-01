@@ -60,3 +60,8 @@ def evidence_from_filters(arguments) -> set[Decimal]:
                 if amount.is_finite() and amount >= 0:
                     found.add(amount)
     return found
+
+
+def evidence_from_manual(manual: str) -> set[Decimal]:
+    """Valores em R$ do manual (parte confiável do prompt): limites de frete, parcela mínima, pagamento combinado."""
+    return {parse_amount(m.group('prefix') or m.group('suffix')) for m in CLAIM.finditer(manual)}

@@ -6,7 +6,7 @@ import threading
 from time import perf_counter_ns
 from pathlib import Path
 from emporio.agent.prompt import build_system_prompt
-from emporio.agent.money_validator import CLAIM, CONTEXT, parse_amount, evidence_from_filters, evidence_from_result, supported_money
+from emporio.agent.money_validator import CLAIM, CONTEXT, parse_amount, evidence_from_filters, evidence_from_manual, evidence_from_result, supported_money
 from emporio.agent.history import BUDGET, estimated_tokens, load_history, save_turn, trim_history
 from emporio.agent.offline import TOKEN
 from emporio.agent.privacy import PrivacyError, protect_dynamic
@@ -86,7 +86,7 @@ class ConversationEngine:
                 return SAFE, visible
             save_turn(context.state, context.session_id, finished_at, sanitized_message, text)
             return text, visible
-        evidence = set()
+        evidence = evidence_from_manual(Path('data/processed/policies.md').read_text(encoding='utf-8'))
         regenerated = False
         for iteration in range(5):
             record['iterations'] = iteration + 1
@@ -128,7 +128,7 @@ class ConversationEngine:
                 regenerated = True
                 record['validator']['regenerations'] += 1
                 current.append({'role':'assistant', 'content':text})
-                current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
+                current.append({'role':'user', 'content':'Reescreva a resposta ao cliente, em tom de conversa, usando como valores em reais apenas os das ferramentas deste turno ou do manual. Não copie dados técnicos.'})
                 continue
             if not isinstance(reply, AssistantReply):
                 record['errors'].append({'code': 'invalid_llm_reply'})
@@ -150,7 +150,7 @@ class ConversationEngine:
                 regenerated = True
                 record['validator']['regenerations'] += 1
                 current.append({'role':'assistant', 'content':text})
-                current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
+                current.append({'role':'user', 'content':'Reescreva a resposta ao cliente, em tom de conversa, usando como valores em reais apenas os das ferramentas deste turno ou do manual. Não copie dados técnicos.'})
                 continue
             normalized = []
             results = []

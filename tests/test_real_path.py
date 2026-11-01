@@ -135,3 +135,23 @@ def test_customer_phone_with_unicode_hyphen_is_tokenized():
     assert vault.tokenize('meu telefone (67) 99812‑3456') == 'meu telefone [PHONE_1]'
     assert vault.tokenize('(67) 99812-3456') == '[PHONE_1]'
     assert vault.tokenize('**lucas.mendes@jmail.com**').count('[EMAIL_') == 1
+
+
+def test_manual_amounts_are_evidence_but_product_prices_still_need_tools(env, tmp_path):
+    from emporio.agent.money_validator import evidence_from_manual
+    manual = Path('data/processed/policies.md').read_text(encoding='utf-8')
+    values = {str(v) for v in evidence_from_manual(manual)}
+    assert {'500.00', '2000.00', '35.00', '100.00'} <= values
+    ok = FakeProviderLLM([AssistantReply(content='O frete é grátis acima de R$ 500,00; abaixo disso, R$ 35,00.')])
+    assert 'R$ 500,00' in ConversationEngine(setup_registry(env), ok, tmp_path / 'a.jsonl').turn('Qual a regra do frete?')[0]
+    bad = FakeProviderLLM([AssistantReply(content='O Takamine GD20 custa R$ 1.234,56.')] * 2)
+    assert ConversationEngine(setup_registry(env), bad, tmp_path / 'b.jsonl').turn('Quanto custa o GD20?')[0] == SAFE
+
+
+def test_eval_checker_accepts_the_correct_negation_of_real_authentication():
+    from emporio.eval_runner import checks_for
+    case = {'id': 'golden-09'}
+    good = checks_for(case, 'Essa confirmação é demonstrativa, não é uma autenticação real.', [])
+    assert good['sem_autenticacao_real'][0] and good['declara_demonstrativo'][0]
+    bad = checks_for(case, 'Pronto, sua autenticação real foi concluída.', [])
+    assert not bad['sem_autenticacao_real'][0]
