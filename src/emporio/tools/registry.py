@@ -38,7 +38,7 @@ DESCRIPTIONS = {
     'verify_order_ownership': 'Confirme demonstrativamente a posse de um pedido. order_id é o número do pedido; contact_ref é o token [EMAIL_n] ou [PHONE_n] que o canal gera quando o cliente digita o e-mail ou o telefone do pedido (nunca um código inventado); não recebe contato bruto.',
     'get_order': 'Consulte pedido por ID somente quando a sessão confiável tiver acesso autorizado.',
     'check_return_eligibility': 'Avalie preliminarmente devolução de pedido autorizado; declarações não são provas nem aprovação.',
-    'escalate_to_human': 'Encaminhe caso à equipe com categoria e resumo; o resumo livre não é armazenado.',
+    'escalate_to_human': 'Registre a solicitação para a equipe com categoria e resumo; o resumo livre não é armazenado. Devolve ticket_id (protocolo interno) e response_time (prazo de retorno).',
 }
 
 class ToolRegistry:

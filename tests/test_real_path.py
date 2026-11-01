@@ -253,3 +253,17 @@ def test_email_with_invisible_characters_is_tokenized_and_never_reaches_the_mode
 
 def test_formatting_characters_are_removed_from_ordinary_text_too():
     assert ContactVault('s7').tokenize('Quero um vio​lão') == 'Quero um violão'
+
+
+def test_escalation_prompt_asks_for_protocol_and_deadline_without_saying_the_team_has_it(env, tmp_path):
+    llm = FakeProviderLLM([AssistantReply(tool_calls=(FunctionCall('e1', 'escalate_to_human', '{"category":"reclamacao","summary":"cliente reclama"}'),)),
+                           AssistantReply(content='Registrei sua solicitação com o protocolo 1. O retorno é em até 24 horas úteis.')])
+    answer, messages = ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Quero registrar uma reclamação.')
+    system = llm.calls[0][0]['content']
+    assert 'registrei sua solicitação com o protocolo <ticket_id>' in system and '24 horas úteis (manual §7.3' in system
+    assert 'Não diga que o caso "já está com a equipe"' in system
+    data = json.loads(next(m['content'] for m in messages if m['role'] == 'tool'))['data']
+    assert isinstance(data['ticket_id'], int) and data['response_time'] == '24 horas úteis'   # o que o agente cita vem da ferramenta
+    assert answer.startswith('Registrei sua solicitação com o protocolo') and 'já está com a equipe' not in answer
+    description = next(d for d in setup_registry(env).definitions() if d['function']['name'] == 'escalate_to_human')['function']['description']
+    assert 'ticket_id' in description and 'response_time' in description
