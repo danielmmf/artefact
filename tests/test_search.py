@@ -44,7 +44,8 @@ def test_listing_query_returns_every_match_with_total_and_flags(repo):
     data = search_products(repo, {'category': 'violão', 'max_price': '1000', 'limit': 20}).data
     assert data['total_matches'] == 12 and data['returned'] == 12 and data['has_more'] is False
     names = [p['name'] for p in data['products']]
-    assert sum('Nylon' in n for n in names) == 5 and sum('Aço' in n for n in names) == 7  # nylon e aço, não só um tipo
+    # 5 de nylon e 7 de aço (um deles, o Tagima Woodstock, não traz 'Aço' no nome): a lista não é de um tipo só
+    assert sum('Nylon' in n for n in names) == 5 and sum('Nylon' not in n for n in names) == 7
     default = search_products(repo, {'category': 'violão', 'max_price': '1000'}).data
     assert default['total_matches'] == 12 and default['returned'] == 5 and default['has_more'] is True
 
