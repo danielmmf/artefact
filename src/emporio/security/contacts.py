@@ -1,5 +1,6 @@
 """Cofre por sessão, exclusivamente em memória; sem autenticação real."""
 import re
+import unicodedata
 
 EMAIL = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
 PHONE = re.compile(r'^\+?[\d\s().-]+$')
@@ -12,6 +13,15 @@ INSTITUTIONAL = frozenset({
     ('phone', '6733414444'), ('phone', '6733214500'),
     ('email', 'contato@emporiodamusica.com.br'), ('email', 'contato@empóriodamusica.com.br'),
 })
+
+def normalize_text(text: str) -> str:
+    """NFKC, sem caracteres de formatação Unicode (categoria Cf: espaço de largura zero, junções, marcas bidi, hífen
+    suave), com dígitos de qualquer alfabeto em ASCII e hífens/espaços especiais comuns."""
+    text = unicodedata.normalize('NFKC', text)
+    text = ''.join(c for c in text if unicodedata.category(c) != 'Cf')
+    text = ''.join(str(unicodedata.decimal(c)) if c.isdecimal() and not c.isascii() else c for c in text)
+    return UNICODE_SPACES.sub(' ', UNICODE_DASHES.sub('-', text))
+
 
 def is_institutional(value: str) -> bool:
     # Markdown (**negrito**, _itálico_) e pontuação nas bordas não mudam o contato.
@@ -56,7 +66,7 @@ class ContactVault:
         return self._contacts.get(token)
 
     def tokenize(self, text: str) -> str:
-        text = UNICODE_SPACES.sub(' ', UNICODE_DASHES.sub('-', text))  # hífens e espaços especiais não escondem contatos
+        text = normalize_text(text)  # separadores invisíveis, formas compatíveis e hífens especiais não escondem contatos
         def replace(match: re.Match) -> str:
             value = match.group(0)
             if is_institutional(value):

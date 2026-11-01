@@ -226,3 +226,30 @@ def test_revisao_gpt_manual_value_as_a_product_price_is_rejected(env, tmp_path):
     assert ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Quanto custa o GD20?')[0] == SAFE
     ok = FakeProviderLLM([AssistantReply(content='O frete é grátis acima de R$ 500,00 e custa R$ 35,00 abaixo disso.')])
     assert 'R$ 500,00' in ConversationEngine(setup_registry(env), ok, tmp_path / 'u.jsonl').turn('Qual a regra do frete?')[0]
+
+
+@pytest.mark.parametrize('disguised', [
+    '(67) 99​812-3456',                 # espaço de largura zero
+    '(67)⁠ 99812⁣-3456',           # word joiner e separador invisível
+    '67﻿99812­3456',               # BOM e hífen suave
+    '(67) 9‍9‌812‎-3456',     # ZWJ, ZWNJ e marca bidi
+    '（６７）９９８１２－３４５６',             # largura total (NFKC)
+    '(٦٧) ٩٩٨١٢-٣٤٥٦',                       # dígitos arábico-índicos
+])
+def test_phone_with_invisible_separators_or_compatibility_forms_is_tokenized(disguised):
+    vault = ContactVault('s5')
+    assert vault.tokenize(f'meu telefone é {disguised}') == 'meu telefone é [PHONE_1]'
+
+
+def test_email_with_invisible_characters_is_tokenized_and_never_reaches_the_model(env, tmp_path):
+    vault = ContactVault('s6')
+    assert vault.tokenize('lucas.mendes@jm​ail.com') == '[EMAIL_1]'
+    assert vault.tokenize('lucas­.mendes@jmail.com') == '[EMAIL_1]'
+    llm = FakeProviderLLM([AssistantReply(content='Ok.')])
+    ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Meu telefone: (67) 99​812⁠-3456 e e-mail a​na@jmail.com')
+    sent = llm.calls[0][-1]['content']
+    assert '[PHONE_1]' in sent and '[EMAIL_1]' in sent and '99812' not in sent and '​' not in sent
+
+
+def test_formatting_characters_are_removed_from_ordinary_text_too():
+    assert ContactVault('s7').tokenize('Quero um vio​lão') == 'Quero um violão'
