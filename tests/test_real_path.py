@@ -162,3 +162,12 @@ def test_eval_checker_trusts_manual_thresholds_but_not_invented_prices():
     case = {'id': 'golden-06'}
     assert checks_for(case, 'Frete grátis acima de R$ 500,00.', [])['valores_fundamentados'][0]
     assert not checks_for(case, 'O violão custa R$ 1.234,56.', [])['valores_fundamentados'][0]
+
+
+def test_prompt_tells_the_model_when_the_channel_already_identified_the_customer(env, tmp_path):
+    llm = FakeProviderLLM([AssistantReply(content='Olá!')])
+    ConversationEngine(setup_registry(env, customer=3), llm, tmp_path / 'a.jsonl').turn('oi')
+    assert 'SESSÃO: o canal já identificou o cliente' in llm.calls[0][0]['content']
+    anon = FakeProviderLLM([AssistantReply(content='Olá!')])
+    ConversationEngine(setup_registry(env), anon, tmp_path / 'b.jsonl').turn('oi')
+    assert 'SESSÃO:' not in anon.calls[0][0]['content']

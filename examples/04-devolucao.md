@@ -6,30 +6,26 @@
 
 **Cliente:** Quero devolver o pedido 7, me arrependi da compra.
 
-_Ferramentas consultadas: `check_return_eligibility` (ok), `get_order` (ok)_
+_Ferramentas consultadas: `check_return_eligibility` (ok)_
 
-**Atendente:** Oi, Letícia! Tudo bem? Já localizei o pedido 7 aqui - é um Shelby SU-21S Soprano Sunburst, com status de entregue.
+**Atendente:** Claro, posso te ajudar com isso! Só preciso de duas informações pra avaliar a devolução por arrependimento:
 
-Sobre o arrependimento, preciso de duas informações pra avaliar o prazo:
+- A compra foi **online** ou **presencial** na loja?
+- Você **já recebeu** o produto? Se sim, em que data?
 
-- A compra foi feita online ou na loja física?
-- Em que data você recebeu o instrumento?
-
-Só pra alinhar: pelo direito de arrependimento (compras online), o prazo é de até 7 dias corridos após o recebimento, com o produto na embalagem original e sem sinais de uso. A avaliação é preliminar e a confirmação final fica com a equipe.
-
-Me passa esses dois dados que eu sigo com a análise?
+Ah, e vale lembrar: o direito de arrependimento (7 dias corridos após o recebimento) vale para compras online. Me conta esses detalhes que eu verifico aqui pra você.
 
 **Cliente:** Recebi no dia 20/03/2026 e comprei pelo site.
 
 _Ferramentas consultadas: `check_return_eligibility` (ok)_
 
-**Atendente:** Boa notícia, Letícia! A análise preliminar indica que a devolução está dentro do prazo: o limite é 27/03/2026 e ainda restam 2 dias. 🎉
+**Atendente:** Boa notícia: pela análise preliminar, seu pedido 7 está dentro do prazo de arrependimento - o limite é **27/03/2026**, ou seja, restam 2 dias. ⏳
 
-Só lembrando que isso é uma avaliação inicial, tá? A aprovação final é da equipe, que vai conferir as condições:
+Só lembrando que isso é uma avaliação inicial, tá? A equipe ainda precisa conferir as condições. Pra devolução ser aceita, o produto deve estar:
 
-- Embalagem original, sem sinais de uso, com todos os acessórios e manuais
-- Não ser item de personalização/ajuste sob encomenda, promoção com aviso de "venda final" ou boquilha de sopro
+- Na embalagem original, sem sinais de uso
+- Com todos os acessórios e manuais
 
-Como é arrependimento em compra online, o frete da devolução fica por conta da loja e o reembolso é feito na mesma forma de pagamento em até 10 dias úteis.
+Também não valem itens personalizados/ajustados sob encomenda, produtos de promoção com aviso de "venda final" e boquilhas de instrumentos de sopro.
 
-Quer que eu encaminhe o caso pra equipe dar sequência na devolução?
+Quer que eu encaminhe seu caso pra equipe dar seguimento à devolução?

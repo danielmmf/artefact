@@ -67,6 +67,8 @@ class ConversationEngine:
             record['errors'].append({'code': 'session_invalid'})
             return SAFE, []
         record['auth']['session'] = session['mode']
+        if session['mode'] == 'simulated_authenticated':
+            system_prompt += '\n\nSESSÃO: o canal já identificou o cliente (identidade simulada). Não peça e-mail, telefone nem confirmação de posse; get_order e check_return_eligibility funcionam para os pedidos dele.'
         try:
             history = load_history(context.state, context.session_id)
             history = [{'user':protect_dynamic(t['user'], vault), 'assistant':protect_dynamic(t['assistant'], vault)} for t in history]
