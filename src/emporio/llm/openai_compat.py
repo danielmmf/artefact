@@ -1,41 +1,79 @@
-"""Protocolo OpenAI-compatible em preparação; somente transporte simulado.
+"""Adaptador OpenAI-compatible: chat/completions com function calling.
 
-A captura em memória pode conter dados pessoais e instruções. O chamador é
-responsável por mantê-la em ambiente controlado e descartá-la após revisão.
-Nenhuma sanitização ou aprovação de payload é implícita neste módulo.
+Transporte HTTP pela biblioteca padrão (urllib), sem dependência adicional.
+Segredos, corpos de requisição e corpos de resposta nunca entram em exceções
+nem em logs; o chamador recebe apenas um código estruturado (e o status HTTP).
 """
 import json
+import re
+import socket
+import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass, field
 from urllib.parse import urlsplit
 
 from emporio.config import Settings
 from emporio.llm.scripted import AssistantReply, FunctionCall
 
+MAX_TOKENS = 2048  # o raciocínio de modelos como gpt-oss consome do mesmo orçamento; provedores contam isso no limite por minuto
+RETRIES = 2
+BACKOFF_SECONDS = (1.0, 3.0)
+MAX_WAIT_SECONDS = 70.0  # teto da espera sugerida pelo provedor (limite de tokens por minuto)
+HINT = re.compile(r'try again in (?:(\d+)m)?(?:([\d.]+)(ms|s))?', re.IGNORECASE)
+USER_AGENT = 'emporio-agent/0.1'
+
 
 class AdapterError(Exception):
     """Erro estruturado sem mensagens, corpos ou detalhes do provedor."""
-    def __init__(self, code: str):
+    def __init__(self, code: str, status: int | None = None):
         self.code = code
+        self.status = status
         super().__init__(code)
 
 
 @dataclass(frozen=True)
-class SimulatedResponse:
+class TransportResponse:
     status: int = 200
     body: bytes = field(default=b'{}', repr=False)
     timeout: bool = False
 
 
+SimulatedResponse = TransportResponse  # nome usado pelos testes com transporte simulado
+
+
+class HttpTransport:
+    """POST real via urllib; falhas viram AdapterError sem detalhes remotos."""
+    def post(self, url: str, headers: dict[str, str], body: bytes, timeout: float) -> TransportResponse:
+        request = urllib.request.Request(url, data=body, method='POST',
+                                         headers={**headers, 'User-Agent': USER_AGENT})
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return TransportResponse(status=response.status, body=response.read())
+        except urllib.error.HTTPError as error:
+            try:
+                return TransportResponse(status=error.code, body=error.read())
+            finally:
+                error.close()
+        except (TimeoutError, socket.timeout):
+            raise AdapterError('timeout') from None
+        except urllib.error.URLError as error:
+            if isinstance(error.reason, (TimeoutError, socket.timeout)):
+                raise AdapterError('timeout') from None
+            raise AdapterError('transport_error') from None
+        except OSError:
+            raise AdapterError('transport_error') from None
+
+
 class CaptureTransport:
-    """Transporte deliberadamente sem HTTP; captura somente o corpo em memória."""
-    def __init__(self, responses: list[SimulatedResponse]):
-        if any(type(response) is not SimulatedResponse for response in responses):
+    """Transporte de teste: sem HTTP; entrega respostas prontas e guarda os corpos."""
+    def __init__(self, responses: list[TransportResponse]):
+        if any(type(response) is not TransportResponse for response in responses):
             raise TypeError('Respostas simuladas inválidas')
         self._responses = iter(responses)
         self.payloads: list[bytes] = []
 
-    def post(self, url: str, headers: dict[str, str], body: bytes, timeout: float) -> SimulatedResponse:
-        # Nenhum endpoint, credencial, header ou erro remoto é registrado.
+    def post(self, url: str, headers: dict[str, str], body: bytes, timeout: float) -> TransportResponse:
         self.payloads.append(body)
         try:
             response = next(self._responses)
@@ -47,6 +85,17 @@ class CaptureTransport:
 
     def clear(self) -> None:
         self.payloads.clear()
+
+
+def _retry_hint(body: bytes) -> float | None:
+    """Espera sugerida pelo provedor no corpo do 429 (ex.: 'try again in 46.065s'); None se ausente."""
+    match = HINT.search(body[:2000].decode('utf-8', 'replace'))
+    if not match or not (match.group(1) or match.group(2)):
+        return None
+    seconds = int(match.group(1) or 0) * 60
+    if match.group(2):
+        seconds += float(match.group(2)) / (1000 if match.group(3).lower() == 'ms' else 1)
+    return seconds
 
 
 def _text(value):
@@ -82,6 +131,8 @@ def _message(value):
         if not isinstance(calls, list) or not calls:
             raise ValueError('invalid calls')
         result['tool_calls'] = [_function_call(call) for call in calls]
+        if content == '':
+            result['content'] = None
     if role == 'assistant' and content is None and 'tool_calls' not in result:
         raise ValueError('missing assistant content')
     return result
@@ -98,10 +149,13 @@ def _tool(value):
 
 
 class OpenAICompatibleAdapter:
-    """Mapeamento de protocolo inativo: nenhum transporte real é aceito."""
-    def __init__(self, settings: Settings, transport: CaptureTransport, *, timeout: float = 30.0):
-        if type(settings) is not Settings or type(transport) is not CaptureTransport:
-            raise TypeError('Somente configuração confiável e transporte simulado são aceitos.')
+    """Cliente de chat/completions; `transport` é injetável para testes."""
+    def __init__(self, settings: Settings, transport=None, *, timeout: float = 60.0, sleep=time.sleep):
+        if type(settings) is not Settings:
+            raise TypeError('Somente configuração confiável é aceita.')
+        transport = HttpTransport() if transport is None else transport
+        if not callable(getattr(transport, 'post', None)):
+            raise TypeError('Transporte inválido.')
         try:
             if not all(isinstance(value, str) and value for value in (settings.llm_base_url, settings.llm_model, settings.llm_api_key)):
                 raise ValueError('invalid configuration')
@@ -117,12 +171,46 @@ class OpenAICompatibleAdapter:
         self._transport = transport
         self._url = settings.llm_base_url.rstrip('/') + '/chat/completions'
         self._timeout = timeout
+        self._sleep = sleep
+        self.model = settings.llm_model
+
+    def _send(self, body: bytes) -> TransportResponse:
+        headers = {'Authorization': 'Bearer ' + self._settings.llm_api_key, 'Content-Type': 'application/json'}
+        last: AdapterError | None = None
+        wait = 0.0
+        for attempt in range(RETRIES + 1):
+            if attempt:
+                self._sleep(max(BACKOFF_SECONDS[min(attempt - 1, len(BACKOFF_SECONDS) - 1)], wait))
+            wait = 0.0
+            try:
+                response = self._transport.post(self._url, headers, body, self._timeout)
+            except AdapterError as error:
+                if error.code not in {'timeout', 'transport_error'}:
+                    raise
+                last = error
+                continue
+            except Exception:
+                raise AdapterError('transport_error') from None
+            if not isinstance(response, TransportResponse) or not isinstance(response.status, int):
+                raise AdapterError('invalid_response')
+            if 200 <= response.status < 300:
+                return response
+            retryable = response.status == 429 or response.status >= 500 or (
+                response.status == 400 and b'tool_use_failed' in response.body)
+            last = AdapterError('http_error', response.status)
+            if not retryable:
+                raise last
+            wait = min(_retry_hint(response.body) or 0.0, MAX_WAIT_SECONDS)
+        raise last
 
     def complete(self, messages: list[dict], tools: list[dict] | None = None) -> AssistantReply:
         try:
             if not isinstance(messages, list) or not messages:
                 raise ValueError('invalid messages')
-            payload = {'model': self._settings.llm_model, 'messages': [_message(m) for m in messages]}
+            payload = {'model': self._settings.llm_model, 'messages': [_message(m) for m in messages],
+                       'temperature': 0, 'max_tokens': MAX_TOKENS}
+            if 'gpt-oss' in self._settings.llm_model.lower():
+                payload['reasoning_effort'] = 'low'
             if tools:
                 if not isinstance(tools, list):
                     raise ValueError('invalid tools')
@@ -132,17 +220,7 @@ class OpenAICompatibleAdapter:
             body = json.dumps(payload, ensure_ascii=False, allow_nan=False, separators=(',', ':')).encode('utf-8')
         except (TypeError, ValueError, KeyError, RecursionError):
             raise AdapterError('invalid_request') from None
-        try:
-            response = self._transport.post(self._url, {'Authorization': 'Bearer ' + self._settings.llm_api_key,
-                                            'Content-Type': 'application/json'}, body, self._timeout)
-        except AdapterError:
-            raise
-        except Exception:
-            raise AdapterError('transport_error') from None
-        if type(response) is not SimulatedResponse or not isinstance(response.status, int):
-            raise AdapterError('invalid_response')
-        if not 200 <= response.status < 300:
-            raise AdapterError('http_error')
+        response = self._send(body)
         try:
             data = json.loads(response.body)
             choices = data['choices']
@@ -166,7 +244,7 @@ class OpenAICompatibleAdapter:
                     raise ValueError('invalid call')
                 ids.add(call['id'])
                 calls.append(FunctionCall(call['id'], call['function']['name'], call['function']['arguments']))
-            if content is None and not calls:
+            if not (content or '').strip() and not calls:
                 raise ValueError('empty response')
             return AssistantReply(content=content, tool_calls=tuple(calls))
         except (ValueError, TypeError, KeyError, IndexError, UnicodeDecodeError, RecursionError):

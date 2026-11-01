@@ -23,7 +23,7 @@ def test_trace_schema_redaction_and_failure(env, tmp_path):
     assert first['iterations'] == 2 and first['llm']['calls'] == 2 and first['llm']['latency_ms'] >= 0 and first['llm']['tokens'] is None
     assert first['tool_calls'][0]['arguments'] == '[REDACTED]' and first['tool_calls'][0]['latency_ms'] >= 0
     assert first['search_backend'] in {'sqlite_filters', 'sqlite_fts5_bm25', 'rapidfuzz'}
-    assert second['errors'] == [{'code': 'simulator_error'}]
+    assert second['errors'] == [{'code': 'llm_error'}]
     assert 'pessoa@example.invalid' not in path.read_text() and 'violão' not in path.read_text()
     with locate(RAW, 'customers').open(encoding='utf-8-sig') as stream:
         for customer in csv.DictReader(stream):

@@ -14,12 +14,12 @@ class TurnTracer:
         self.path = path
         self.sequence = 0
 
-    def new(self):
+    def new(self, model: str = 'unknown'):
         self.sequence += 1
         return {
             'session_hash': self.session, 'turn': self.sequence, 'turn_id': str(uuid4()),
             'iterations': 0, 'tool_calls': [],
-            'llm': {'model': 'ConversationScriptedLLM', 'latency_ms': None, 'tokens': None, 'calls': 0},
+            'llm': {'model': model, 'latency_ms': None, 'tokens': None, 'calls': 0},
             'search_backend': None,
             'validator': {'approved': 0, 'approved_values_brl': [], 'rejected': 0, 'regenerations': 0, 'fallback': False},
             'budget': {'estimated_tokens': None, 'limit': 16000, 'history_turns_truncated': 0},

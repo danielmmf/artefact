@@ -42,3 +42,21 @@ def supported_money(text: str, evidence: set[Decimal]) -> bool:
     values = [parse_amount(m.group('prefix') or m.group('suffix')) for m in claims]
     values.extend(parse_amount(m.group('amount')) for m in CONTEXT.finditer(remaining))
     return all(value in evidence for value in values)
+
+
+FILTER_KEYS = {'min_price', 'max_price'}
+
+def evidence_from_filters(arguments) -> set[Decimal]:
+    """Faixa de preço pedida pelo cliente e enviada à busca: repeti-la na resposta não é valor inventado."""
+    found = set()
+    if isinstance(arguments, dict):
+        for key in FILTER_KEYS:
+            value = arguments.get(key)
+            if value is not None and not isinstance(value, bool):
+                try:
+                    amount = Decimal(str(value))
+                except InvalidOperation:
+                    continue
+                if amount.is_finite() and amount >= 0:
+                    found.add(amount)
+    return found

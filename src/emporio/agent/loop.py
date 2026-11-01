@@ -1,24 +1,26 @@
-"""Motor de chamadas offline; a ativação de provedores externos está bloqueada."""
+"""Motor de conversa: loop de function calling sobre qualquer LLM do protocolo `complete`."""
 import json
 import re
+import sys
 import threading
 from time import perf_counter_ns
 from pathlib import Path
 from emporio.agent.prompt import build_system_prompt
-from emporio.agent.money_validator import CLAIM, CONTEXT, parse_amount, evidence_from_result, supported_money
+from emporio.agent.money_validator import CLAIM, CONTEXT, parse_amount, evidence_from_filters, evidence_from_result, supported_money
 from emporio.agent.history import BUDGET, estimated_tokens, load_history, save_turn, trim_history
 from emporio.agent.offline import TOKEN
 from emporio.agent.privacy import PrivacyError, protect_dynamic
 from emporio.agent.trace import TurnTracer
-from emporio.llm.scripted import AssistantReply, ConversationScriptedLLM
+from emporio.llm.scripted import AssistantReply
 from emporio.tools.registry import ToolRegistry
 
 SAFE = 'Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe.'
 
 class ConversationEngine:
-    def __init__(self, registry: ToolRegistry, llm: ConversationScriptedLLM, trace: Path | None = None):
-        if type(llm) is not ConversationScriptedLLM:
-            raise TypeError('Somente o simulador offline está habilitado.')
+    def __init__(self, registry: ToolRegistry, llm, trace: Path | None = None):
+        # Protocolo: complete(messages, tools=None) -> str | AssistantReply (ScriptedLLM ou adaptador real).
+        if not callable(getattr(llm, 'complete', None)):
+            raise TypeError('O LLM deve implementar complete(messages, tools).')
         self.registry = registry
         self.llm = llm
         self.trace = trace
@@ -27,7 +29,7 @@ class ConversationEngine:
 
     def turn(self, message: str, system_prompt: str | None = None) -> tuple[str, list[dict]]:
         with self._turn_lock:
-            record = self._tracer.new()
+            record = self._tracer.new(str(getattr(self.llm, 'model', type(self.llm).__name__)))
             try:
                 answer, messages = self._turn(message, system_prompt, record)
                 if answer == SAFE:
@@ -98,7 +100,11 @@ class ConversationEngine:
             try:
                 reply = self.llm.complete(messages, tools=tools)
             except Exception:
-                record['errors'].append({'code': 'simulator_error'})
+                failure = sys.exc_info()[1]
+                error = {'code': getattr(failure, 'code', None) or 'llm_error'}
+                if getattr(failure, 'status', None) is not None:
+                    error['status'] = failure.status
+                record['errors'].append(error)
                 return SAFE, messages
             finally:
                 elapsed = (perf_counter_ns() - started) / 1_000_000
@@ -125,7 +131,7 @@ class ConversationEngine:
                 current.append({'role':'user', 'content':'Reformule sem valores monetários não fundamentados nas ferramentas deste turno.'})
                 continue
             if not isinstance(reply, AssistantReply):
-                record['errors'].append({'code': 'invalid_simulator_reply'})
+                record['errors'].append({'code': 'invalid_llm_reply'})
                 return SAFE, messages
             if not reply.tool_calls:
                 try:
@@ -163,6 +169,8 @@ class ConversationEngine:
                     if not isinstance(args, dict):
                         raise ValueError('Argumentos devem ser objeto')
                     safe_args = json.dumps(protect_dynamic(args, vault), ensure_ascii=False)
+                    if name == 'search_products':
+                        evidence.update(evidence_from_filters(args))
                     result = self.registry.dispatch(name, args)
                 except PrivacyError:
                     return SAFE, messages
