@@ -47,25 +47,25 @@ Estados: **aprovado** = evidência (teste, execução real ou relatório) sufici
 | SEC-07 | parcial | src/emporio/repository/sqlite.py; tests/test_order_security.py | Campos livres de outras fontes ainda podem conter dados privados. |
 | SEC-08 | aprovado | tests/test_agent_loop.py; tests/test_order_security.py | Demonstração de autorização para os casos testados, não prova universal. |
 | AGT-01 | aprovado | src/emporio/llm/openai_compat.py; tests/test_openai_compat.py (inclui HTTP real em loopback); smoke test real | Transporte `urllib`; timeout, retentativas e `reasoning_effort` baixo para gpt-oss. |
-| AGT-02 | aprovado | docs/DECISIONS.md DEC-11 (seção 8) | Modelo padrão `openai/gpt-oss-120b` no Groq; o plano gratuito limita a 8.000 tokens/min e 200.000/dia. |
-| AGT-03 | parcial | tests/test_agent_loop.py; tests/test_real_path.py; golden set (1ª rodada) | Comportamento do modelo real medido em 16 casos; ver README. |
+| AGT-02 | aprovado | docs/DECISIONS.md DEC-11 (seção 8) | Padrão DeepSeek `deepseek-chat`; Groq `gpt-oss-120b` como alternativa (limite do plano gratuito motivou a troca). |
+| AGT-03 | aprovado | tests/test_agent_loop.py; tests/test_real_path.py; golden set (rodada final) | Comportamento do modelo real medido: 16/16 verificações automáticas; ver README. |
 | AGT-04 | aprovado | src/emporio/agent/prompt.py; docs/DECISIONS.md seção 8 | Manual integral no prompt; contatos institucionais da loja são dados públicos. |
-| AGT-05 | parcial | src/emporio/agent/prompt.py; evals/golden_set.json | Persona e escopo avaliados no golden set; a rodada final está pendente. |
-| AGT-06 | parcial | tests/test_product.py; tests/test_real_path.py; golden set | Nomes divergentes (T-2) cobertos em ferramenta; sem validador de nomes na saída do LLM. |
-| AGT-07 | parcial | tests/test_money_validator.py; src/emporio/agent/money_validator.py | Padrões não reconhecem todas as formas de expressar valores. |
+| AGT-05 | aprovado | src/emporio/agent/prompt.py; evals/reports/golden-20261101T215907Z.json | Persona, escopo e recusas avaliados (recusas 100%). |
+| AGT-06 | parcial | tests/test_product.py; tests/test_real_path.py; golden set | Nomes divergentes (T-2) cobertos em ferramenta; sem validador de nomes na saída do LLM (o prompt proíbe inventar). |
+| AGT-07 | parcial | tests/test_money_validator.py; tests/test_real_path.py; src/emporio/agent/money_validator.py | Valores do manual contam como evidência; padrões não reconhecem todas as formas de expressar valores. |
 | AGT-08 | parcial | tests/test_agent_history.py; src/emporio/agent/history.py | Bytes UTF-8/3 não são tokens do modelo real. |
 | AGT-09 | parcial | tests/test_agent_history.py; src/emporio/agent/history.py | Histórico persiste apenas usuário e resposta; proteção heurística. |
 | AGT-10 | parcial | tests/test_agent_loop.py; tests/test_agent_history.py; tests/test_trace_phase4.py | Varredura e injeção restritas aos cenários testados. |
-| EVL-01 | parcial | src/emporio/eval_runner.py; evals/reports/golden-20261101T200323Z.json | 1ª rodada medida: ferramentas 66,7%, exatidão 100%, recusas 87,5%. Rodada com as correções pendente (cota diária do Groq). |
+| EVL-01 | parcial | src/emporio/eval_runner.py; evals/reports/golden-20261101T215907Z.json (+5 rodadas anteriores) | Exatidão 100% e recusas 100%; acerto de ferramenta 75% (meta 90%), no teto da métrica: 3 casos sem argumento obrigatório. |
 | CLI-01 | aprovado | Makefile; src/emporio/cli.py | A ingestão requer os arquivos de entrada. |
 | CLI-02 | aprovado | src/emporio/cli.py (`chat`, `chat --offline`); tests/test_real_path.py; tests/test_offline_phase4.py | Conversa livre com o LLM do `.env`; sem Rich. |
 | CLI-03 | aprovado | src/emporio/cli.py; tests/test_offline_phase4.py | Aviso não transforma verificação em autenticação. |
 | TST-01 | aprovado | tests/test_pricing.py; tests/test_quote_payment.py; tests/test_hours.py | Limites testados não resolvem decisões comerciais pendentes. |
 | TST-02 | parcial | tests/test_order_security.py; tests/test_trace_phase4.py; make test | Passar testes existentes não é prova de segurança completa. |
 | DOC-01 | aprovado | docs/DECISIONS.md | Decisões, suposições S-a..S-m, tratamento de dados T-1..T-9 e DEC-11. |
-| DOC-02 | pendente | examples/ (vazio) | As cinco conversas reais aguardam cota do Groq; nenhuma foi fabricada. |
-| DOC-03 | parcial | README.md | Métricas da rodada final do golden set pendentes. |
-| DOC-04 | parcial | docs/ACCEPTANCE-MATRIX.md | Aceite final após golden set, conversas e CI do último commit. |
+| DOC-02 | aprovado | examples/01..05 | Cinco conversas reais com o `deepseek-chat`, relógio fixo, contatos tokenizados; fatos conferidos contra os CSVs. |
+| DOC-03 | aprovado | README.md | Instruções, arquitetura, decisões, avaliação medida (todas as rodadas), limitações, LGPD e uso de assistentes de IA. |
+| DOC-04 | parcial | docs/ACCEPTANCE-MATRIX.md | Aceite final registrado; ver validação do commit final no README/CI. |
 | DOC-05 | parcial | .gitignore; git ls-files; git history | Congelamento futuro e auditoria de segredos exigem verificação na entrega. |
 
 
@@ -75,7 +75,7 @@ Estados: **aprovado** = evidência (teste, execução real ou relatório) sufici
 - Limites e testes de segurança: testes locais passam; o escopo de privacidade e de rede não é universal.
 - Interpretações e qualidade: `docs/DECISIONS.md` e `data/processed/QUALITY.md`.
 - Mini-eval de busca: medido (`make bench`), sem generalização presumida.
-- Golden set real: 1ª rodada medida e metas **não** atingidas; 3 dos 12 casos com ferramenta exigem argumentos que o cliente não fornece (ver README).
+- Golden set real: exatidão 100% e recusas 100% (metas atingidas); acerto de ferramenta 75% (meta 90% **não** atingida): 3 dos 12 casos com ferramenta exigem argumentos que o cliente não fornece (ver README).
 - Verificação demonstrativa: documentada na CLI e no README; não equivale a autenticação.
-- Cinco conversas reais: pendentes.
+- Cinco conversas reais: gravadas em `examples/`.
 - Itens adiados pela ADR §16 constam em "O que eu faria com mais tempo" no README.

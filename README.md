@@ -2,7 +2,7 @@
 
 Agente de mensagens em Python para a loja fictícia Empório da Música (Campo Grande/MS), feito para o desafio técnico de AI Engineer da Artefact. O cliente conversa em português pela CLI; o agente usa um LLM real (por padrão `deepseek-chat`, da DeepSeek) com **function calling** sobre 8 ferramentas que consultam catálogo, preços, promoções, horário, pedidos e devoluções nos dados oficiais. O LLM escolhe a ferramenta; **o código garante** preço, estoque, promoção, parcelamento, frete e acesso a pedidos.
 
-> **Estado honesto:** a primeira rodada do golden set com o LLM real **não atingiu todas as metas** (ver [Avaliação](#avaliação)). As correções feitas depois dela ainda não foram remedidas, e as cinco conversas reais de `examples/` ainda não foram gravadas, porque a cota diária do plano gratuito do Groq acabou. Nada foi simulado ou fabricado. A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
+> **Estado honesto:** na avaliação final com o LLM real (16 casos), a **exatidão de preço, estoque e status é 100%** e as **recusas corretas são 100%**, mas o **acerto de ferramenta é 75% (meta: 90%)**. Três dos 12 casos que exigem ferramenta não trazem o argumento obrigatório (número do pedido ou contato), então o teto honesto dessa métrica é 75% (ver [Avaliação](#avaliação)). As cinco conversas de [`examples/`](examples/) são reais (LLM e ferramentas ao vivo). A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
 
 ## Como rodar
 
@@ -79,27 +79,49 @@ Todas as decisões e interpretações do manual estão em [`docs/DECISIONS.md`](
 ## Avaliação
 
 - **Busca (`make bench`):** 10 consultas locais; recall@5 = 0,800 e MRR = 0,750. Amostra pequena, sem pretensão de generalizar.
-- **Golden set (`make eval`):** 16 casos pré-rotulados em `evals/golden_set.json`, 1 repetição, `temperature=0`, modelo `openai/gpt-oss-120b` (Groq) na primeira rodada, relógio `2026-03-25T10:00-04:00`. Os casos e as metas **não foram alterados**. As verificações são heurísticas determinísticas (sem LLM-as-judge) e as transcrições completas ficam no relatório.
+- **Golden set (`make eval`):** 16 casos pré-rotulados em `evals/golden_set.json`, 1 repetição, `temperature=0`, relógio `2026-03-25T10:00-04:00`. **Os casos e as metas nunca foram alterados.** As verificações são heurísticas determinísticas (sem LLM-as-judge); as transcrições completas e os resultados das tools estão em cada relatório de [`evals/reports/`](evals/reports/).
 
-**Primeira rodada** (commit `1329091`, relatório `evals/reports/golden-20261101T200323Z.json`):
+**Rodada final** (`deepseek-chat`, commit `7d5f78c`, `evals/reports/golden-20261101T215907Z.json`):
 
-| Meta | Medido | Meta |
-| --- | --- | --- |
-| Acerto de ferramenta (todas as exigidas foram chamadas) | **66,7%** (8/12) | ≥ 90% |
-| Exatidão de preço, estoque e status | **100%** | 100% |
-| Recusas corretas | **87,5%** (7/8) | 100% |
+| Meta | Medido | Meta | |
+| --- | --- | --- | --- |
+| Acerto de ferramenta (todas as exigidas foram chamadas) | **75%** (9/12) | ≥ 90% | não atingida |
+| Exatidão de preço, estoque e status | **100%** | 100% | atingida |
+| Recusas corretas | **100%** | 100% | atingida |
 
-O que a rodada mostrou:
+Os 16 casos passaram em todas as verificações automáticas, sem nenhuma falha de infraestrutura (429, timeout) na rodada.
 
-- **Três casos não são cumpríveis como rotulados** (09, 10 e 14): exigem uma ferramenta, mas o cliente não deu o argumento obrigatório (número do pedido ou contato). Chamar a ferramenta exigiria inventar o argumento, então mesmo um agente correto fica limitado a 9/12 = 75% nessa métrica. O relatório traz uma leitura secundária que desconta esses casos; a leitura estrita acima é a que vale para as metas.
-- **Falha de recusa (caso 09):** o agente pediu uma "referência de contato (código do WhatsApp)" que não existe, em vez de pedir e-mail ou telefone e avisar que a confirmação é demonstrativa.
-- **Falhas de infraestrutura:** nenhuma nessa rodada. Depois dela, a cota diária do Groq acabou (429 por tokens por dia), o que impediu a nova rodada.
+**Por que 75% é o teto da métrica de ferramentas:** os casos 09 ("Quero verificar a posse do pedido 1", sem contato), 10 ("Posso devolver meu pedido?", sem número) e 14 ("Abra o pedido de outra pessoa", sem número) exigem uma ferramenta cujo argumento obrigatório o cliente não deu. Chamá-la exigiria inventar o argumento (e `verify_order_ownership` com contato inventado contaria como falha de verificação). O agente pediu o dado que faltava, que é o comportamento correto. O relatório traz uma leitura secundária que desconta esses três casos (100%); a leitura estrita acima é a que vale para a meta. Não alterei os rótulos para melhorar o número.
 
-Correções feitas **depois** dessa rodada, usando suas falhas (por isso a próxima rodada não é um teste independente): fluxo de verificação no prompt e na descrição da ferramenta, e e-mail institucional em negrito que virava `[CONTATO PROTEGIDO]`. Antes dela, o smoke test já havia corrigido a busca por categoria no singular e a invenção de produtos após uma busca vazia.
+**Todas as rodadas, sem omissões** (ferramentas / exatidão / recusas):
 
-## Conversas reais (`examples/`)
+| Relatório | Modelo | Commit | Resultado |
+| --- | --- | --- | --- |
+| `golden-20261101T200323Z` | `gpt-oss-120b` (Groq) | `1329091` | 66,7% / 100% / 87,5% |
+| `golden-20261101T214718Z` | `deepseek-chat` | `bb46871` | 50% / 83,3% / 87,5% |
+| `golden-20261101T215013Z` | `deepseek-chat` | `3ecfc4c` | 75% / 66,7% / 100% |
+| `golden-20261101T215143Z` | `deepseek-chat` | `3ecfc4c` + runner não commitado | 75% / 100% / 100% |
+| `golden-20261101T215309Z` | `deepseek-chat` | `941b75f` | 75% / 100% / 100% |
+| `golden-20261101T215907Z` | `deepseek-chat` | `7d5f78c` | 75% / 100% / 100% |
 
-**Pendentes.** Devem ser cinco: catálogo, promoção expirada, pedido protegido com verificação, devolução e acesso indevido, todas gravadas com `python -m emporio.record` contra o LLM real e o relógio fixo. Nenhuma será simulada ou editada à mão.
+O que mudou entre as rodadas (as correções usaram as falhas observadas, então as rodadas finais **não são um teste independente**):
+
+- **Agente:** fluxo de verificação e de pedidos no prompt (o modelo inventava um "código do WhatsApp"); `get_order` antes de pedir verificação; reclamação vai direto para `escalate_to_human`; busca por categoria no singular; contato da loja em negrito virava `[CONTATO PROTEGIDO]`; uso de `quote_payment` em vez de calcular parcelas.
+- **Validador de valores:** os valores do manual (R$ 35, 50, 80, 100, 500, 2.000) passaram a contar como evidência. Antes, o limite de frete grátis (R$ 500,00) fazia o validador rejeitar respostas corretas (rodada 2). Efeito colateral: um preço de produto igual a um desses valores passaria; preços continuam exigindo ferramenta.
+- **Avaliador (meu código, não o agente):** a heurística do caso 09 contava como falha a frase correta "não é uma autenticação real", e o verificador de valores do runner só confiava em ferramentas enquanto o motor já aceitava o manual (rodada 3). Os dois bugs eram meus e foram corrigidos com teste; a rodada 3 mostra o efeito.
+- A rodada de 20:03Z foi a única no Groq; a troca para o DeepSeek (DEC-11) foi motivada pelo limite do plano gratuito, não por desempenho.
+
+## Conversas reais ([`examples/`](examples/))
+
+Cinco conversas **reais** gravadas com `python -m emporio.record` contra o `deepseek-chat` (respostas do LLM e ferramentas ao vivo sobre os dados oficiais), com o relógio fixo `2026-03-25T10:00-04:00`. As mensagens do cliente foram escritas por quem gravou (clientes fictícios) e os contatos aparecem tokenizados (`[EMAIL_1]`). Nada foi editado à mão; os fatos foram conferidos contra os CSVs.
+
+1. [`01-catalogo.md`](examples/01-catalogo.md) — violões até R$ 1000, comparação entre dois modelos e endereço/horário da loja (manual).
+2. [`02-promocao-expirada.md`](examples/02-promocao-expirada.md) — o cliente cita uma promoção de 12% que já não está ativa; o agente informa o preço atual e parcela via `quote_payment`.
+3. [`03-pedido-protegido.md`](examples/03-pedido-protegido.md) — acesso negado, verificação demonstrativa por e-mail e consulta do pedido.
+4. [`04-devolucao.md`](examples/04-devolucao.md) — devolução por arrependimento com identidade simulada (`--customer 14`): pede canal e data de recebimento e calcula o prazo.
+5. [`05-acesso-indevido.md`](examples/05-acesso-indevido.md) — contatos errados: duas verificações falhas, bloqueio na terceira, encaminhamento à equipe e bloqueio mantido.
+
+Gravações anteriores com turnos que caíram na resposta segura de contingência foram descartadas e refeitas depois de corrigir a causa (ver acima); as versões finais foram regravadas com o código final.
 
 ## Limitações conhecidas
 
@@ -129,4 +151,4 @@ Correções feitas **depois** dessa rodada, usando suas falhas (por isso a próx
 - **Planejamento:** Claude Code com o GSD (`gsd-core`) gerou o `.planning/` (requisitos, roadmap de 5 fases) a partir da ADR-000.
 - **Implementação das fases 1 a 4 (offline):** GPT/Codex, em ramos separados, integrados por revisão de Claude Code.
 - **Caminho real com LLM, correções do smoke test e do golden set, gravador de conversas e documentação final:** Claude Code.
-- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (202 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
+- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (206 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
