@@ -77,3 +77,5 @@ A ADR registra revisão de arquitetura com propostas de Claude, ChatGPT, Gemini,
 - Ampliar o validador de evidências para estoque, número de pedido e nome de produto.
 
 Antes de uso externo, resolver as pendências em `docs/DECISIONS.md`, inclusive modelo, tokenizador, política de contatos, lockout, tickets e avaliação adversarial. O projeto não está pronto para produção.
+
+A preparação isolada de protocolo OpenAI-compatible e o harness de captura exclusivamente em memória estão descritos em [adaptador inativo](docs/ADAPTADOR-INATIVO.md). Não há transporte HTTP real ou ativação por variáveis de ambiente; a captura não é uma projeção de privacidade aprovada.
