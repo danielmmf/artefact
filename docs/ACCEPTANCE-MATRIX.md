@@ -51,12 +51,12 @@ Estados: **aprovado** = evidência (teste, execução real ou relatório) sufici
 | AGT-03 | aprovado | tests/test_agent_loop.py; tests/test_real_path.py; golden set (rodada final) | Comportamento do modelo real medido: 16/16 verificações automáticas; ver README. |
 | AGT-04 | aprovado | src/emporio/agent/prompt.py; docs/DECISIONS.md seção 8 | Manual integral no prompt; contatos institucionais da loja são dados públicos. |
 | AGT-05 | aprovado | src/emporio/agent/prompt.py; evals/reports/golden-20261101T215907Z.json | Persona, escopo e recusas avaliados (recusas 100%). |
-| AGT-06 | parcial | tests/test_product.py; tests/test_real_path.py; golden set | Nomes divergentes (T-2) cobertos em ferramenta; sem validador de nomes na saída do LLM (o prompt proíbe inventar). |
+| AGT-06 | parcial | tests/test_product.py; tests/test_real_path.py; golden set | Nomes divergentes (T-2) cobertos em ferramenta; sem validador de nomes nem de afirmações de política na saída do LLM (regra genérica no prompt + caso 17 do golden set). |
 | AGT-07 | parcial | tests/test_money_validator.py; tests/test_real_path.py; src/emporio/agent/money_validator.py | Valores do manual contam como evidência; padrões não reconhecem todas as formas de expressar valores. |
 | AGT-08 | parcial | tests/test_agent_history.py; src/emporio/agent/history.py | Bytes UTF-8/3 não são tokens do modelo real. |
 | AGT-09 | parcial | tests/test_agent_history.py; src/emporio/agent/history.py | Histórico persiste apenas usuário e resposta; proteção heurística. |
 | AGT-10 | parcial | tests/test_agent_loop.py; tests/test_agent_history.py; tests/test_trace_phase4.py | Varredura e injeção restritas aos cenários testados. |
-| EVL-01 | parcial | src/emporio/eval_runner.py; evals/reports/golden-20261101T215907Z.json (+5 rodadas anteriores) | Golden set: exatidão 100%, recusas 100%, ferramentas 75% (meta 90%; teto da métrica). Validação independente (`evals/holdout_set.json`, uma execução): 6/8 casos; ver README. |
+| EVL-01 | parcial | src/emporio/eval_runner.py; evals/reports/golden-20261101T215907Z.json (+5 rodadas anteriores) | Golden set (17 casos): exatidão 100%, recusas 100%, ferramentas 75% (meta 90%; teto da métrica). Validação independente (`evals/holdout_set.json`, uma execução em `662dfed`): 6/8 casos; leitura corrigida e reexecução pós-correção no README. |
 | CLI-01 | aprovado | Makefile; src/emporio/cli.py | A ingestão requer os arquivos de entrada. |
 | CLI-02 | aprovado | src/emporio/cli.py (`chat`, `chat --offline`); tests/test_real_path.py; tests/test_offline_phase4.py | Conversa livre com o LLM do `.env`; sem Rich. |
 | CLI-03 | aprovado | src/emporio/cli.py; tests/test_offline_phase4.py | Aviso não transforma verificação em autenticação. |
