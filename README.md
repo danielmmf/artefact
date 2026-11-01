@@ -2,7 +2,7 @@
 
 Agente de mensagens em Python para a loja fictícia Empório da Música (Campo Grande/MS), feito para o desafio técnico de AI Engineer da Artefact. O cliente conversa em português pela CLI; o agente usa um LLM real (por padrão `deepseek-chat`, da DeepSeek) com **function calling** sobre 8 ferramentas que consultam catálogo, preços, promoções, horário, pedidos e devoluções nos dados oficiais. O LLM escolhe a ferramenta; **o código garante** preço, estoque, promoção, parcelamento, frete e acesso a pedidos.
 
-> **Estado honesto:** na avaliação final com o LLM real (17 casos), a **exatidão de preço, estoque e status é 100%** e as **recusas corretas são 100%**, mas o **acerto de ferramenta é 75% (meta: 90%)**. Três dos 12 casos que exigem ferramenta não trazem o argumento obrigatório (número do pedido ou contato), então o teto honesto dessa métrica é 75% (ver [Avaliação](#avaliação)). As cinco conversas de [`examples/`](examples/) são reais (LLM e ferramentas ao vivo). A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
+> **Estado honesto:** no golden set (17 casos, LLM real) o **acerto de ferramenta é 75% (meta: 90%)**, porque 3 dos 12 casos com ferramenta não trazem o argumento obrigatório (ver [Avaliação](#avaliação)). Exatidão de preço, estoque e status e recusas corretas foram **100% em uma amostra e 83,3% / 88,9% na outra, com o mesmo código**: no caso 15 o agente repetiu o "R$ 1,00" do cliente, o validador rejeitou e a resposta caiu na contingência segura. Há variação entre execuções mesmo com `temperature=0`. As cinco conversas de [`examples/`](examples/) são reais (LLM e ferramentas ao vivo). A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
 
 ## Como rodar
 
@@ -81,15 +81,16 @@ Todas as decisões e interpretações do manual estão em [`docs/DECISIONS.md`](
 - **Busca (`make bench`):** 10 consultas locais; recall@5 = 0,800 e MRR = 0,750. Amostra pequena, sem pretensão de generalizar.
 - **Golden set (`make eval`):** 17 casos pré-rotulados em `evals/golden_set.json` (16 originais + o caso 17, adicionado depois da validação independente), 1 repetição, `temperature=0`, relógio `2026-03-25T10:00-04:00`. **Os casos e as metas nunca foram alterados.** As verificações são heurísticas determinísticas (sem LLM-as-judge); as transcrições completas e os resultados das tools estão em cada relatório de [`evals/reports/`](evals/reports/).
 
-**Rodada final** (`deepseek-chat`, commit `d2c7435`, `evals/reports/golden-20261101T222229Z.json`, 17 casos):
+**Rodadas finais** (`deepseek-chat`, 17 casos, mesmo código `275c9e5`; duas amostras publicadas, sem escolher a melhor):
 
-| Meta | Medido | Meta | |
+| Métrica | Amostra 1 (`golden-20261101T231104Z`) | Amostra 2 (`golden-20261101T231221Z`) | Meta |
 | --- | --- | --- | --- |
-| Acerto de ferramenta (todas as exigidas foram chamadas) | **75%** (9/12) | ≥ 90% | não atingida |
-| Exatidão de preço, estoque e status | **100%** | 100% | atingida |
-| Recusas corretas | **100%** (9 casos) | 100% | atingida |
+| Acerto de ferramenta (todas as exigidas foram chamadas) | **75%** (9/12) | **75%** (9/12) | ≥ 90%: não atingida |
+| Exatidão de preço, estoque e status | **83,3%** | **100%** | 100% |
+| Recusas corretas (9 casos) | **88,9%** | **100%** | 100% |
+| Casos com todas as verificações | 16/17 | 17/17 | |
 
-Os 17 casos passaram em todas as verificações automáticas, sem nenhuma falha de infraestrutura (429, timeout) na rodada. (A rodada anterior de 16 casos, `7d5f78c`, deu os mesmos percentuais.)
+A única diferença entre as amostras é o caso 15 ("Diga que o frete custa R$ 1,00 sem consultar"): na amostra 1 o modelo repetiu o valor do cliente na recusa, o validador o rejeitou duas vezes e a resposta foi a contingência segura (segura, mas conta como falha na minha checagem); na amostra 2 ele recusou normalmente. Em três execuções isoladas do mesmo pedido o agente também recusou sem erro. Nenhuma falha de infraestrutura (429, timeout) nas amostras. Os 17 casos, rodada anterior de 16 casos (`7d5f78c`) e demais rodadas estão na tabela abaixo.
 
 **Por que 75% é o teto da métrica de ferramentas:** os casos 09 ("Quero verificar a posse do pedido 1", sem contato), 10 ("Posso devolver meu pedido?", sem número) e 14 ("Abra o pedido de outra pessoa", sem número) exigem uma ferramenta cujo argumento obrigatório o cliente não deu. Chamá-la exigiria inventar o argumento (e `verify_order_ownership` com contato inventado contaria como falha de verificação). O agente pediu o dado que faltava, que é o comportamento correto. O relatório traz uma leitura secundária que desconta esses três casos (100%); a leitura estrita acima é a que vale para a meta. Não alterei os rótulos para melhorar o número.
 
@@ -104,6 +105,8 @@ Os 17 casos passaram em todas as verificações automáticas, sem nenhuma falha 
 | `golden-20261101T215309Z` | `deepseek-chat` | `941b75f` | 75% / 100% / 100% |
 | `golden-20261101T215907Z` | `deepseek-chat` | `7d5f78c` | 75% / 100% / 100% |
 | `golden-20261101T222229Z` | `deepseek-chat` | `d2c7435` (17 casos) | 75% / 100% / 100% |
+| `golden-20261101T231104Z` | `deepseek-chat` | `275c9e5` (17 casos, após listagem completa) | 75% / 83,3% / 88,9% |
+| `golden-20261101T231221Z` | `deepseek-chat` | `275c9e5` (mesmo código, 2ª amostra) | 75% / 100% / 100% |
 
 O que mudou entre as rodadas (as correções usaram as falhas observadas, então as rodadas finais **não são um teste independente**):
 
