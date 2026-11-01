@@ -10,3 +10,4 @@ docs/private/
 evals/reports/*
 !evals/reports/search.json
 !evals/reports/golden-*.json
+!evals/reports/holdout-*.json

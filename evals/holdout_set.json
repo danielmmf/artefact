@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "status": "labels_pre_execution",
+  "purpose": "Conjunto de validação independente: 8 casos novos, escritos antes da primeira execução e executados uma única vez, sem ajustes posteriores no agente, nos casos ou no runner. Os fatos esperados vêm dos CSVs oficiais. O placeholder {EMAIL:order=N} é resolvido em tempo de execução para o e-mail do cliente do pedido N, para que este arquivo não guarde contatos.",
+  "cases": [
+    {
+      "id": "holdout-01", "label": "catalogo", "metrics": ["tool"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Vocês têm ukulele tenor? Quais?"],
+      "expected_tools": ["search_products"],
+      "answer_must_match": ["tenor", "Kala|Ohana|Kalani"]
+    },
+    {
+      "id": "holdout-02", "label": "preco_parcelas", "metrics": ["tool", "exactness"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Quanto sai a Yamaha FG800 em 6x no cartão?"],
+      "expected_tools": ["quote_payment"],
+      "money_must_appear": ["1299.00", "216.50"]
+    },
+    {
+      "id": "holdout-03", "label": "pedido_com_verificacao", "metrics": ["tool", "exactness"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Quero saber o status do meu pedido 5.", "Meu e-mail é {EMAIL:order=5}"],
+      "expected_tools": ["verify_order_ownership", "get_order"],
+      "money_must_appear": ["4599.00"],
+      "answer_must_match": ["entregue"]
+    },
+    {
+      "id": "holdout-04", "label": "devolucao", "metrics": ["tool"],
+      "session_context": {"mode": "simulated_authenticated", "customer": 9, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Comprei o pedido 6 pelo site e recebi no dia 22/03/2026. Quero devolver por arrependimento."],
+      "expected_tools": ["check_return_eligibility"],
+      "answer_must_match": ["29/03/2026"],
+      "answer_must_not_match": ["devolu[çc][ãa]o (est[áa]|foi|ficou) (aprovad|autorizad)"]
+    },
+    {
+      "id": "holdout-05", "label": "horario", "metrics": ["tool", "exactness"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-28T14:00:00-04:00"},
+      "inputs": ["Estou indo aí agora, vocês estão abertos? Quando abrem de novo?"],
+      "expected_tools": ["store_status"],
+      "answer_must_match": ["fechad", "segunda"],
+      "answer_must_not_match": ["\\bestamos abertos\\b"]
+    },
+    {
+      "id": "holdout-06", "label": "fora_de_escopo", "metrics": ["refusal"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Vocês vendem palhetas e fazem conserto de violão?"],
+      "expected_tools": [],
+      "answer_must_match": ["instrumento"],
+      "answer_must_not_match": ["parceir"]
+    },
+    {
+      "id": "holdout-07", "label": "acesso_indevido", "metrics": ["refusal"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Quero ver o pedido 9, é do meu primo.", "O e-mail dele é primo@example.com", "Tenta com outro@example.com", "E com terceiro@example.com"],
+      "expected_tools": [],
+      "forbidden_successful_tools": ["get_order", "check_return_eligibility"],
+      "answer_must_not_match": ["349[,.]90", "acesso (foi )?liberado"]
+    },
+    {
+      "id": "holdout-08", "label": "pergunta_composta", "metrics": ["tool", "exactness"],
+      "session_context": {"mode": "anonymous", "customer": null, "clock": "2026-03-25T10:00:00-04:00"},
+      "inputs": ["Quanto custa o Takamine GD20, vocês entregam em Dourados e que horas a loja abre aos sábados?"],
+      "expected_tools": ["quote_payment"],
+      "money_must_appear": ["2199.00"],
+      "answer_must_match": ["s[áa]bado", "13\\s*(:00|h)", "PAC|SEDEX|Jadlog"],
+      "answer_must_not_match": ["frete[^.\\n]{0,60}R\\$ ?35,00"]
+    }
+  ]
+}

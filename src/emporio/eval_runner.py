@@ -102,13 +102,47 @@ def checks_for(case: dict, answer: str, results: list[dict]) -> dict[str, tuple[
     return out
 
 
+def substitute(text: str, registry) -> str:
+    """{EMAIL:order=N} vira o e-mail do cliente do pedido N, lido em runtime: o arquivo de casos não guarda contatos."""
+    def email(match):
+        row = registry.context.repository.connection.execute(
+            'SELECT c.email FROM customers c JOIN orders o ON o.customer_id = c.customer_id WHERE o.order_id = ?',
+            (int(match.group(1)),)).fetchone()
+        return row[0]
+    return re.sub(r'\{EMAIL:order=(\d+)\}', email, text)
+
+
+def declarative_checks(case: dict, answers: list[str], results: list[dict]) -> dict[str, tuple[bool, str]]:
+    """Verificações escritas no próprio caso (conjunto de validação): regex, valores e ferramentas."""
+    final, every = answers[-1], '\n'.join(answers)
+    unsupported = sorted(str(v) for v in money_in(every) - evidence(results))
+    out = {'valores_fundamentados': (not unsupported, f'sem evidência: {unsupported}' if unsupported else 'ok'),
+           'sem_fallback': (SAFE not in answers, 'resposta segura de contingência' if SAFE in answers else 'ok')}
+    for pattern in case.get('answer_must_match', []):
+        out[f'contém /{pattern}/'] = (re.search(pattern, final, re.IGNORECASE) is not None, 'resposta final')
+    for pattern in case.get('answer_must_not_match', []):
+        out[f'não contém /{pattern}/'] = (re.search(pattern, every, re.IGNORECASE) is None, 'todas as respostas')
+    for amount in case.get('money_must_appear', []):
+        out[f'valor R$ {amount}'] = (Decimal(amount) in money_in(final), 'resposta final')
+    for tool in case.get('forbidden_successful_tools', []):
+        ok = not any(r['tool'] == tool and r['result'].get('ok') for r in results)
+        out[f'{tool} nunca concluído com sucesso'] = (ok, 'resultados das ferramentas')
+    return out
+
+
 def run_case(case: dict, llm, root: Path) -> dict:
     when = datetime.fromisoformat(case['session_context']['clock'])
     trace = root / 'var/traces/eval.jsonl'
     started = datetime.now(timezone.utc)
-    with open_registry(root, None, lambda: when) as registry:
-        answer, messages = ConversationEngine(registry, llm, trace).turn(case['input'])
-    results = tool_results(messages)
+    inputs = case.get('inputs') or [case['input']]
+    answers, results = [], []
+    with open_registry(root, case['session_context'].get('customer'), lambda: when) as registry:
+        engine = ConversationEngine(registry, llm, trace)
+        for raw in inputs:
+            answer, messages = engine.turn(substitute(raw, registry))
+            answers.append(answer)
+            results += tool_results(messages)
+    answer = answers[-1]
     called = [r['tool'] for r in results]
     last = {}
     try:
@@ -117,8 +151,8 @@ def run_case(case: dict, llm, root: Path) -> dict:
         pass
     required = case['expected_tools']
     tool_ok = all(t in called for t in required) if required else None
-    checks = checks_for(case, answer, results)
-    return {'id': case['id'], 'label': case['label'], 'input': case['input'], 'answer': answer,
+    checks = declarative_checks(case, answers, results) if 'inputs' in case else checks_for(case, answer, results)
+    return {'id': case['id'], 'label': case['label'], 'input': ' || '.join(inputs), 'metrics': case.get('metrics', []), 'answer': answer, 'answers': answers,
             'expected_tools': required, 'called_tools': called, 'tool_ok': tool_ok,
             'extra_tools': sorted(set(called) - set(required)) if required else called,
             'checks': {k: {'ok': v[0], 'detail': v[1]} for k, v in checks.items()},
@@ -130,8 +164,8 @@ def run_case(case: dict, llm, root: Path) -> dict:
 def summarize(rows: list[dict]) -> dict:
     with_tools = [r for r in rows if r['tool_ok'] is not None]
     tool = sum(1 for r in with_tools if r['tool_ok']) / len(with_tools) if with_tools else 1.0
-    exact_rows = [r for r in rows if r['id'] in EXACTNESS_CASES]
-    refusal_rows = [r for r in rows if r['id'] in REFUSAL_CASES]
+    exact_rows = [r for r in rows if r['id'] in EXACTNESS_CASES or 'exactness' in r.get('metrics', [])]
+    refusal_rows = [r for r in rows if r['id'] in REFUSAL_CASES or 'refusal' in r.get('metrics', [])]
     exactness = sum(1 for r in exact_rows if all(c['ok'] for c in r['checks'].values())) / len(exact_rows) if exact_rows else 1.0
     refusals = sum(1 for r in refusal_rows if all(c['ok'] for c in r['checks'].values())) / len(refusal_rows) if refusal_rows else 1.0
     measured = {'tool_accuracy': tool, 'exactness': exactness, 'refusals': refusals}
@@ -147,6 +181,7 @@ def summarize(rows: list[dict]) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog='emporio.eval_runner')
+    parser.add_argument('--set', default='evals/golden_set.json', help='arquivo de casos (golden_set.json ou holdout_set.json)')
     parser.add_argument('--only', help='ids separados por vírgula (execução parcial; relatório marcado como parcial)')
     args = parser.parse_args(argv)
     settings = Settings.from_env()
@@ -154,8 +189,8 @@ def main(argv: list[str] | None = None) -> int:
         print('Configure LLM_BASE_URL, LLM_MODEL e LLM_API_KEY no .env para rodar a avaliação com o LLM real.')
         return 2
     root = Path.cwd()
-    golden = json.loads((root / 'evals/golden_set.json').read_text(encoding='utf-8'))
-    cases = golden['cases']
+    kind = 'holdout' if 'holdout' in Path(args.set).name else 'golden'
+    cases = json.loads((root / args.set).read_text(encoding='utf-8'))['cases']
     if args.only:
         wanted = set(args.only.split(','))
         cases = [c for c in cases if c['id'] in wanted]
@@ -174,11 +209,11 @@ def main(argv: list[str] | None = None) -> int:
     except Exception:
         head = ''
     report = {'run': {'model': settings.llm_model, 'started_at': started.isoformat(), 'git_head': head,
-                      'partial': bool(args.only), 'temperature': 0, 'repetitions': 1},
+                      'partial': bool(args.only), 'temperature': 0, 'repetitions': 1, 'case_set': args.set},
               'summary': summary, 'results': rows}
     out_dir = root / 'evals/reports'
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"golden-{started.strftime('%Y%m%dT%H%M%SZ')}{'-parcial' if args.only else ''}.json"
+    path = out_dir / f"{kind}-{started.strftime('%Y%m%dT%H%M%SZ')}{'-parcial' if args.only else ''}.json"
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     print(f'Relatório: {path}')
