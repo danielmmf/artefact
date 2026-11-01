@@ -6,7 +6,7 @@ from pathlib import Path
 
 from emporio.agent.loop import ConversationEngine
 from emporio.cli import chat_offline
-from emporio.eval_gate import main as eval_main
+from emporio.eval_runner import main as eval_main
 from emporio.llm.scripted import ConversationScriptedLLM
 from test_integration_offline import setup_registry
 from test_order_security import env
@@ -30,7 +30,9 @@ def test_offline_paths_never_attempt_connections_or_subprocesses(env, monkeypatc
     assert any('DEMONSTRAÇÃO OFFLINE' in line for line in output)
     assert any('não autenticação real' in line for line in output)
     assert sum('Consulta demonstrativa concluída' in line for line in output) == 2
-    assert eval_main() == 1 and 'bloqueado' in capsys.readouterr().out
+    for name in ('LLM_BASE_URL', 'LLM_MODEL', 'LLM_API_KEY'):
+        monkeypatch.setenv(name, '')
+    assert eval_main([]) == 2 and 'Configure' in capsys.readouterr().out  # sem configuração não há avaliação
     assert attempts == []
 
 

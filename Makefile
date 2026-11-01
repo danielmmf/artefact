@@ -12,7 +12,7 @@ bench: ingest
 
 .PHONY: chat eval
 chat:
-	uv run --locked emporio chat --offline
+	uv run --locked emporio chat
 
 eval:
-	uv run --locked python -m emporio.eval_gate
+	uv run --locked python -m emporio.eval_runner
