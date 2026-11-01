@@ -6,17 +6,19 @@
 
 **Cliente:** Vi que o Takamine GD20 estava com 12% de desconto. Ainda está em promoção?
 
-_Ferramentas consultadas: `search_products` (ok)_
+_Ferramentas consultadas: `get_product` (ok)_
 
-**Atendente:** Oi! Consultei aqui e o **Takamine GD20 Dreadnought Natural** está disponível, com 5 unidades em estoque - mas no sistema ele está sem promoção ativa no momento. O preço atual é **R$ 2.199,00**, sem desconto.
+**Atendente:** Oi! Verifiquei aqui e essa promoção de 12% não está mais ativa, não. 😕
 
-Então aqueles 12% que você viu provavelmente eram de uma campanha que já encerrou. Quer que eu calcule as condições de pagamento (PIX, parcelamento) pra esse valor?
+O Takamine GD20 Dreadnought Natural está saindo pelo preço cheio de R$ 2.199,00 no momento. Ele tem 5 unidades em estoque e está disponível.
+
+Se quiser, posso te passar as condições de pagamento (PIX, parcelamento) ou te mostrar outros violões na faixa de preço parecida. É só falar!
 
 **Cliente:** Então quanto fica no cartão, e em quantas vezes posso parcelar?
 
-_Ferramentas consultadas: `quote_payment` (not_found), `get_product` (ok), `quote_payment` (ok)_
+_Ferramentas consultadas: `quote_payment` (not_found), `search_products` (ok), `quote_payment` (ok)_
 
-**Atendente:** No cartão de crédito, o Takamine GD20 sai por **R$ 2.199,00** e dá pra parcelar em até 12x sem juros:
+**Atendente:** No cartão de crédito o Takamine GD20 Dreadnought Natural fica em R$ 2.199,00, e dá pra parcelar em até 12x sem juros:
 
 - 1x de R$ 2.199,00
 - 2x de R$ 1.099,50
@@ -24,13 +26,11 @@ _Ferramentas consultadas: `quote_payment` (not_found), `get_product` (ok), `quot
 - 4x de R$ 549,75
 - 5x de R$ 439,80
 - 6x de R$ 366,50
-- 7x de R$ 314,15
-- 8x de R$ 274,88
-- 9x de R$ 244,34
+- 7x de R$ 314,14, sendo a última de R$ 314,16
+- 8x de R$ 274,87, sendo a última de R$ 274,91
+- 9x de R$ 244,33, sendo a última de R$ 244,36
 - 10x de R$ 219,90
-- 11x de R$ 199,91
+- 11x de R$ 199,90, sendo a última de R$ 200,00
 - 12x de R$ 183,25
 
-Só lembrando que esses valores são dos produtos, sem frete. E se preferir PIX, o valor fica **R$ 2.089,05** (5% de desconto).
-
-Quer que eu veja o frete pra sua cidade?
+Ah, e se preferir PIX, o valor cai para R$ 2.089,05 (5% de desconto). Quer que eu siga com alguma dessas opções?
