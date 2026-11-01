@@ -18,7 +18,7 @@ Registro único que substitui as ADRs 001–011 (decisão de escopo, ADR-000 §1
 | DEC-05 (ex-ADR-005) | Identidade autenticada **simulada** pelo canal (`--customer <id>`); confirmação de posse **demonstrativa** (pedido + e-mail ou telefone). Produção exige login ou OTP | Os dados não têm credenciais; a verificação por contato é fraca e precisa ser declarada como demonstrativa no README e na CLI | Fechada |
 | DEC-06 (ex-ADR-006) | E-mail e telefone tokenizados (`[EMAIL_1]`, `[PHONE_1]`) antes do LLM; mapa só em memória, por sessão; traces, histórico e tickets sem contato | LGPD (§9 do manual) e redução de superfície de vazamento | Fechada |
 | DEC-07 (ex-ADR-008) | Adaptador OpenAI-compatible; provedor configurável **somente** por `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` (nenhum nome específico de provedor) | O avaliador pode usar a chave que tiver | Fechada |
-| DEC-11 | Modelo padrão: **Groq `openai/gpt-oss-120b`** (`LLM_BASE_URL=https://api.groq.com/openai/v1`), com `temperature=0`, `reasoning_effort` baixo e `max_tokens` ≥ 2048. Alternativa documentada: `openai/gpt-oss-20b`. Modelos em preview (ex.: qwen) não são usados | Smoke test de 2026-10-31: aceita `temperature=0` e chamou `get_product` corretamente via function calling. É modelo de raciocínio: os tokens de raciocínio saem do mesmo orçamento de `max_tokens` (com 10 tokens a resposta veio vazia), daí o limite folgado. O critério "sem raciocínio estendido" foi relaxado pelo Daniel com base nesse teste | Fechada |
+| DEC-11 | Modelo padrão: **Groq `openai/gpt-oss-120b`** (parâmetros e limites medidos na seção 8). Alternativa documentada: `openai/gpt-oss-20b`. Modelos em preview (ex.: qwen) não são usados | Smoke test de 2026-10-31: aceita `temperature=0` e chamou `get_product` corretamente via function calling. É modelo de raciocínio: os tokens de raciocínio saem do mesmo orçamento de `max_tokens` (com 10 tokens a resposta veio vazia), daí o limite folgado. O critério "sem raciocínio estendido" foi relaxado pelo Daniel com base nesse teste | Fechada |
 | DEC-08 (ex-ADR-009) | Reprodutibilidade: uv com lock, relógio injetável (`EMPORIO_NOW`), `make test` sem chave, sem rede e sem Docker | Requisito do avaliador | Fechada |
 | DEC-09 | Valores em centavos (inteiros), expostos como `Decimal` | Evitar erro de arredondamento nos testes de limite | Fechada |
 | DEC-10 | Verificação de posse e acesso checados em Python a cada chamada de `get_order` e `check_return_eligibility` | A defesa contra injeção é a autorização no código, não o prompt | Fechada |
@@ -87,7 +87,7 @@ As versões exatas são registradas em `uv.lock`. Estas dependências não alter
 
 ## 7. Auditoria de coerência e decisões pendentes
 
-S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não altera as interpretações aprovadas. As dependências correntes estão em `pyproject.toml` e `uv.lock`: as bibliotecas de execução listadas na seção 6 incluem `python-dotenv`; `pytest` é dependência de desenvolvimento e `hatchling` é usado no build. O mini-eval usa dez casos locais e mede recall@5 e MRR (`evals/search_queries.yaml`). A ADR §16 prevê golden set de aproximadamente 15 casos com uma repetição; §11 prevê temperatura zero quando suportada. Há 16 casos pré-rotulados em `evals/golden_set.json`, sem execução de LLM real. O modelo padrão continua pendente: nenhuma documentação de provedor foi utilizada para escolhê-lo.
+S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não altera as interpretações aprovadas. As dependências correntes estão em `pyproject.toml` e `uv.lock`: as bibliotecas de execução listadas na seção 6 incluem `python-dotenv`; `pytest` é dependência de desenvolvimento e `hatchling` é usado no build. O mini-eval usa dez casos locais e mede recall@5 e MRR (`evals/search_queries.yaml`). A ADR §16 prevê golden set de aproximadamente 15 casos com uma repetição; §11 prevê temperatura zero quando suportada. Há 16 casos pré-rotulados em `evals/golden_set.json`, executados com o LLM real por `make eval` (resultados no README e em `evals/reports/`). O modelo padrão está decidido em DEC-11 (detalhes na seção 8).
 
 | Assunto | Estado | Pendência para revisão |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não alter
 | Contatos compartilhados | PENDENTE | Definir prova adicional e política para contatos compartilhados; a implementação nega a verificação por contato compartilhado. |
 | Tickets humanos | PENDENTE | Definir dados úteis e seguros: atualmente o resumo livre é descartado. |
 | Estimativa de tokens | PENDENTE | Selecionar tokenizador e margem por modelo; bytes UTF-8/3 é apenas aproximação. |
-| Modelo LLM e parâmetros de avaliação | RESOLVIDO | DEC-11 abaixo; golden set com temperature 0 e 1 repetição, casos e metas inalterados. |
+| Modelo LLM e parâmetros de avaliação | RESOLVIDO | DEC-11 (seção 8); golden set com temperature 0 e 1 repetição, casos e metas inalterados. |
 
 ## 8. Decisão do responsável (2026-11-01)
 
