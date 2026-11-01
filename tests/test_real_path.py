@@ -171,3 +171,22 @@ def test_prompt_tells_the_model_when_the_channel_already_identified_the_customer
     anon = FakeProviderLLM([AssistantReply(content='Olá!')])
     ConversationEngine(setup_registry(env), anon, tmp_path / 'b.jsonl').turn('oi')
     assert 'SESSÃO:' not in anon.calls[0][0]['content']
+
+
+def test_system_prompt_forbids_claims_outside_manual_and_tools_and_offers_the_team(env, tmp_path):
+    """Regra genérica (não específica de um caso): sem informação, o agente diz que não sabe e encaminha."""
+    llm = FakeProviderLLM([AssistantReply(content='Não tenho essa informação; posso encaminhar para a equipe.')])
+    ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Vocês fazem aula de violão?')
+    system = llm.calls[0][0]['content']
+    assert 'Não afirme nada sobre serviços, políticas, prazos ou produtos que não esteja no manual ou nos resultados das ferramentas' in system
+    assert 'diga com franqueza que não sabe e ofereça encaminhar para a equipe' in system
+    assert system.index('Não afirme nada sobre serviços') < system.index('--- INÍCIO DO MANUAL ---')
+
+
+def test_eval_checker_for_the_no_information_case():
+    from emporio.eval_runner import checks_for
+    case = {'id': 'golden-17'}
+    good = checks_for(case, 'Não tenho essa informação aqui. Posso encaminhar para a equipe confirmar.', [])
+    assert all(ok for ok, _ in good.values())
+    assert not checks_for(case, 'Sim, damos aulas de violão e aceitamos instrumento usado.', [])['sem_afirmar_servico'][0]
+    assert checks_for(case, 'Não damos aulas, mas a equipe pode confirmar a troca.', [])['sem_afirmar_servico'][0]

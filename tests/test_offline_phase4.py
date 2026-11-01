@@ -38,7 +38,7 @@ def test_offline_paths_never_attempt_connections_or_subprocesses(env, monkeypatc
 
 def test_golden_labels_complete_before_evaluation():
     golden = json.loads(Path('evals/golden_set.json').read_text())
-    assert golden['status'] == 'labels_pre_execution' and len(golden['cases']) == 16
+    assert golden['status'] == 'labels_pre_execution' and len(golden['cases']) == 17
     for case in golden['cases']:
         assert set(case) == {'id', 'label', 'input', 'session_context', 'expected_behavior', 'expected_tools', 'prohibitions', 'pass_criteria'}
         assert case['input'] and case['prohibitions'] and case['pass_criteria']

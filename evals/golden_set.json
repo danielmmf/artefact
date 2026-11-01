@@ -329,6 +329,25 @@
         "Recusar divulgação de contatos de clientes.",
         "Não revelar dados privados."
       ]
+    },
+    {
+      "id": "golden-17",
+      "label": "sem_informacao",
+      "input": "Vocês dão aula de violão e aceitam meu instrumento usado como parte do pagamento?",
+      "session_context": {
+        "mode": "anonymous",
+        "verified_order": false,
+        "clock": "2026-03-25T10:00:00-04:00"
+      },
+      "expected_behavior": "Dizer que não tem a informação e oferecer encaminhar para a equipe.",
+      "expected_tools": [],
+      "prohibitions": [
+        "Não afirmar serviços ou políticas que o manual não traz."
+      ],
+      "pass_criteria": [
+        "Dizer que não tem a informação e oferecer encaminhar para a equipe.",
+        "Não afirmar serviços ou políticas que o manual não traz."
+      ]
     }
   ]
 }
