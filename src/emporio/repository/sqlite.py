@@ -62,6 +62,26 @@ class SQLiteRepository:
             raise ValueError('Categoria inexistente')
         return row['name']
 
+    def _match_categories(self, text: str) -> list[int]:
+        """Categorias cujo nome contém todos os termos de `text`, sem distinguir caixa, acento ou singular/plural."""
+        import re
+        import unicodedata
+        def stems(value: str) -> set[str]:
+            plain = ''.join(c for c in unicodedata.normalize('NFKD', value.casefold()) if not unicodedata.combining(c))
+            result = set()
+            for word in re.findall(r'[^\W_]+', plain):
+                if word.endswith(('oes', 'aes')):
+                    word = word[:-3] + 'ao'
+                elif word.endswith('s') and len(word) > 3:
+                    word = word[:-1]
+                result.add(word)
+            return result
+        wanted = stems(text)
+        if not wanted:
+            return []
+        rows = self.connection.execute('SELECT category_id, name FROM categories').fetchall()
+        return [r['category_id'] for r in rows if wanted <= stems(r['name'])]
+
     def search_product_ids(self, query: str | None, category: str | None, min_cents: int | None, max_cents: int | None, only_available: bool) -> tuple[list[int], str]:
         import re
         import unicodedata
@@ -69,8 +89,11 @@ class SQLiteRepository:
         conditions = []
         params = []
         if category is not None:
-            conditions.append('c.name = ? COLLATE NOCASE')
-            params.append(category)
+            category_ids = self._match_categories(category)
+            if not category_ids:
+                return [], ('sqlite_fts5_bm25' if query else 'sqlite_filters')
+            conditions.append('p.category_id IN (' + ','.join('?' * len(category_ids)) + ')')
+            params.extend(category_ids)
         if only_available:
             conditions.append("p.status = 'active' AND p.stock_quantity > 0")
         # Os limites são aplicados ao preço final promocional, em centavos.
@@ -98,3 +121,45 @@ class SQLiteRepository:
             return ''.join(c for c in unicodedata.normalize('NFKD', value.casefold()) if not unicodedata.combining(c))
         ranked = [(fuzz.partial_ratio(normalize(query), normalize(r['name'])), r['product_id']) for r in rows]
         return [i for score, i in sorted(ranked, key=lambda x: (-x[0], x[1])) if score >= 80], 'rapidfuzz'
+
+    def order_customer_id(self, order_id: int) -> int | None:
+        row = self.connection.execute('SELECT customer_id FROM orders WHERE order_id = ?', (order_id,)).fetchone()
+        return row['customer_id'] if row else None
+
+    def verify_order_contact(self, order_id: int, contact: tuple[str, str]) -> bool:
+        from hmac import compare_digest
+        from emporio.security.contacts import normalize_contact
+        kind, expected = contact
+        if kind not in ('email', 'phone'):
+            return False
+        owner_id = self.order_customer_id(order_id)
+        # Percorrer toda a base impede que um contato compartilhado autorize qualquer cliente.
+        customers = self.connection.execute('SELECT customer_id, email, phone FROM customers').fetchall()
+        owners = []
+        for customer in customers:
+            normalized = normalize_contact(customer[kind])
+            if normalized is not None and normalized[0] == kind and compare_digest(normalized[1].encode('utf-8'), expected.encode('utf-8')):
+                owners.append(customer['customer_id'])
+        return owner_id is not None and owners == [owner_id]
+
+    def order_details(self, order_id: int) -> dict | None:
+        import re
+        row = self.connection.execute('''SELECT o.*, c.name AS customer_name FROM orders o
+                                         JOIN customers c ON c.customer_id = o.customer_id WHERE o.order_id = ?''', (order_id,)).fetchone()
+        if row is None:
+            return None
+        items = self.connection.execute('''SELECT p.product_id, p.name, i.quantity FROM order_items i
+                                           JOIN products p ON p.product_id=i.product_id WHERE i.order_id = ? ORDER BY p.product_id''', (order_id,)).fetchall()
+        private_values = [customer[field] for customer in self.connection.execute('SELECT name, email, phone FROM customers')
+                          for field in ('name', 'email', 'phone') if customer[field]]
+        def redact(value: str) -> str:
+            for private in private_values:
+                value = re.sub(re.escape(private), '[DADO REDIGIDO]', value, flags=re.IGNORECASE)
+            value = re.sub(r'[^\s@]+@[^\s@]+\.[^\s@]+', '[EMAIL]', value)
+            return re.sub(r'(?<!\w)(?:\+?\d[\d ()-]{8,}\d)(?!\w)', '[TELEFONE]', value)
+        return {'order_id': row['order_id'], 'status': row['status'], 'order_date': row['order_date'],
+                'items': [{'product_id': i['product_id'], 'name': redact(i['name']), 'quantity': i['quantity']} for i in items],
+                'total_brl': str(from_cents(row['total_cents'])), 'total_label': 'total registrado no pedido',
+                'payment_method': redact(row['payment_method']), 'tracking_code': redact(row['tracking_code']),
+                'estimated_delivery': row['estimated_delivery'], 'notes': '[OBSERVAÇÃO OMITIDA]',
+                'first_name': row['customer_name'].split()[0]}

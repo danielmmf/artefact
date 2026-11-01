@@ -9,7 +9,7 @@ from emporio.tools.product import availability
 class SearchInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
     query: str | None = Field(default=None, max_length=200)
-    category: str | None = Field(default=None, max_length=100)
+    category: str | None = Field(default=None, max_length=100, description='Categoria do catálogo: Guitarras, Baixos, Baterias e Percussão, Teclados e Pianos, Violões, Ukuleles (singular ou plural). Omita se não tiver certeza.')
     min_price: Decimal | None = Field(default=None, ge=0, allow_inf_nan=False, max_digits=12, decimal_places=2)
     max_price: Decimal | None = Field(default=None, ge=0, allow_inf_nan=False, max_digits=12, decimal_places=2)
     only_available: bool = Field(default=True, strict=True)
