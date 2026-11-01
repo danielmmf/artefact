@@ -62,6 +62,26 @@ class SQLiteRepository:
             raise ValueError('Categoria inexistente')
         return row['name']
 
+    def _match_categories(self, text: str) -> list[int]:
+        """Categorias cujo nome contém todos os termos de `text`, sem distinguir caixa, acento ou singular/plural."""
+        import re
+        import unicodedata
+        def stems(value: str) -> set[str]:
+            plain = ''.join(c for c in unicodedata.normalize('NFKD', value.casefold()) if not unicodedata.combining(c))
+            result = set()
+            for word in re.findall(r'[^\W_]+', plain):
+                if word.endswith(('oes', 'aes')):
+                    word = word[:-3] + 'ao'
+                elif word.endswith('s') and len(word) > 3:
+                    word = word[:-1]
+                result.add(word)
+            return result
+        wanted = stems(text)
+        if not wanted:
+            return []
+        rows = self.connection.execute('SELECT category_id, name FROM categories').fetchall()
+        return [r['category_id'] for r in rows if wanted <= stems(r['name'])]
+
     def search_product_ids(self, query: str | None, category: str | None, min_cents: int | None, max_cents: int | None, only_available: bool) -> tuple[list[int], str]:
         import re
         import unicodedata
@@ -69,8 +89,11 @@ class SQLiteRepository:
         conditions = []
         params = []
         if category is not None:
-            conditions.append('c.name = ? COLLATE NOCASE')
-            params.append(category)
+            category_ids = self._match_categories(category)
+            if not category_ids:
+                return [], ('sqlite_fts5_bm25' if query else 'sqlite_filters')
+            conditions.append('p.category_id IN (' + ','.join('?' * len(category_ids)) + ')')
+            params.extend(category_ids)
         if only_available:
             conditions.append("p.status = 'active' AND p.stock_quantity > 0")
         # Os limites são aplicados ao preço final promocional, em centavos.
