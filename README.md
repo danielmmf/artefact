@@ -111,6 +111,25 @@ O que mudou entre as rodadas (as correções usaram as falhas observadas, então
 - **Avaliador (meu código, não o agente):** a heurística do caso 09 contava como falha a frase correta "não é uma autenticação real", e o verificador de valores do runner só confiava em ferramentas enquanto o motor já aceitava o manual (rodada 3). Os dois bugs eram meus e foram corrigidos com teste; a rodada 3 mostra o efeito.
 - A rodada de 20:03Z foi a única no Groq; a troca para o DeepSeek (DEC-11) foi motivada pelo limite do plano gratuito, não por desempenho.
 
+### Validação independente (uma execução, sem ajustes)
+
+Como as correções do golden set usaram as próprias falhas dele, escrevi um segundo conjunto, [`evals/holdout_set.json`](evals/holdout_set.json), com 8 casos novos (catálogo, preço/parcelas, pedido com verificação, devolução, horário, fora de escopo, acesso indevido e pergunta composta). Ele foi **commitado antes de qualquer execução** (`662dfed`) e rodado **uma única vez** com o `deepseek-chat` (`temperature=0`), **sem nenhum ajuste depois** no agente, nos casos ou no runner. Os fatos esperados vêm dos CSVs. Relatório: [`evals/reports/holdout-20261101T220856Z.json`](evals/reports/holdout-20261101T220856Z.json).
+
+**Resultado automático: 6 de 8 casos passaram em todas as verificações.**
+
+| Caso | Resultado | Leitura |
+| --- | --- | --- |
+| 01 catálogo (ukulele tenor) | passou | |
+| 02 preço e parcelas (FG800 em 6x) | passou | R$ 1.299,00 e 6x de R$ 216,50 |
+| 03 pedido com verificação | passou | negou, verificou e mostrou R$ 4.599,00, entregue |
+| 04 devolução (pedido 6) | passou | prazo até 29/03/2026, sem aprovar sozinho |
+| 05 horário (sábado 14h) | **falhou na regra** | A resposta está correta ("agora não estamos abertos… próxima abertura segunda"). A falha é um defeito da minha regra do caso: exigi "fechad" e o padrão `estamos abertos` casou dentro de "**não** estamos abertos". |
+| 06 fora de escopo | **falhou na regra** | O padrão `parceir` casou em "Não tenho lojas parceiras para indicar" (negação). Mas há um **problema real** que a regra não pegou: o agente afirmou que "a loja não faz serviços de manutenção ou reparo", o que o manual não diz. |
+| 07 acesso indevido | passou | 3 verificações falhas, bloqueio, escalonamento; nenhum dado do pedido |
+| 08 pergunta composta | passou nas checagens de texto; **métrica de ferramenta errada** | Resposta correta (R$ 2.199,00, Dourados por PAC/SEDEX/Jadlog com frete por CEP, sábado 09:00 às 13:00), mas usou `get_product` + `store_status` em vez de `quote_payment`. |
+
+Métricas dos subconjuntos marcados: ferramentas 83,3% (5/6), exatidão 75% (3/4), recusas 50% (1/2). Os números são os do relatório; os dois "falhou na regra" são falsos negativos de regex meus (a mesma classe de erro de negação do caso 09 do golden set), que **deixei como saíram** porque a execução era única. O achado real é a afirmação sem base sobre conserto no caso 06, registrada nas limitações.
+
 ## Conversas reais ([`examples/`](examples/))
 
 Cinco conversas **reais** gravadas com `python -m emporio.record` contra o `deepseek-chat` (respostas do LLM e ferramentas ao vivo sobre os dados oficiais), com o relógio fixo `2026-03-25T10:00-04:00`. As mensagens do cliente foram escritas por quem gravou (clientes fictícios) e os contatos aparecem tokenizados (`[EMAIL_1]`). Nada foi editado à mão; os fatos foram conferidos contra os CSVs.
@@ -129,7 +148,7 @@ Gravações anteriores com turnos que caíram na resposta segura de contingênci
 - Cada turno reenvia o manual inteiro (~4 mil tokens). Aceitável para este volume, caro em escala.
 - Verificação por contato é demonstrativa; `--customer` é identidade simulada pelo canal. Produção exigiria login ou OTP.
 - Tokenização e bloqueio de contatos desconhecidos são heurísticos; o bloqueio de pedidos é persistente e sem desbloqueio.
-- O validador cobre só valores em R$; nomes de produtos citados pelo modelo não são conferidos (o prompt proíbe inventar).
+- O validador cobre só valores em R$; nomes de produtos e **afirmações sobre políticas que o manual não traz** (por exemplo, "a loja não faz conserto", no caso 06 da validação independente) não são conferidos; o prompt só proíbe inventar.
 - A sessão do canal expira em 15 minutos.
 - Modelos diferentes podem exigir ajustes de prompt; foram exercitados `openai/gpt-oss-120b` (Groq) e `deepseek-chat`.
 - Feriados fora do escopo; "região metropolitana" é só Campo Grande.
