@@ -61,3 +61,33 @@ def test_verified_anonymous_return_rechecks_expiration(env):
     assert ask(env, session, 3, 'defeito').ok
     env['time'][0] = NOW + timedelta(minutes=15)
     assert ask(env, session, 3, 'defeito').error.code == 'access_denied'
+
+
+def _order7(env):
+    owner = env['repo'].order_customer_id(7)  # cliente 14; pedido entregue, previsão 2026-02-17
+    return create_session(env, owner)
+
+
+def test_received_long_after_the_estimate_is_flagged_for_the_team_without_denying(env):
+    from datetime import date
+    result = ask(env, _order7(env), 7, 'arrependimento', purchase_channel='online', received_at='2026-03-20').data
+    assert result['status'] == 'eligible' and not result['approved']          # o pedido não é negado
+    (flag,) = result['divergences']
+    assert (flag['code'], flag['estimated_delivery'], flag['received_at'], flag['days_after_estimate']) == (
+        'received_after_estimated_delivery', '2026-02-17', '2026-03-20', 31)
+    assert 'equipe vai conferir' in flag['note'] and 'não foi negado' in flag['note']
+    assert result['information_sources']['received_at'] == 'declaração não verificada'
+
+
+def test_divergence_threshold_is_fourteen_days_inclusive_and_estimate_is_never_the_receipt_date(env):
+    session = _order7(env)
+    def flagged(received):
+        return bool(ask(env, session, 7, 'arrependimento', purchase_channel='online', received_at=received).data['divergences'])
+    assert not flagged('2026-02-18') and not flagged('2026-03-03')   # até 14 dias depois da previsão (17/02 + 14 = 03/03)
+    assert flagged('2026-03-04')                                      # 15 dias depois
+    assert ask(env, session, 7, 'arrependimento', purchase_channel='online').data['status'] == 'insufficient_information'
+    assert ask(env, session, 7, 'arrependimento', purchase_channel='online').data['divergences'] == []
+
+
+def test_defect_reason_does_not_use_the_receipt_date_and_has_no_divergence(env):
+    assert ask(env, _order7(env), 7, 'defeito', received_at='2026-03-20').data['divergences'] == []

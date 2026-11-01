@@ -203,3 +203,11 @@ def test_prompt_orients_listings_with_total_and_grouping_and_tool_exposes_the_to
     assert answer.startswith('Há 12 violões')
     schema = next(d for d in setup_registry(env).definitions() if d['function']['name'] == 'search_products')
     assert schema['function']['parameters']['properties']['limit']['maximum'] == 20
+
+
+def test_prompt_tells_the_model_to_mention_return_date_divergences_without_denying(env, tmp_path):
+    llm = FakeProviderLLM([AssistantReply(content='Ok.')])
+    ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('oi')
+    system = llm.calls[0][0]['content']
+    assert 'check_return_eligibility trouxer divergences' in system and 'sem acusá-lo nem negar o pedido' in system
+    assert 'a equipe vai conferir' in system

@@ -1,7 +1,23 @@
 """Elegibilidade preliminar; não aprova, nem comprova declarações do cliente."""
-from datetime import date
+from datetime import date, timedelta
 
+# Recebimento declarado mais de 14 dias depois da previsão de entrega registrada: sinaliza para a equipe conferir (S-n).
+DIVERGENCE_DAYS = 14
 EXCLUSIONS = ['personalização ou ajustes sob encomenda', 'promoção com aviso de venda final', 'boquilhas de instrumentos de sopro']
+
+def _late_receipt(order: dict, received_at: date) -> dict | None:
+    """Compara a data declarada com a previsão da loja; a previsão nunca vira data de recebimento (A2)."""
+    try:
+        estimated = date.fromisoformat(order.get('estimated_delivery') or '')
+    except ValueError:
+        return None
+    late = (received_at - estimated).days
+    if late <= DIVERGENCE_DAYS:
+        return None
+    return {'code': 'received_after_estimated_delivery', 'estimated_delivery': estimated.isoformat(),
+            'received_at': received_at.isoformat(), 'days_after_estimate': late,
+            'note': f'A data de recebimento informada é {late} dias posterior à previsão de entrega registrada; a equipe vai conferir. O pedido não foi negado e a análise segue preliminar.'}
+
 
 def evaluate_return(order: dict, reason: str, today: date, received_at: date | None, purchase_channel: str | None) -> dict:
     sources = {'order_date': 'registro da loja', 'order_status': 'registro da loja',
@@ -9,7 +25,7 @@ def evaluate_return(order: dict, reason: str, today: date, received_at: date | N
                'purchase_channel': 'declaração não verificada' if purchase_channel else 'não informado'}
     result = {'status': None, 'rule_ref': None, 'deadline': None, 'days_remaining': None,
               'missing_information': [], 'conditions': [], 'exclusions_to_confirm': EXCLUSIONS.copy(),
-              'information_sources': sources, 'eligibility': 'preliminar', 'approved': False}
+              'information_sources': sources, 'eligibility': 'preliminar', 'approved': False, 'divergences': []}
     if order['status'] == 'cancelled':
         result.update(status='cancelled', conditions=['Pedido cancelado.'], order_note=order['notes'])
         return result
@@ -36,13 +52,15 @@ def evaluate_return(order: dict, reason: str, today: date, received_at: date | N
             result['conditions'].append('Informações declaradas não são comprovantes.')
             return result
         start, days = received_at, 7
+        divergence = _late_receipt(order, received_at)
+        if divergence:
+            result['divergences'].append(divergence)
     else:
         start, days = purchase, 30
     elapsed = (today - start).days
     if elapsed < 0:
         result.update(status='insufficient_information', missing_information=['order_date'], conditions=['Data de compra posterior ao relógio informado.'])
         return result
-    from datetime import timedelta
     deadline = start + timedelta(days=days)
     result.update(status='eligible' if today <= deadline else 'expired', deadline=deadline.isoformat(), days_remaining=max(0, (deadline-today).days))
     if reason == 'arrependimento':
