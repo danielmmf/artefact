@@ -1,6 +1,6 @@
 # Empório AI — agente de atendimento da Empório da Música
 
-Agente de mensagens em Python para a loja fictícia Empório da Música (Campo Grande/MS), feito para o desafio técnico de AI Engineer da Artefact. O cliente conversa em português pela CLI; o agente usa um LLM real (por padrão `openai/gpt-oss-120b` no Groq) com **function calling** sobre 8 ferramentas que consultam catálogo, preços, promoções, horário, pedidos e devoluções nos dados oficiais. O LLM escolhe a ferramenta; **o código garante** preço, estoque, promoção, parcelamento, frete e acesso a pedidos.
+Agente de mensagens em Python para a loja fictícia Empório da Música (Campo Grande/MS), feito para o desafio técnico de AI Engineer da Artefact. O cliente conversa em português pela CLI; o agente usa um LLM real (por padrão `deepseek-chat`, da DeepSeek) com **function calling** sobre 8 ferramentas que consultam catálogo, preços, promoções, horário, pedidos e devoluções nos dados oficiais. O LLM escolhe a ferramenta; **o código garante** preço, estoque, promoção, parcelamento, frete e acesso a pedidos.
 
 > **Estado honesto:** a primeira rodada do golden set com o LLM real **não atingiu todas as metas** (ver [Avaliação](#avaliação)). As correções feitas depois dela ainda não foram remedidas, e as cinco conversas reais de `examples/` ainda não foram gravadas, porque a cota diária do plano gratuito do Groq acabou. Nada foi simulado ou fabricado. A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
 
@@ -20,17 +20,19 @@ make eval     # golden set (16 casos) com o LLM real; grava evals/reports/golden
 Para o LLM real, copie `.env.example` para `.env` e preencha (qualquer provedor compatível com a API de chat completions da OpenAI):
 
 ```sh
-LLM_BASE_URL=https://api.groq.com/openai/v1
-LLM_MODEL=openai/gpt-oss-120b
-LLM_API_KEY=...        # nunca versionar; .env está no .gitignore
+LLM_BASE_URL=https://api.deepseek.com
+LLM_MODEL=deepseek-chat   # não use deepseek-reasoner: não suporta function calling
+LLM_API_KEY=...           # nunca versionar; .env está no .gitignore
 ```
+
+Alternativa documentada: Groq (`LLM_BASE_URL=https://api.groq.com/openai/v1`, `LLM_MODEL=openai/gpt-oss-120b`). O adaptador só envia `reasoning_effort` a modelos `gpt-oss`.
 
 - `uv run emporio chat --customer 3` simula a identidade autenticada do cliente 3 pelo canal (só vê os pedidos dele).
 - `uv run emporio chat --offline` roda um roteiro fixo, sem chave, só para demonstrar as ferramentas.
 - `EMPORIO_NOW=2026-03-25T10:00:00-04:00` fixa o relógio (usado nos testes, no golden set e nos exemplos).
 - `uv run python -m emporio.record --out examples/NN-nome.md --title "..." "mensagem 1" "mensagem 2"` grava uma conversa real em Markdown, com contatos tokenizados.
 
-O plano gratuito do Groq para esse modelo limita **8.000 tokens/min e 200.000 tokens/dia**. Como cada turno envia o manual inteiro (~4 mil tokens), um turno leva cerca de 1 min e o golden set completo consome ~150 mil tokens. O adaptador espera o tempo sugerido pelo provedor em 429 por minuto e falha rápido quando a cota diária acaba.
+Cada turno envia o manual inteiro (~4 mil tokens). A troca do Groq (plano gratuito: 8.000 tokens/min e 200.000/dia, turnos de ~1 min) pelo DeepSeek foi motivada por esses limites; o adaptador ainda espera o tempo sugerido pelo provedor em 429 por minuto e falha rápido quando uma cota diária acaba.
 
 ## Arquitetura
 
@@ -77,7 +79,7 @@ Todas as decisões e interpretações do manual estão em [`docs/DECISIONS.md`](
 ## Avaliação
 
 - **Busca (`make bench`):** 10 consultas locais; recall@5 = 0,800 e MRR = 0,750. Amostra pequena, sem pretensão de generalizar.
-- **Golden set (`make eval`):** 16 casos pré-rotulados em `evals/golden_set.json`, 1 repetição, `temperature=0`, modelo `openai/gpt-oss-120b`, relógio `2026-03-25T10:00-04:00`. Os casos e as metas **não foram alterados**. As verificações são heurísticas determinísticas (sem LLM-as-judge) e as transcrições completas ficam no relatório.
+- **Golden set (`make eval`):** 16 casos pré-rotulados em `evals/golden_set.json`, 1 repetição, `temperature=0`, modelo `openai/gpt-oss-120b` (Groq) na primeira rodada, relógio `2026-03-25T10:00-04:00`. Os casos e as metas **não foram alterados**. As verificações são heurísticas determinísticas (sem LLM-as-judge) e as transcrições completas ficam no relatório.
 
 **Primeira rodada** (commit `1329091`, relatório `evals/reports/golden-20261101T200323Z.json`):
 
@@ -101,13 +103,13 @@ Correções feitas **depois** dessa rodada, usando suas falhas (por isso a próx
 
 ## Limitações conhecidas
 
-- O plano gratuito do Groq torna cada turno lento (cerca de 1 min) e limita o uso diário; com um plano pago isso desaparece.
+- **Privacidade e LGPD:** o provedor do LLM recebe as mensagens do cliente (com e-mails e telefones tokenizados), os resultados das ferramentas e o manual. Numa loja real, a escolha do provedor exigiria avaliação de transferência internacional de dados pela LGPD (o DeepSeek e o Groq processam fora do Brasil).
 - Cada turno reenvia o manual inteiro (~4 mil tokens). Aceitável para este volume, caro em escala.
 - Verificação por contato é demonstrativa; `--customer` é identidade simulada pelo canal. Produção exigiria login ou OTP.
 - Tokenização e bloqueio de contatos desconhecidos são heurísticos; o bloqueio de pedidos é persistente e sem desbloqueio.
 - O validador cobre só valores em R$; nomes de produtos citados pelo modelo não são conferidos (o prompt proíbe inventar).
 - A sessão do canal expira em 15 minutos.
-- Modelos diferentes podem exigir ajustes de prompt; só `openai/gpt-oss-120b` foi exercitado.
+- Modelos diferentes podem exigir ajustes de prompt; foram exercitados `openai/gpt-oss-120b` (Groq) e `deepseek-chat`.
 - Feriados fora do escopo; "região metropolitana" é só Campo Grande.
 
 ## O que eu faria com mais tempo
