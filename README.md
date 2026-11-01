@@ -1,81 +1,130 @@
-# Empório AI — integração demonstrativa offline
+# Empório AI — agente de atendimento da Empório da Música
 
-Protótipo local para atendimento da Empório da Música. O agente aceita somente um simulador de respostas programadas; não há adaptador LLM real habilitado. A verificação de posse por contato é demonstrativa, e `--customer <id>` define uma identidade simulada: nenhuma das duas é autenticação de produção. A Fase 4 e o gate de privacidade permanecem abertos.
+Agente de mensagens em Python para a loja fictícia Empório da Música (Campo Grande/MS), feito para o desafio técnico de AI Engineer da Artefact. O cliente conversa em português pela CLI; o agente usa um LLM real (por padrão `openai/gpt-oss-120b` no Groq) com **function calling** sobre 8 ferramentas que consultam catálogo, preços, promoções, horário, pedidos e devoluções nos dados oficiais. O LLM escolhe a ferramenta; **o código garante** preço, estoque, promoção, parcelamento, frete e acesso a pedidos.
+
+> **Estado honesto:** a primeira rodada do golden set com o LLM real **não atingiu todas as metas** (ver [Avaliação](#avaliação)). As correções feitas depois dela ainda não foram remedidas, e as cinco conversas reais de `examples/` ainda não foram gravadas, porque a cota diária do plano gratuito do Groq acabou. Nada foi simulado ou fabricado. A verificação de posse de pedido por contato é **demonstrativa**, não autenticação real.
+
+## Como rodar
+
+Requer Python 3.11+ e [`uv`](https://docs.astral.sh/uv/). Só a instalação precisa de rede.
+
+```sh
+make setup    # uv sync --locked --extra dev
+make ingest   # lê data/raw/ e gera var/store.db, data/processed/policies.md e QUALITY.md
+make test     # testes sem chave, sem rede e sem Docker
+make bench    # mini-eval da busca (recall@5 e MRR), sem download
+make chat     # conversa com o LLM real configurado no .env
+make eval     # golden set (16 casos) com o LLM real; grava evals/reports/golden-*.json
+```
+
+Para o LLM real, copie `.env.example` para `.env` e preencha (qualquer provedor compatível com a API de chat completions da OpenAI):
+
+```sh
+LLM_BASE_URL=https://api.groq.com/openai/v1
+LLM_MODEL=openai/gpt-oss-120b
+LLM_API_KEY=...        # nunca versionar; .env está no .gitignore
+```
+
+- `uv run emporio chat --customer 3` simula a identidade autenticada do cliente 3 pelo canal (só vê os pedidos dele).
+- `uv run emporio chat --offline` roda um roteiro fixo, sem chave, só para demonstrar as ferramentas.
+- `EMPORIO_NOW=2026-03-25T10:00:00-04:00` fixa o relógio (usado nos testes, no golden set e nos exemplos).
+- `uv run python -m emporio.record --out examples/NN-nome.md --title "..." "mensagem 1" "mensagem 2"` grava uma conversa real em Markdown, com contatos tokenizados.
+
+O plano gratuito do Groq para esse modelo limita **8.000 tokens/min e 200.000 tokens/dia**. Como cada turno envia o manual inteiro (~4 mil tokens), um turno leva cerca de 1 min e o golden set completo consome ~150 mil tokens. O adaptador espera o tempo sugerido pelo provedor em 429 por minuto e falha rápido quando a cota diária acaba.
 
 ## Arquitetura
 
 ```text
-CLI com roteiros fixos -> ConversationEngine -> ConversationScriptedLLM
-                               |                 (sem rede)
-                               +-> ToolRegistry (8 tools, Pydantic)
-                               |    +-> regras Python -> StoreRepository -> store.db (somente leitura)
-                               |    +-> autorização -> app.db separado
-                               +-> histórico tokenizado + trace JSONL de metadados
+CLI (emporio chat) ──> ConversationEngine ──> LLM (OpenAI-compatible, HTTP)
+                            │  loop de function calling (até 5 iterações)
+                            │  tokeniza contatos de clientes antes do LLM
+                            │  valida valores em R$ contra os resultados das tools
+                            ├──> ToolRegistry (8 tools, contratos Pydantic)
+                            │      ├─ regras em Python (preço, PIX, parcelas, frete, horário, devolução)
+                            │      ├─ StoreRepository ──> store.db   (somente leitura)
+                            │      └─ autorização     ──> app.db     (sessões, acesso a pedidos, tentativas, tickets, histórico)
+                            └──> trace JSONL por turno (só metadados) em var/traces/
 ```
 
-A identidade e o relógio vêm do contexto Python, não dos argumentos do modelo. O loop limita-se a cinco iterações, protege entradas e saídas com tokenização heurística, preserva instruções de sistema e usa uma verificação inicial de valores monetários. Descrições e resultados de ferramentas são dados não confiáveis. A autorização de pedidos é aplicada em Python a cada consulta. Consulte [decisões](docs/DECISIONS.md), [ADR-000](docs/adr/ADR-000-especificacao-consolidada.md) e [matriz de aceite](docs/ACCEPTANCE-MATRIX.md).
+- **Manual no prompt, sem RAG.** As 8 páginas do manual vão inteiras no prompt de sistema (`data/processed/policies.md`, com marcadores `[§seção · p.página]`). É pequeno o bastante para caber, e evita recuperar o trecho errado.
+- **Regras comerciais em Python, não no prompt.** Disponibilidade, promoção, PIX por item, parcelamento, pagamento combinado, frete e horário têm testes de limite (por exemplo frete em R$ 499,99 / 500,00 / 500,01).
+- **Loop próprio de function calling** com Pydantic, sem framework de agentes: são 8 tools e um fluxo linear, e assim autorização, orçamento de contexto e validador ficam explícitos e testáveis.
+- **Busca:** SQLite FTS5/BM25 com fallback fuzzy (rapidfuzz). Filtros exatos em SQL; o índice só ordena IDs.
+- **Dinheiro em centavos inteiros**, exposto como `Decimal`. Totais históricos usam sempre `orders.total_brl` ("total registrado no pedido").
+- **Duas bases SQLite:** `store.db` aberto com `mode=ro` (o atendimento não consegue alterar preço, estoque ou pedido) e `app.db` separado para estado do atendimento.
 
-## Instalação e execução
-
-Requer Python 3.11+ e `uv`. A instalação pode precisar de rede para obter dependências travadas; após instaladas, ingestão e testes não exigem chave LLM, Docker ou GPU.
-
-```sh
-make setup    # uv sync --locked --extra dev
-make ingest   # emporio ingest; lê data/raw/ e cria var/store.db e data/processed/
-make test     # testes offline
-make bench    # miniavaliação local da busca
-make chat     # equivale a emporio chat --offline
-make eval     # falha explicitamente: adaptador externo bloqueado
-```
-
-A CLI é uma **demonstração offline**, não um chatbot com raciocínio real. Escolha `1` para horário, `2` para produto 90 e `sair` para encerrar. `emporio chat --offline --customer 3` configura identidade simulada, sem validar credenciais. A CLI cria os bancos quando necessário, invalida a sessão e fecha as conexões. Para reproduzir o horário, por exemplo:
-
-```sh
-EMPORIO_NOW=2026-03-25T10:00:00-04:00 uv run --locked emporio chat --offline
-```
-
-A ingestão é reutilizada pelo comando `emporio ingest`; os dados originais não são modificados. `store.db` é aberto somente para leitura; `app.db`, sessões, histórico e traces ficam em `var/`, ignorado pelo Git. O relógio é injetável em Python.
-
-## Ferramentas e limites
+### Ferramentas
 
 | Ferramenta | Função e limite |
 | --- | --- |
-| `search_products` | Busca lexical e filtros; retorna candidatos, não escolhe produto ambíguo. |
-| `get_product` | Detalhes e promoções; retorna ambiguidade quando necessário. |
-| `quote_payment` | Cotação, PIX, parcelas e frete; não registra compras. Bases e arredondamento aguardam revisão comercial. |
-| `store_status` | Horário local pelo relógio injetado; não cobre feriados. |
-| `verify_order_ownership` | Confirmação demonstrativa por pedido e referência de contato; não é login nem OTP. |
-| `get_order` | Exige autorização Python; total é o registrado no pedido. Observações livres são omitidas por privacidade. |
-| `check_return_eligibility` | Avaliação preliminar após autorização; não aprova devolução e pode exigir dados não disponíveis. |
-| `escalate_to_human` | Cria ticket mínimo; resumo livre é descartado, portanto não chega à equipe. |
+| `search_products` | Busca por texto, categoria (singular/plural, com ou sem acento) e faixa de preço; devolve candidatos, não escolhe produto ambíguo. |
+| `get_product` | Detalhes, promoção ativa e promoções inativas; `ambiguous` com candidatos. A descrição é omitida para os 7 produtos cujo nome diverge da descrição (T-2). |
+| `quote_payment` | Cotação com PIX (5% só em itens sem promoção), parcelas, pagamento combinado e frete; produtos não vendáveis ficam fora dos totais. |
+| `store_status` | Aberto/fechado e próxima abertura pelo relógio injetado; feriados fora do escopo. |
+| `verify_order_ownership` | Confirmação **demonstrativa** de posse por pedido + e-mail ou telefone do cliente do pedido. |
+| `get_order` | Só com acesso autorizado; devolve o total registrado e só o primeiro nome do cliente. |
+| `check_return_eligibility` | Avalia arrependimento (7 dias do recebimento), defeito (30 dias da compra) e preferência; nunca aprova devolução. |
+| `escalate_to_human` | Cria ticket sem dados pessoais; retorno em 24 horas úteis. |
 
-## Privacidade, trace e segurança
+## Decisões, suposições e privacidade
 
-O cofre de contatos fica em memória por sessão, e os contatos reconhecidos são tokenizados antes do simulador. A detecção de texto livre é heurística: não cobre garantidamente todas as formas de contato, nomes ou segredos. O prompt atual inclui o manual integral e contatos institucionais divergentes em claro; sua classificação e tratamento para uso externo aguardam decisão. Consulte [auditoria de privacidade](docs/AUDITORIA-PRIVACIDADE-FASE4.md). Não envie dados a um provedor externo antes da revisão.
+Todas as decisões e interpretações do manual estão em [`docs/DECISIONS.md`](docs/DECISIONS.md) (ex.: R$ 500,00 e R$ 2.000,00 inclusivos, parcela mínima de R$ 50 em 2–3x, §3.1 prevalece sobre a tabela da §3, frete antes do PIX, pagamento em dinheiro orienta confirmar com a equipe). A especificação completa é a [ADR-000](docs/adr/ADR-000-especificacao-consolidada.md); o que foi cortado ou adiado pelo prazo está na seção 16. As inconsistências dos dados estão em `data/processed/QUALITY.md` (gerado por `make ingest`).
 
-O trace JSONL opcional registra hash de sessão com chave efêmera por instância, sequência e UUID de turno, iterações, ferramentas e argumentos omitidos, status, erros, tempos medidos, modelo simulado, tokens desconhecidos `null`, busca, validador, orçamento e autorização abstrata. Não grava prompts, resultados completos ou referências de contato. A sequência reinicia com a instância; erro de gravação do trace não interrompe o atendimento.
+**Privacidade (ADR-000 §8):** e-mails e telefones de **clientes** viram `[EMAIL_1]`/`[PHONE_1]` antes do LLM, com o mapa só em memória por sessão. O restante do texto do usuário e os resultados das tools vão completos (as tools nunca devolvem contato nem nome completo). Telefones e e-mail **da loja** são dados institucionais públicos e seguem em claro. O trace JSONL só guarda metadados (sessão com hash, ferramentas, status, latências, validador, erros), nunca texto de conversa. A detecção de contatos em texto livre é heurística e não garante cobertura de todos os formatos.
 
-Os testes interceptam sockets, resolução de nomes e subprocessos nos caminhos offline que exercitam. Isso não demonstra isolamento universal do processo. Bloqueios persistentes podem causar negação de serviço; contatos compartilhados são negados; nenhuma autenticação real foi implementada.
+**Segurança de pedidos:** o acesso é verificado em Python a cada chamada, nunca pelo LLM. Pedido inexistente e contato errado dão a mesma resposta; 3 falhas bloqueiam o pedido (persistente, sem desbloqueio automático); o acesso expira em 15 minutos; o contato é comparado com o cliente **do pedido** (o e-mail repetido dos clientes 11 e 43 não abre o pedido do outro).
 
 ## Avaliação
 
-`make bench` executa dez consultas locais rotuladas: **Recall@5 = 0,800 e MRR = 0,750**. É uma amostra pequena, não evidência de generalização. O [golden set](evals/golden_set.json) tem 16 casos rotulados antes de execução, abrangendo catálogo, preço, pedidos, loja e ataques. Nenhum caso foi avaliado com LLM real; não existem métricas reais de acerto ou recusa. `make eval` permanece bloqueado até revisão de privacidade e implementação autorizada do adaptador.
+- **Busca (`make bench`):** 10 consultas locais; recall@5 = 0,800 e MRR = 0,750. Amostra pequena, sem pretensão de generalizar.
+- **Golden set (`make eval`):** 16 casos pré-rotulados em `evals/golden_set.json`, 1 repetição, `temperature=0`, modelo `openai/gpt-oss-120b`, relógio `2026-03-25T10:00-04:00`. Os casos e as metas **não foram alterados**. As verificações são heurísticas determinísticas (sem LLM-as-judge) e as transcrições completas ficam no relatório.
 
-## Estratégia e uso de assistentes
+**Primeira rodada** (commit `1329091`, relatório `evals/reports/golden-20261101T200323Z.json`):
 
-A ADR registra revisão de arquitetura com propostas de Claude, ChatGPT, Gemini, DeepSeek e GLM, validadas contra os dados e o manual. Claude Code com GSD foi previsto para planejamento e implementação; GPT/Codex contribuiu para integração offline, testes, trace, CLI e documentação. As decisões pertencem ao responsável pelo projeto; artefatos gerados por assistentes exigem revisão humana e não constituem validação independente de produção.
+| Meta | Medido | Meta |
+| --- | --- | --- |
+| Acerto de ferramenta (todas as exigidas foram chamadas) | **66,7%** (8/12) | ≥ 90% |
+| Exatidão de preço, estoque e status | **100%** | 100% |
+| Recusas corretas | **87,5%** (7/8) | 100% |
+
+O que a rodada mostrou:
+
+- **Três casos não são cumpríveis como rotulados** (09, 10 e 14): exigem uma ferramenta, mas o cliente não deu o argumento obrigatório (número do pedido ou contato). Chamar a ferramenta exigiria inventar o argumento, então mesmo um agente correto fica limitado a 9/12 = 75% nessa métrica. O relatório traz uma leitura secundária que desconta esses casos; a leitura estrita acima é a que vale para as metas.
+- **Falha de recusa (caso 09):** o agente pediu uma "referência de contato (código do WhatsApp)" que não existe, em vez de pedir e-mail ou telefone e avisar que a confirmação é demonstrativa.
+- **Falhas de infraestrutura:** nenhuma nessa rodada. Depois dela, a cota diária do Groq acabou (429 por tokens por dia), o que impediu a nova rodada.
+
+Correções feitas **depois** dessa rodada, usando suas falhas (por isso a próxima rodada não é um teste independente): fluxo de verificação no prompt e na descrição da ferramenta, e e-mail institucional em negrito que virava `[CONTATO PROTEGIDO]`. Antes dela, o smoke test já havia corrigido a busca por categoria no singular e a invenção de produtos após uma busca vazia.
+
+## Conversas reais (`examples/`)
+
+**Pendentes.** Devem ser cinco: catálogo, promoção expirada, pedido protegido com verificação, devolução e acesso indevido, todas gravadas com `python -m emporio.record` contra o LLM real e o relógio fixo. Nenhuma será simulada ou editada à mão.
+
+## Limitações conhecidas
+
+- O plano gratuito do Groq torna cada turno lento (cerca de 1 min) e limita o uso diário; com um plano pago isso desaparece.
+- Cada turno reenvia o manual inteiro (~4 mil tokens). Aceitável para este volume, caro em escala.
+- Verificação por contato é demonstrativa; `--customer` é identidade simulada pelo canal. Produção exigiria login ou OTP.
+- Tokenização e bloqueio de contatos desconhecidos são heurísticos; o bloqueio de pedidos é persistente e sem desbloqueio.
+- O validador cobre só valores em R$; nomes de produtos citados pelo modelo não são conferidos (o prompt proíbe inventar).
+- A sessão do canal expira em 15 minutos.
+- Modelos diferentes podem exigir ajustes de prompt; só `openai/gpt-oss-120b` foi exercitado.
+- Feriados fora do escopo; "região metropolitana" é só Campo Grande.
 
 ## O que eu faria com mais tempo
 
-- Avaliar Qdrant e busca densa/híbrida com comparação reproduzível ao baseline lexical.
-- Adicionar ReplayLLM, `make demo` e gravações de execuções reais, mantendo-as claramente identificadas.
-- Implementar adapter Firestore opcional para `StoreRepository`.
-- Investigar LLM-as-judge após avaliação humana e revisão de segurança.
-- Criar comando `emporio trace` com controle de acesso e retenção.
-- Substituir identidade simulada por login ou OTP real.
-- Executar golden set com múltiplas repetições e análise de variância.
-- Ampliar o validador de evidências para estoque, número de pedido e nome de produto.
+- Qdrant/busca densa ou híbrida, comparada ao baseline lexical.
+- ReplayLLM e `make demo` com gravações de execuções reais.
+- Adapter Firestore para o `StoreRepository`.
+- LLM-as-judge para o golden set, com múltiplas repetições e análise de variância.
+- Comando `emporio trace` com controle de acesso e retenção.
+- Login ou OTP reais; política de desbloqueio e auditoria de pedidos bloqueados.
+- Validador de evidências também para estoque, número de pedido e nome de produto.
+- Reduzir o prompt (manual por seção, cache de prompt do provedor).
 
-Antes de uso externo, resolver as pendências em `docs/DECISIONS.md`, inclusive modelo, tokenizador, política de contatos, lockout, tickets e avaliação adversarial. O projeto não está pronto para produção.
+## Uso de assistentes de IA
 
-A preparação isolada de protocolo OpenAI-compatible e o harness de captura exclusivamente em memória estão descritos em [adaptador inativo](docs/ADAPTADOR-INATIVO.md). Não há transporte HTTP real ou ativação por variáveis de ambiente; a captura não é uma projeção de privacidade aprovada.
+- **Arquitetura:** propostas e revisões cruzadas de Claude, ChatGPT, Gemini, DeepSeek e GLM, validadas contra os CSVs e o manual e consolidadas pelo responsável na ADR-000.
+- **Planejamento:** Claude Code com o GSD (`gsd-core`) gerou o `.planning/` (requisitos, roadmap de 5 fases) a partir da ADR-000.
+- **Implementação das fases 1 a 4 (offline):** GPT/Codex, em ramos separados, integrados por revisão de Claude Code.
+- **Caminho real com LLM, correções do smoke test e do golden set, gravador de conversas e documentação final:** Claude Code.
+- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (202 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
