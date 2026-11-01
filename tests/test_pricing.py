@@ -9,6 +9,7 @@ from emporio.rules.pricing import (
     combined_payment_allowed,
     discounted_cents,
     installment_options,
+    minimum_installment_cents,
     may_require_special_quote,
     price_cart,
     quote_shipping,
@@ -72,7 +73,7 @@ def test_installment_limits(count, valid_total, invalid_total):
 
 def test_installments_distribute_cents_without_losing_money():
     installment = installment_options(10001)[2]
-    assert installment.amounts_cents == (3334, 3334, 3333)
+    assert installment.amounts_cents == (3333, 3333, 3335)  # n-1 parcelas iguais; a última fecha o total
     assert sum(installment.amounts_cents) == 10001
     assert installment_options(1)[0].valid
 
@@ -147,3 +148,20 @@ def test_rounding_happens_per_unit_and_zero_percent_promotion_blocks_pix():
     assert cart.subtotal_cents == 153
     zero = price_cart([item(price=10000, promotion=Decimal('0'))]).items[0]
     assert zero.unit_pix_cents == zero.unit_final_cents == 10000
+
+
+@pytest.mark.parametrize('count', [7, 8, 9, 11])
+def test_installments_of_2199_close_the_exact_total_with_the_last_one(count):
+    option = installment_options(219900)[count - 1]
+    common, last = option.amounts_cents[0], option.amounts_cents[-1]
+    assert option.amounts_cents[:-1] == (common,) * (count - 1)
+    assert common * (count - 1) + last == 219900 and sum(option.amounts_cents) == 219900
+    assert common <= last < common + count  # a diferença é só o resto da divisão
+    assert option.valid
+
+
+def test_every_installment_plan_sums_exactly_for_awkward_totals():
+    for total in (1, 5, 6, 99, 10001, 219900, 123457, 999999):
+        for option in installment_options(total):
+            assert sum(option.amounts_cents) == total and min(option.amounts_cents) >= 0
+            assert option.valid == (min(option.amounts_cents) >= minimum_installment_cents(option.count))

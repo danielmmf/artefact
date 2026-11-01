@@ -114,3 +114,12 @@ def test_city_variations_and_safe_database_error(repository):
     result = quote_payment(repository, {'items': [{'product_id': 81, 'quantity': 1}]})
     assert not result.ok and result.error.code == 'internal_error'
     assert 'sqlite' not in result.model_dump_json().lower()
+
+
+def test_quote_installments_expose_common_and_last_amount_that_close_the_total(repository):
+    data = quote_payment(repository, {'items': [{'product_id': 95, 'quantity': 1}]}).data
+    for line in data['installments']:
+        n = line['n']
+        assert Decimal(line['valor']) * (n - 1) + Decimal(line['last_amount']) == Decimal(data['subtotal'])
+    eight = data['installments'][7]
+    assert (eight['valor'], eight['last_amount']) == (Decimal('274.87'), Decimal('274.91'))

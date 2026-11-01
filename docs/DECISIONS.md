@@ -94,7 +94,7 @@ S-a a S-l e T-1 a T-9 permanecem como registrados acima; esta seção não alter
 | Contatos institucionais divergentes e DEC-06 | RESOLVIDO | Telefone, e-mail e endereço da loja são dados institucionais públicos, não pessoais (§8 abaixo); só contatos de clientes são tokenizados. |
 | Projeção do manual para serviço externo | RESOLVIDO | Sem projeção: o manual vai inteiro no prompt (DEC-03), incluindo contatos institucionais (§8 abaixo). |
 | Subtotal sem frete para parcelas e pagamento combinado | PENDENTE | Confirmar a base usada atualmente em `quote_payment` com a área comercial. |
-| Arredondamento e distribuição de centavos | PENDENTE | Confirmar HALF_UP por unidade e distribuição dos centavos nas primeiras parcelas. |
+| Arredondamento e distribuição de centavos | RESOLVIDO | Decidido pelo responsável em 2026-11-01: n−1 parcelas iguais (piso de total÷n) e a última absorve o resto, de modo que a soma fecha o total exato (ex.: 8x de R$ 2.199,00 = 7 × 274,87 + 274,91). A parcela mínima vale para a menor parcela. Desconto de promoção segue HALF_UP por unidade. |
 | Bloqueio persistente por pedido | PENDENTE | Definir desbloqueio, auditoria e mitigação de negação de serviço; o bloqueio atual não expira automaticamente. |
 | Contatos compartilhados | PENDENTE | Definir prova adicional e política para contatos compartilhados; a implementação nega a verificação por contato compartilhado. |
 | Tickets humanos | PENDENTE | Definir dados úteis e seguros: atualmente o resumo livre é descartado. |

@@ -168,13 +168,13 @@ def minimum_installment_cents(count: int) -> int:
 
 
 def installment_options(total_cents: int) -> tuple[Installment, ...]:
-    """Installment sums exactly equal the total; odd cents go to earliest terms."""
+    """n-1 equal installments (floor of total/n); the last one absorbs the remainder, so the sum is exact."""
     if isinstance(total_cents, bool) or not isinstance(total_cents, int) or total_cents < 0:
         raise ValueError('total must be nonnegative integer cents')
     options = []
     for count in range(1, 13):
-        base, remainder = divmod(total_cents, count)
-        amounts = tuple(base + (1 if i < remainder else 0) for i in range(count))
+        base = total_cents // count
+        amounts = (base,) * (count - 1) + (total_cents - base * (count - 1),)
         valid = min(amounts) >= minimum_installment_cents(count)
         options.append(Installment(
             count=count,

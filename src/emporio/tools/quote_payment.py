@@ -78,7 +78,7 @@ def _quote_payment(repository: StoreRepository, args: dict) -> ToolResult:
             'special_quote_required': shipping.special_quote_possible,
             'special_quote_note': 'Pode exigir cotação especial.' if shipping.special_quote_possible else None,
         }
-        installments = [{'n': option.count, 'valor': from_cents(option.amounts_cents[0]),
+        installments = [{'n': option.count, 'valor': from_cents(option.amounts_cents[0]), 'last_amount': from_cents(option.amounts_cents[-1]),
                          'amounts': [from_cents(amount) for amount in option.amounts_cents],
                          'valid': option.valid, 'reason': option.reason}
                         for option in installment_options(cart.subtotal_cents)]
