@@ -177,4 +177,6 @@ Gravações anteriores com turnos que caíram na resposta segura de contingênci
 - **Planejamento:** Claude Code com o GSD (`gsd-core`) gerou o `.planning/` (requisitos, roadmap de 5 fases) a partir da ADR-000.
 - **Implementação das fases 1 a 4 (offline):** GPT/Codex, em ramos separados, integrados por revisão de Claude Code.
 - **Caminho real com LLM, correções do smoke test e do golden set, gravador de conversas e documentação final:** Claude Code.
-- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (229 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
+- **Navegação do código:** o Graphify foi usado como índice de navegação do código (para localizar módulos e relações), **não como fonte de verdade**: o que vale é o código, os testes e os relatórios. A saída dele (`graphify-out/`) fica fora do repositório.
+- **Revisões finais:** Claude e ChatGPT revisaram o repositório publicado antes da entrega; os ajustes que saíram dessas revisões estão no histórico de commits (por exemplo, a listagem completa de catálogo, a sinalização de divergência na data de recebimento e a regra de não afirmar nada fora do manual).
+- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (238 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
