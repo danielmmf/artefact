@@ -23,7 +23,7 @@ def test_category_filter_tolerates_case_accent_and_plural(repo, category):
 
 
 def test_category_filter_maps_other_singular_terms_and_rejects_unknown(repo):
-    assert search_products(repo, {'category': 'ukulele', 'limit': 50}).data['total_matches'] > 0
+    assert search_products(repo, {'category': 'ukulele', 'limit': 20}).data['total_matches'] > 0
     assert search_products(repo, {'category': 'bateria'}).data['total_matches'] > 0
     assert search_products(repo, {'category': 'acordeon'}).data['products'] == []
 
@@ -190,3 +190,16 @@ def test_eval_checker_for_the_no_information_case():
     assert all(ok for ok, _ in good.values())
     assert not checks_for(case, 'Sim, damos aulas de violão e aceitamos instrumento usado.', [])['sem_afirmar_servico'][0]
     assert checks_for(case, 'Não damos aulas, mas a equipe pode confirmar a troca.', [])['sem_afirmar_servico'][0]
+
+
+def test_prompt_orients_listings_with_total_and_grouping_and_tool_exposes_the_totals(env, tmp_path):
+    llm = FakeProviderLLM([AssistantReply(tool_calls=(FunctionCall('c1', 'search_products', '{"category":"violão","max_price":1000,"limit":20}'),)),
+                           AssistantReply(content='Há 12 violões até R$ 1.000,00 e mostro os 12: 5 de nylon e 7 de aço.')])
+    answer, messages = ConversationEngine(setup_registry(env), llm, tmp_path / 't.jsonl').turn('Quais violões até R$ 1000?')
+    system = llm.calls[0][0]['content']
+    assert 'chame search_products com limit 20' in system and 'total_matches' in system and 'Agrupe por tipo' in system
+    result = json.loads(next(m['content'] for m in messages if m['role'] == 'tool'))['data']
+    assert (result['total_matches'], result['returned'], result['has_more']) == (12, 12, False)
+    assert answer.startswith('Há 12 violões')
+    schema = next(d for d in setup_registry(env).definitions() if d['function']['name'] == 'search_products')
+    assert schema['function']['parameters']['properties']['limit']['maximum'] == 20

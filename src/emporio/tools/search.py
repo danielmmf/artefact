@@ -13,7 +13,7 @@ class SearchInput(BaseModel):
     min_price: Decimal | None = Field(default=None, ge=0, allow_inf_nan=False, max_digits=12, decimal_places=2)
     max_price: Decimal | None = Field(default=None, ge=0, allow_inf_nan=False, max_digits=12, decimal_places=2)
     only_available: bool = Field(default=True, strict=True)
-    limit: int = Field(default=5, ge=1, le=50, strict=True)
+    limit: int = Field(default=5, ge=1, le=20, strict=True, description='Quantos produtos devolver (1 a 20). Em perguntas de listagem ("quais violões até R$ 1000?") use 20 para mostrar todos; total_matches informa quantos existem.')
     @model_validator(mode='after')
     def validate_ranges(self):
         if self.min_price is not None and self.max_price is not None and self.min_price > self.max_price:
@@ -40,4 +40,4 @@ def search_products(repository: StoreRepository, args: dict) -> ToolResult:
                         'availability': availability(product.status, product.stock_quantity), 'stock_quantity': product.stock_quantity,
                         'price_info': {'list_price': str(from_cents(pricing.price_cents)), 'final_price': str(from_cents(final)),
                                        'active_promotion': promo.model_dump(mode='json') if promo else None}})
-    return ToolResult(ok=True, data={'products': results, 'total_matches': len(ids), 'search_backend': backend})
+    return ToolResult(ok=True, data={'products': results, 'total_matches': len(ids), 'returned': len(results), 'has_more': len(ids) > len(results), 'search_backend': backend})

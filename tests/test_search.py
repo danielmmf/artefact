@@ -21,7 +21,7 @@ def test_name_accent_fuzzy_and_no_match(repo):
     assert search_products(repo, {'query': 'zzzzzzzzzzz'}).data['products'] == []
 
 def test_filters_and_availability(repo):
-    data = search_products(repo, {'category': 'Violões', 'min_price': '1967.18', 'max_price': '1967.18', 'only_available': True, 'limit': 50}).data
+    data = search_products(repo, {'category': 'Violões', 'min_price': '1967.18', 'max_price': '1967.18', 'only_available': True, 'limit': 20}).data
     assert [p['product_id'] for p in data['products']] == [90]
     assert data['products'][0]['price_info']['active_promotion']['discount_percent'] == '18'
     assert search_products(repo, {'category': 'Violões', 'min_price': '1967.19', 'max_price': '1967.19'}).data['products'] == []
@@ -34,6 +34,21 @@ def test_empty_malformed_and_description_protection(repo):
     assert search_products(repo, {'query': '" OR *'}).data['products'] == []
     assert search_products(repo, {'limit': 0}).error.code == 'invalid_input'
     assert search_products(repo, {'min_price': 10, 'max_price': 1}).error.code == 'invalid_input'
-    result = search_products(repo, {'query': 'Fender Jazz Bass', 'only_available': False, 'limit': 50}).data
+    result = search_products(repo, {'query': 'Fender Jazz Bass', 'only_available': False, 'limit': 20}).data
     assert any(p['product_id'] == 135 for p in result['products'])
     assert all('description' not in p for p in result['products'])
+
+
+def test_listing_query_returns_every_match_with_total_and_flags(repo):
+    """'Quais violões até R$ 1000?' tem 12 disponíveis: com limit 20 vêm todos, nylon e aço, e a resposta informa o total."""
+    data = search_products(repo, {'category': 'violão', 'max_price': '1000', 'limit': 20}).data
+    assert data['total_matches'] == 12 and data['returned'] == 12 and data['has_more'] is False
+    names = [p['name'] for p in data['products']]
+    assert sum('Nylon' in n for n in names) == 5 and sum('Aço' in n for n in names) == 7  # nylon e aço, não só um tipo
+    default = search_products(repo, {'category': 'violão', 'max_price': '1000'}).data
+    assert default['total_matches'] == 12 and default['returned'] == 5 and default['has_more'] is True
+
+
+@pytest.mark.parametrize('limit', [0, 21, 50])
+def test_limit_is_bounded_to_twenty(repo, limit):
+    assert search_products(repo, {'limit': limit}).error.code == 'invalid_input'
