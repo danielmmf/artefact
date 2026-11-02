@@ -37,12 +37,12 @@ Estados: **aprovado** = evidência (teste, execução real ou relatório) sufici
 | ORD-01 | aprovado | src/emporio/appdb/security_store.py; tests/test_appdb.py | Banco local não é implantação de produção. |
 | ORD-02 | parcial | src/emporio/repository/sqlite.py; tests/test_order_security.py | Observações livres omitidas para privacidade; requisito pede observação. |
 | ORD-03 | parcial | src/emporio/rules/returns.py; tests/test_returns.py | Nota livre em cancelamento omitida; falta conciliar requisito e privacidade. |
-| ORD-04 | parcial | src/emporio/tools/escalation.py; tests/test_escalation.py | Resumo é descartado; utilidade do ticket aguarda decisão. |
+| ORD-04 | parcial | src/emporio/tools/escalation.py; tests/test_escalation.py; tests/test_real_path.py | Registro interno com categoria e horário, sem contato nem texto livre; o agente informa protocolo e prazo de 24 horas úteis, mas não há entrega real à equipe. |
 | SEC-01 | aprovado | src/emporio/tools/registry.py; tests/test_order_security.py; src/emporio/cli.py | Identidade exclusivamente simulada. |
 | SEC-02 | parcial | tests/test_order_security.py; src/emporio/security/access.py | Contatos compartilhados são negados; decisão de tratamento pendente. |
 | SEC-03 | aprovado | tests/test_order_security.py; tests/test_agent_history.py | Verificação demonstrativa não é autenticação real. |
 | SEC-04 | parcial | tests/test_order_security.py; src/emporio/appdb/security_store.py | Bloqueio persistente pode causar negação de serviço; desbloqueio pendente. |
-| SEC-05 | parcial | src/emporio/agent/privacy.py; tests/test_real_path.py; tests/test_agent_loop.py | Tokenização heurística de contatos de clientes; formatos não previstos são bloqueados, sem garantia de cobertura total. |
+| SEC-05 | parcial | src/emporio/agent/privacy.py; src/emporio/security/contacts.py; tests/test_real_path.py | Tokenização com NFKC, sem caracteres Unicode de formatação e dígitos em ASCII; ainda heurística, sem garantia de cobertura total. |
 | SEC-06 | parcial | tests/test_order_security.py; tests/test_agent_history.py; tests/test_trace_phase4.py | Varredura limitada aos artefatos e cenários exercitados. |
 | SEC-07 | parcial | src/emporio/repository/sqlite.py; tests/test_order_security.py | Campos livres de outras fontes ainda podem conter dados privados. |
 | SEC-08 | aprovado | tests/test_agent_loop.py; tests/test_order_security.py | Demonstração de autorização para os casos testados, não prova universal. |
@@ -52,11 +52,11 @@ Estados: **aprovado** = evidência (teste, execução real ou relatório) sufici
 | AGT-04 | aprovado | src/emporio/agent/prompt.py; docs/DECISIONS.md seção 8 | Manual integral no prompt; contatos institucionais da loja são dados públicos. |
 | AGT-05 | aprovado | src/emporio/agent/prompt.py; evals/reports/golden-20261101T215907Z.json | Persona, escopo e recusas avaliados (recusas 100%). |
 | AGT-06 | parcial | tests/test_product.py; tests/test_real_path.py; golden set | Nomes divergentes (T-2) cobertos em ferramenta; sem validador de nomes nem de afirmações de política na saída do LLM (regra genérica no prompt + caso 17 do golden set). |
-| AGT-07 | parcial | tests/test_money_validator.py; tests/test_real_path.py; src/emporio/agent/money_validator.py | Valores do manual contam como evidência; padrões não reconhecem todas as formas de expressar valores. |
+| AGT-07 | parcial | tests/test_money_validator.py; tests/test_real_path.py; src/emporio/agent/money_validator.py | Valores do manual só em frases de frete, parcela mínima ou pagamento combinado; filtro de preço só se dito pelo cliente no turno; padrões não reconhecem todas as formas de expressar valores. |
 | AGT-08 | parcial | tests/test_agent_history.py; src/emporio/agent/history.py | Bytes UTF-8/3 não são tokens do modelo real. |
 | AGT-09 | parcial | tests/test_agent_history.py; src/emporio/agent/history.py | Histórico persiste apenas usuário e resposta; proteção heurística. |
 | AGT-10 | parcial | tests/test_agent_loop.py; tests/test_agent_history.py; tests/test_trace_phase4.py | Varredura e injeção restritas aos cenários testados. |
-| EVL-01 | parcial | src/emporio/eval_runner.py; evals/reports/golden-20261101T215907Z.json (+5 rodadas anteriores) | Golden set (17 casos): exatidão 100%, recusas 100%, ferramentas 75% (meta 90%; teto da métrica). Validação independente (`evals/holdout_set.json`, uma execução em `662dfed`): 6/8 casos; leitura corrigida e reexecução pós-correção no README. |
+| EVL-01 | parcial | src/emporio/eval_runner.py; tests/test_eval_runner_mutations.py; evals/reports/golden-20261101T235011Z.json (+ rodadas anteriores) | Golden set (17 casos, `3391bfd`): 17/17 nas verificações automáticas; ferramentas 75% (meta 90%; teto da métrica). Verificações são regex sem LLM-as-judge e não cobrem fatos em texto livre. Validação independente: 6/8 (README). |
 | CLI-01 | aprovado | Makefile; src/emporio/cli.py | A ingestão requer os arquivos de entrada. |
 | CLI-02 | aprovado | src/emporio/cli.py (`chat`, `chat --offline`); tests/test_real_path.py; tests/test_offline_phase4.py | Conversa livre com o LLM do `.env`; sem Rich. |
 | CLI-03 | aprovado | src/emporio/cli.py; tests/test_offline_phase4.py | Aviso não transforma verificação em autenticação. |
