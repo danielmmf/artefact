@@ -1,0 +1,116 @@
+{
+  "cenario": "S0-baseline",
+  "arquitetura": "v1.0.2",
+  "execucao": {
+    "started_at": "2026-11-02T17:57:36.246092+00:00",
+    "git_head": "1cafca7",
+    "scenario_sha256": "1d2bf76d1c407a938aeb09007c539d9a916b00d7b8f5474d2912894780dad6c6",
+    "criterios_pre_registrados": true,
+    "python": "3.13.15",
+    "plataforma": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "cpus": 20
+  },
+  "dados": {
+    "sinteticos": true,
+    "seed": 20261102,
+    "workload_sha256": "edb50eda18d071e2ee987f37dbd031cdde00aa5e105378437f50a1b3a56ffedc",
+    "turnos_por_tipo": {
+      "conversa": 23,
+      "horario": 16,
+      "listagem": 22,
+      "preco": 39
+    },
+    "catalogo": "oficial, 61 produtos disponíveis",
+    "latencia_llm_simulada_ms": 300
+  },
+  "metricas": {
+    "turnos": 100,
+    "tempo_total_s": 12.007,
+    "erros_de_execucao": 0,
+    "contingencias_seguras": 0,
+    "sobrecarga_local_p50_ms": 9.8,
+    "sobrecarga_local_p95_ms": 20.1,
+    "latencia_turno_p50_ms": 609.33,
+    "latencia_turno_p95_ms": 620.41,
+    "vazao_turnos_por_s": 8.329,
+    "tokens_prompt_estimados_p50": 9611,
+    "tokens_prompt_estimados_max": 11249,
+    "chamadas_llm_por_turno": 1.77,
+    "erros_detalhe": [],
+    "busca_recall_at_5": 0.8,
+    "busca_mrr": 0.75
+  },
+  "avaliacao": [
+    {
+      "id": "erros_de_execucao",
+      "valor": 0,
+      "unidade": "erros",
+      "criterio": "== 0",
+      "resultado": "atendido"
+    },
+    {
+      "id": "contingencias_seguras",
+      "valor": 0,
+      "unidade": "respostas",
+      "criterio": "== 0",
+      "resultado": "atendido"
+    },
+    {
+      "id": "sobrecarga_local_p95_ms",
+      "valor": 20.1,
+      "unidade": "ms",
+      "criterio": "<= 100",
+      "resultado": "atendido"
+    },
+    {
+      "id": "busca_recall_at_5",
+      "valor": 0.8,
+      "unidade": "fração",
+      "criterio": "== 0.8",
+      "resultado": "atendido"
+    },
+    {
+      "id": "busca_mrr",
+      "valor": 0.75,
+      "unidade": "fração",
+      "criterio": "== 0.75",
+      "resultado": "atendido"
+    },
+    {
+      "id": "latencia_turno_p50_ms",
+      "valor": 609.33,
+      "unidade": "ms",
+      "criterio": null,
+      "resultado": "referência"
+    },
+    {
+      "id": "latencia_turno_p95_ms",
+      "valor": 620.41,
+      "unidade": "ms",
+      "criterio": null,
+      "resultado": "referência"
+    },
+    {
+      "id": "vazao_turnos_por_s",
+      "valor": 8.329,
+      "unidade": "turnos/s",
+      "criterio": null,
+      "resultado": "referência"
+    },
+    {
+      "id": "tokens_prompt_estimados_p50",
+      "valor": 9611,
+      "unidade": "tokens",
+      "criterio": null,
+      "resultado": "referência"
+    },
+    {
+      "id": "tokens_prompt_estimados_max",
+      "valor": 11249,
+      "unidade": "tokens",
+      "criterio": null,
+      "resultado": "referência"
+    }
+  ],
+  "conclusao": "Se o cenário mudar para 5 usuários simultâneos, catálogo de 65 produtos e manual de 8 páginas (cerca de 14 mil caracteres) inteiro no prompt de sistema, o gargalo medido foi o LLM e o tamanho do prompt: a sobrecarga local foi 20.1 ms no p95 contra 531 ms de latência simulada do LLM por turno, e o pedido ao LLM tem cerca de 9611 tokens estimados; o código local não é gargalo, e a arquitetura recomendada é v1.0.2 (cenário de referência, sem alternativa medida), pelos números: erros 0, contingências 0, sobrecarga local p95 20.1 ms, latência do turno p95 620.41 ms, 8.329 turnos/s, tokens estimados p50 9611, recall@5 0.8, MRR 0.75."
+}
