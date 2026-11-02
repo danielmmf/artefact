@@ -1,0 +1,28 @@
+"""emporio-lab scenario list | run <nome> [--strict] [--allow-dirty]"""
+import argparse
+from pathlib import Path
+
+from emporio_lab import runner
+from emporio_lab import scenario as sc
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(prog='emporio-lab')
+    sub = parser.add_subparsers(dest='group', required=True)
+    group = sub.add_parser('scenario').add_subparsers(dest='action', required=True)
+    group.add_parser('list')
+    run = group.add_parser('run')
+    run.add_argument('name')
+    run.add_argument('--strict', action='store_true', help='sai com 1 se algum critério for reprovado (padrão: sai com 0 e registra no relatório)')
+    run.add_argument('--allow-dirty', action='store_true', help='permite rodar com o cenário não commitado (o relatório registra que não foi pré-registrado)')
+    args = parser.parse_args(argv)
+    root = Path.cwd()
+    if args.action == 'list':
+        for s in sc.list_all(root):
+            print(f'{s.nome:26} [{s.status:10}] {s.resumo()}')
+        return 0
+    return runner.run(args.name, root, strict=args.strict, allow_dirty=args.allow_dirty)
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

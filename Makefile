@@ -10,7 +10,7 @@ test:
 bench: ingest
 	uv run --locked python -m emporio.search_bench
 
-.PHONY: chat eval eval-strict
+.PHONY: chat eval eval-strict scenario scenario-list
 chat:
 	uv run --locked emporio chat
 
@@ -19,3 +19,10 @@ eval:
 
 eval-strict:
 	uv run --locked python -m emporio.eval_runner --strict
+
+scenario:
+	@test -n "$(S)" || { echo "Uso: make scenario S=<nome>  (veja make scenario-list)"; exit 2; }
+	uv run --locked --extra lab emporio-lab scenario run $(S)
+
+scenario-list:
+	uv run --locked --extra lab emporio-lab scenario list

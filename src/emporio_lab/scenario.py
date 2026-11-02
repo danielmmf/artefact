@@ -83,8 +83,10 @@ class Scenario(BaseModel):
                 raise ValueError('ids de métricas duplicados')
         return self
 
-    def resumo(self) -> str:
-        return self.descricao.strip().splitlines()[0]
+    def resumo(self, limite: int = 100) -> str:
+        """Primeira frase da descrição, em uma linha (para `scenario-list`)."""
+        frase = self.descricao.strip().split('. ')[0].rstrip('.')
+        return frase if len(frase) <= limite else frase[:limite - 1].rstrip() + '…'
 
 
 class ScenarioError(Exception):
