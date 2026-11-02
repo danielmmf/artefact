@@ -8,7 +8,7 @@ Ponto de partida para o lab. Tudo é reproduzível a partir do repositório e do
 
 | Item | Valor |
 | --- | --- |
-| Testes (`make test`, sem chave, sem Docker e sem rede externa; alguns usam loopback) | 297 passando |
+| Testes (`make test`, sem chave, sem Docker e sem rede externa; alguns usam loopback) | 368 passando |
 | Busca (`make bench`, 10 consultas) | recall@5 = 0.8 · MRR = 0.75 (`evals/reports/search.json`) |
 | Golden set | 17 casos (`evals/golden_set.json`; o caso 17 foi adicionado depois da validação independente) |
 | Validação independente | 8 casos (`evals/holdout_set.json`, imutável desde `662dfed`) |
