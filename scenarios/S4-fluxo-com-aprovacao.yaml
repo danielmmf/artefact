@@ -1,0 +1,8 @@
+nome: S4-fluxo-com-aprovacao
+status: planejado
+descricao: >-
+  Atendimento que pausa para aprovação humana e retoma após reinício. Os critérios das métricas ainda não
+  foram definidos; este cenário não pode ser executado antes disso.
+mudanca_em_relacao_a_v1_0_2: O fluxo passa a ter uma pausa para aprovação humana e a retomada após reinício.
+hipotese: O loop próprio não persiste o estado do fluxo entre a pausa e a retomada.
+arquitetura_candidata: LangGraph com persistência (substitui a Etapa 4 condicional).

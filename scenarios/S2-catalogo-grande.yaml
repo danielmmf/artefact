@@ -1,0 +1,8 @@
+nome: S2-catalogo-grande
+status: planejado
+descricao: >-
+  Catálogo de 50 mil produtos sintéticos. Os critérios das métricas (recall@5, MRR e latência, com
+  dataset de consultas rotulado antes) ainda não foram definidos; este cenário não pode ser executado antes disso.
+mudanca_em_relacao_a_v1_0_2: Catálogo de 50 mil produtos sintéticos, em vez de 65.
+hipotese: A busca FTS5 perde recall em consultas por intenção.
+arquitetura_candidata: Qdrant local com busca híbrida (RRF).

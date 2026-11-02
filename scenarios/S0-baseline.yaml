@@ -1,0 +1,73 @@
+nome: S0-baseline
+status: mensuravel
+descricao: >-
+  Referência de todos os outros cenários: a v1.0.2 exatamente como foi entregue, com o catálogo oficial
+  (65 produtos), o manual de 8 páginas inteiro no prompt e poucos usuários conversando ao mesmo tempo.
+  Mede o que o código local custa por turno, o tamanho do prompt e a qualidade da busca, para que as
+  alternativas dos outros cenários tenham contra o que ser comparadas.
+mudanca_em_relacao_a_v1_0_2: >-
+  Nada. É a própria v1.0.2, sem alternativa. Serve para medir a referência antes de comparar qualquer outra
+  arquitetura.
+hipotese: >-
+  Com poucos usuários não aparece gargalo no código local: o custo por turno é dominado pelo LLM (latência
+  e tokens do manual enviado inteiro a cada turno), e não por SQLite, ferramentas ou validador. Se esta
+  hipótese falhar, o gargalo já existe na escala da entrega e os cenários seguintes partem de outro ponto.
+arquitetura_candidata: null
+arquiteturas:
+  - v1.0.2
+parametros:
+  usuarios_simultaneos: 5
+  turnos_por_usuario: 20
+  tamanho_do_catalogo: 65
+  tamanho_do_conhecimento: manual de 8 páginas (cerca de 14 mil caracteres) inteiro no prompt de sistema
+  requisitos_de_fluxo: conversa síncrona de pergunta e resposta, sem pausa para aprovação humana
+  latencia_llm_simulada_ms: 300
+  seed: 20261102
+metricas:
+  # Critérios (definidos ANTES da primeira execução; a execução é recusada se este arquivo tiver mudanças não commitadas).
+  - id: erros_de_execucao
+    descricao: Exceções, erros internos do motor e erros de banco (por exemplo, database is locked) durante a carga
+    unidade: erros
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: contingencias_seguras
+    descricao: Respostas de contingência segura (o agente desistiu de responder) durante a carga
+    unidade: respostas
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: sobrecarga_local_p95_ms
+    descricao: p95 do tempo por turno gasto fora do LLM (ferramentas, SQLite, validador, histórico e trace)
+    unidade: ms
+    tipo: criterio
+    criterio: {operador: "<=", valor: 100}
+  - id: busca_recall_at_5
+    descricao: recall@5 da busca nas 10 consultas rotuladas (valor publicado da v1.0.2)
+    unidade: fração
+    tipo: criterio
+    criterio: {operador: "==", valor: 0.8}
+  - id: busca_mrr
+    descricao: MRR da busca nas 10 consultas rotuladas (valor publicado da v1.0.2)
+    unidade: fração
+    tipo: criterio
+    criterio: {operador: "==", valor: 0.75}
+  # Referências (apenas registradas, servem de base de comparação para os outros cenários).
+  - id: latencia_turno_p50_ms
+    descricao: Mediana do tempo total por turno, incluindo a latência simulada do LLM
+    unidade: ms
+    tipo: referencia
+  - id: latencia_turno_p95_ms
+    descricao: p95 do tempo total por turno, incluindo a latência simulada do LLM
+    unidade: ms
+    tipo: referencia
+  - id: vazao_turnos_por_s
+    descricao: Turnos concluídos por segundo de relógio durante a carga
+    unidade: turnos/s
+    tipo: referencia
+  - id: tokens_prompt_estimados_p50
+    descricao: Mediana dos tokens estimados do pedido enviado ao LLM (estimativa conservadora do projeto, bytes/3)
+    unidade: tokens
+    tipo: referencia
+  - id: tokens_prompt_estimados_max
+    descricao: Máximo dos tokens estimados do pedido enviado ao LLM (estimativa conservadora do projeto, bytes/3)
+    unidade: tokens
+    tipo: referencia

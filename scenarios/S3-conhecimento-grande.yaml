@@ -1,0 +1,8 @@
+nome: S3-conhecimento-grande
+status: planejado
+descricao: >-
+  Manual expandido e múltiplos documentos sintéticos. Os critérios das métricas ainda não foram definidos;
+  este cenário não pode ser executado antes disso.
+mudanca_em_relacao_a_v1_0_2: Base de conhecimento muito maior que o manual de 8 páginas.
+hipotese: O contexto completo deixa de caber ou de ser viável em custo.
+arquitetura_candidata: RAG com Qdrant, comparado ao contexto completo.

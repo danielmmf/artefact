@@ -1,0 +1,9 @@
+nome: S1-mil-usuarios
+status: planejado
+descricao: >-
+  1.000 usuários simultâneos. Os critérios das métricas ainda não foram definidos; este cenário não pode
+  ser executado antes disso.
+mudanca_em_relacao_a_v1_0_2: Carga de 1.000 usuários simultâneos, em vez de poucos.
+hipotese: >-
+  Gargalos de concorrência no SQLite, execução síncrona e custo por turno do manual no prompt.
+arquitetura_candidata: API assíncrona, Postgres para o estado e cache de prompt.

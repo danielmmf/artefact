@@ -1,10 +1,10 @@
 .PHONY: setup ingest test
 setup:
-	uv sync --locked --extra dev
+	uv sync --locked --extra dev --extra lab
 ingest:
 	uv run --locked emporio ingest
 test:
-	uv run --locked --extra dev pytest
+	uv run --locked --extra dev --extra lab pytest
 
 .PHONY: bench
 bench: ingest

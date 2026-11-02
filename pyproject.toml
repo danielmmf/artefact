@@ -15,12 +15,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10"]
+lab = ["pyyaml>=6,<7"]
 
 [project.scripts]
 emporio = "emporio.cli:main"
+emporio-lab = "emporio_lab.cli:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/emporio"]
+packages = ["src/emporio", "src/emporio_lab"]
