@@ -35,14 +35,14 @@ def test_institutional_contacts_are_public_not_personal_data():
     assert is_institutional('contato@empóriodamusica.com.br')
 
 
-def test_customer_contacts_stay_tokenized_and_unknown_formats_stay_blocked():
+def test_customer_contacts_stay_tokenized_and_unknown_email_forms_stay_blocked():
     vault = ContactVault('s2')
     assert protect_dynamic('meu e-mail é lucas.mendes@jmail.com e (67) 99812-3456', vault) == 'meu e-mail é [EMAIL_1] e [PHONE_1]'
     with pytest.raises(Exception):
         protect_dynamic('escreva para pessoa arroba exemplo ponto com', vault)
-    # institucional ao lado de dado desconhecido não libera o desconhecido
-    with pytest.raises(Exception):
-        protect_dynamic('(67) 3341-4444 e 5567 9 8765 4321 0', vault)
+    # Política (v1.0.2 em revisão): sequência de dígitos não reconhecida passa como está; não há bloqueio por dígitos.
+    unknown = '(67) 3341-4444 e 5567 9 8765 4321 0'
+    assert protect_dynamic(unknown, vault) == unknown
 
 
 class FakeProviderLLM:

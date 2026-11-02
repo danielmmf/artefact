@@ -3,10 +3,18 @@ import re
 import unicodedata
 
 EMAIL = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
-PHONE = re.compile(r'^\+?[\d\s().-]+$')
+
+# Telefone brasileiro: prefixo 55 opcional, DDD válido (lista da Anatel), e 8 ou 9 dígitos no agrupamento usual
+# (celular 9xxxx-xxxx; fixo xxxx-xxxx). Qualquer separador comum entre os grupos (espaço . - _ : / , ; |), no máximo 3.
+# Datas (20/03/2026 10:00), CEP (79202-333), valores (R$ 2.199,00), pedidos e rastreio não têm esse formato.
+_SEP = r'[\s._:/,;|\-]{0,3}'
+_DDD = r'(?:1[1-9]|2[12478]|3[1-578]|4[1-9]|5[1345]|6[1-9]|7[134579]|8[1-9]|9[1-9])'
+_PHONE_CORE = rf'(?:\+?55{_SEP})?(?:\({_DDD}\)|{_DDD}){_SEP}(?:9\d{{4}}{_SEP}\d{{4}}|[2-9]\d{{3}}{_SEP}\d{{4}})'
+PHONE = re.compile(rf'^{_PHONE_CORE}$')
+_EMAIL_IN_TEXT = r"[\w.!#$%&'*+/=?^_`{|}~-]+@[\w.-]+\.[^\W\d_]{2,}"
+CONTACT_IN_TEXT = re.compile(rf"{_EMAIL_IN_TEXT}|(?<![\w+]){_PHONE_CORE}(?!\w)")
 UNICODE_DASHES = re.compile('[\u2010-\u2015\u2212\ufe58\ufe63\uff0d]')
 UNICODE_SPACES = re.compile('[\u00a0\u2007\u202f]')
-CONTACT_IN_TEXT = re.compile(r"[\w.!#$%&'*+/=?^_`{|}~-]+@[\w.-]+\.[^\W\d_]{2,}|(?<!\w)(?:\+?\d|\(\d)[\d ().-]{7,}\d(?!\w)")
 
 # Contatos institucionais da loja (manual §1.2 e §7): dados públicos, não pessoais (DECISIONS §8).
 INSTITUTIONAL = frozenset({
@@ -25,7 +33,7 @@ def normalize_text(text: str) -> str:
 
 def is_institutional(value: str) -> bool:
     # Markdown (**negrito**, _itálico_) e pontuação nas bordas não mudam o contato.
-    return normalize_contact(value.strip('*_~`<>()[]"\' ,;:')) in INSTITUTIONAL
+    return normalize_contact(value.strip('*_~`<>[]"\' ,;:')) in INSTITUTIONAL
 
 def strip_institutional(text: str) -> str:
     return CONTACT_IN_TEXT.sub(lambda m: ' ' if is_institutional(m.group(0)) else m.group(0), text)
