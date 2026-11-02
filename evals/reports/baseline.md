@@ -86,7 +86,7 @@ O resultado independente se refere à versão anterior à regra "não afirmar na
 4. Amostra pequena (17 + 8 casos), 1 repetição, sem LLM-as-judge; há variação entre execuções com o mesmo código.
 5. O encaminhamento (`escalate_to_human`) só grava um registro interno sem contato; não há entrega real à equipe nem retorno.
 6. Privacidade: o provedor recebe as mensagens do cliente (contatos tokenizados); a LGPD exigiria avaliação de transferência internacional.
-7. O limite de 14 dias da divergência de recebimento (S-n) é suposição do implementador, a confirmar.
+7. O limite de 14 dias da divergência de recebimento (S-n) foi aprovado pelo responsável: gera somente alerta para a equipe conferir, sem negar o pedido nem alterar os cálculos.
 
 ## Como reproduzir
 
