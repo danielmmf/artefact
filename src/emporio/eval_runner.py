@@ -293,12 +293,22 @@ def rescore(report_path: Path, root: Path) -> dict:
             'casos_com_mudanca': changed, 'nota': 'reavaliação offline das respostas gravadas; o relatório original permanece intacto'}
 
 
-def main(argv: list[str] | None = None) -> int:
+# Erros de infraestrutura/provedor registrados no trace: o resultado não mede o agente e a execução é considerada falha.
+INFRA_ERRORS = {'http_error', 'timeout', 'transport_error', 'transport_unavailable', 'invalid_config', 'invalid_response'}
+EXIT_OK, EXIT_TARGETS_MISSED, EXIT_NO_CONFIG, EXIT_INFRA = 0, 1, 2, 3
+
+
+def main(argv: list[str] | None = None, *, llm=None) -> int:
+    """Códigos de saída: 0 = avaliação executada (metas atingidas ou não, no modo padrão); 1 = com --strict, alguma meta
+    não atingida; 2 = sem configuração do LLM; 3 = falha de infraestrutura em algum caso (rede, 429, timeout); uma exceção
+    não tratada também sai com erro. `llm` permite injetar um LLM (testes)."""
     parser = argparse.ArgumentParser(prog='emporio.eval_runner')
     parser.add_argument('--set', default='evals/golden_set.json', help='arquivo de casos (golden_set.json ou holdout_set.json)')
     parser.add_argument('--out', type=Path, help='com --rescore: arquivo de saída (padrão: <relatório>.rescored.json)')
     parser.add_argument('--rescore', type=Path, help='reavalia um relatório gravado com o avaliador atual (sem LLM)')
     parser.add_argument('--label', help='rótulo da execução (ex.: reexecucao-pos-correcao), vai para o relatório e o nome do arquivo')
+    parser.add_argument('--strict', action='store_true', help='gate: sai com código 1 se alguma meta não for atingida (padrão: sai com 0)')
+    parser.add_argument('--reports-dir', type=Path, help='onde gravar o relatório (padrão: evals/reports)')
     parser.add_argument('--only', help='ids separados por vírgula (execução parcial; relatório marcado como parcial)')
     args = parser.parse_args(argv)
     if args.rescore:
@@ -308,16 +318,16 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     settings = Settings.from_env()
-    if not configured(settings):
+    if llm is None and not configured(settings):
         print('Configure LLM_BASE_URL, LLM_MODEL e LLM_API_KEY no .env para rodar a avaliação com o LLM real.')
-        return 2
+        return EXIT_NO_CONFIG
     root = Path.cwd()
     kind = 'holdout' if 'holdout' in Path(args.set).name else 'golden'
     cases = json.loads((root / args.set).read_text(encoding='utf-8'))['cases']
     if args.only:
         wanted = set(args.only.split(','))
         cases = [c for c in cases if c['id'] in wanted]
-    llm = OpenAICompatibleAdapter(settings)
+    llm = llm or OpenAICompatibleAdapter(settings)
     started = datetime.now(timezone.utc)
     rows = []
     for case in cases:
@@ -331,16 +341,29 @@ def main(argv: list[str] | None = None) -> int:
         head = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], capture_output=True, text=True, timeout=10).stdout.strip()
     except Exception:
         head = ''
-    report = {'run': {'model': settings.llm_model, 'started_at': started.isoformat(), 'git_head': head,
+    report = {'run': {'model': settings.llm_model or str(getattr(llm, 'model', 'injetado')), 'strict': args.strict, 'started_at': started.isoformat(), 'git_head': head,
                       'partial': bool(args.only), 'temperature': 0, 'repetitions': 1, 'case_set': args.set, 'label': args.label},
               'summary': summary, 'results': rows}
-    out_dir = root / 'evals/reports'
+    out_dir = args.reports_dir or root / 'evals/reports'
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{kind}-{started.strftime('%Y%m%dT%H%M%SZ')}{'-parcial' if args.only else ''}{'-' + args.label if args.label else ''}.json"
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(summary, ensure_ascii=False, indent=2))
+    labels = {'tool_accuracy': 'acerto de ferramenta', 'exactness': 'exatidão', 'refusals': 'recusas'}
+    for key, ok in summary['met'].items():
+        print(f"Meta {labels[key]}: {summary['measured'][key]:.1%} (meta {summary['targets'][key]:.0%}) -> {'atingida' if ok else 'NÃO atingida'}")
     print(f'Relatório: {path}')
-    return 0 if all(summary['met'].values()) else 1
+    infra = [r['id'] for r in rows if any(e.get('code') in INFRA_ERRORS for e in r['errors'])]
+    if infra:
+        print(f'FALHA DE INFRAESTRUTURA em {len(infra)} caso(s) ({", ".join(infra)}): o resultado não mede o agente; repita a execução.')
+        return EXIT_INFRA
+    if all(summary['met'].values()):
+        return EXIT_OK
+    if args.strict:
+        print('Modo --strict: alguma meta não foi atingida (saída com código 1).')
+        return EXIT_TARGETS_MISSED
+    print('Metas não atingidas registradas no relatório; `make eval` sai com 0 (use `make eval-strict` como gate).')
+    return EXIT_OK
 
 
 if __name__ == '__main__':

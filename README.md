@@ -14,7 +14,8 @@ make ingest   # lê data/raw/ e gera var/store.db, data/processed/policies.md e 
 make test     # testes sem chave, sem Docker e sem rede externa (alguns usam loopback, 127.0.0.1)
 make bench    # mini-eval da busca (recall@5 e MRR), sem download
 make chat     # conversa com o LLM real configurado no .env
-make eval     # golden set (17 casos) com o LLM real; grava evals/reports/golden-*.json
+make eval         # golden set (17 casos) com o LLM real; imprime e grava o relatório com as metas; sai com 0 mesmo se uma meta não for atingida
+make eval-strict  # igual, mas sai com 1 se alguma meta não for atingida (gate; com os rótulos atuais falha sempre, pelo teto de 75% em ferramentas)
 ```
 
 Para o LLM real, copie `.env.example` para `.env` e preencha (qualquer provedor compatível com a API de chat completions da OpenAI):
@@ -196,4 +197,4 @@ Gravações anteriores com turnos que caíram na resposta segura de contingênci
 - **Caminho real com LLM, correções do smoke test e do golden set, gravador de conversas e documentação final:** Claude Code.
 - **Navegação do código:** o Graphify foi usado como índice de navegação do código (para localizar módulos e relações), **não como fonte de verdade**: o que vale é o código, os testes e os relatórios. A saída dele (`graphify-out/`) fica fora do repositório.
 - **Revisões finais:** Claude e ChatGPT revisaram o repositório publicado antes da entrega; os ajustes que saíram dessas revisões estão no histórico de commits (por exemplo, a listagem completa de catálogo, a sinalização de divergência na data de recebimento, a regra de não afirmar nada fora do manual, e, da revisão independente do ChatGPT sobre o commit `12ceae9`, as correções do validador de valores, do avaliador e da tokenização).
-- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (287 testes). Revisões de assistentes não substituem uma revisão de segurança independente.
+- Todas as decisões de produto e de escopo são do responsável pelo projeto; o código gerado por assistentes foi revisado e testado (297 testes). Revisões de assistentes não substituem uma revisão de segurança independente.

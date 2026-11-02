@@ -10,9 +10,12 @@ test:
 bench: ingest
 	uv run --locked python -m emporio.search_bench
 
-.PHONY: chat eval
+.PHONY: chat eval eval-strict
 chat:
 	uv run --locked emporio chat
 
 eval:
 	uv run --locked python -m emporio.eval_runner
+
+eval-strict:
+	uv run --locked python -m emporio.eval_runner --strict
