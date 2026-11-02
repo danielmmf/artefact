@@ -303,4 +303,6 @@ Efeito nas seções anteriores:
 - §12: o primeiro critério passa a ser `make setup && make test` verdes na CI; o critério "demo sem embedding" sai; "toda interpretação tem ADR" passa a "toda interpretação está em `docs/DECISIONS.md` com o trecho do manual"; "benchmark P2" passa a "mini-eval de busca medido".
 - LLM (D11): provedor configurável por `LLM_BASE_URL`, `LLM_MODEL` e `LLM_API_KEY` no `.env`. O modelo padrão é escolhido na fase do agente, consultando a documentação oficial.
 
+Esclarecimento (2026-11-01): onde esta ADR diz "sem rede" (§1, §4, §9), leia **sem rede externa**: os testes usam loopback (127.0.0.1). `make demo` e ReplayLLM citados nas seções 1, 4 e 9 foram adiados por esta seção.
+
 Planejamento: no máximo 5 fases, tracer bullet na fase 1, e a última fase (5 conversas reais + README) não pode ser comprimida. Se uma fase atrasar, corta-se refinamento, nunca a entrega.

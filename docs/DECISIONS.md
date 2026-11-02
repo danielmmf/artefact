@@ -19,7 +19,7 @@ Registro único que substitui as ADRs 001–011 (decisão de escopo, ADR-000 §1
 | DEC-06 (ex-ADR-006) | E-mail e telefone tokenizados (`[EMAIL_1]`, `[PHONE_1]`) antes do LLM; mapa só em memória, por sessão; traces, histórico e tickets sem contato | LGPD (§9 do manual) e redução de superfície de vazamento | Fechada |
 | DEC-07 (ex-ADR-008) | Adaptador OpenAI-compatible; provedor configurável **somente** por `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` (nenhum nome específico de provedor) | O avaliador pode usar a chave que tiver | Fechada |
 | DEC-11 | Modelo padrão: **DeepSeek `deepseek-chat`** (`LLM_BASE_URL=https://api.deepseek.com`); alternativa documentada: Groq `openai/gpt-oss-120b` (parâmetros e limites medidos na seção 8) | Troca de provedor decidida pelo responsável em 2026-11-01: o plano gratuito do Groq (8.000 tokens/min e 200.000/dia) inviabilizava o golden set e as conversas. `deepseek-reasoner` não é usado porque não suporta function calling | Fechada |
-| DEC-08 (ex-ADR-009) | Reprodutibilidade: uv com lock, relógio injetável (`EMPORIO_NOW`), `make test` sem chave, sem rede e sem Docker | Requisito do avaliador | Fechada |
+| DEC-08 (ex-ADR-009) | Reprodutibilidade: uv com lock, relógio injetável (`EMPORIO_NOW`), `make test` sem chave, sem rede externa e sem Docker (alguns testes usam loopback, 127.0.0.1) | Requisito do avaliador | Fechada |
 | DEC-09 | Valores em centavos (inteiros), expostos como `Decimal` | Evitar erro de arredondamento nos testes de limite | Fechada |
 | DEC-10 | Verificação de posse e acesso checados em Python a cada chamada de `get_order` e `check_return_eligibility` | A defesa contra injeção é a autorização no código, não o prompt | Fechada |
 
