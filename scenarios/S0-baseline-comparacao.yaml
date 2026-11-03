@@ -1,0 +1,186 @@
+nome: S0-baseline-comparacao
+status: mensuravel
+descricao: >-
+  Segunda medição do S0: as mesmas condições originais da entrega (catálogo oficial, manual inteiro no prompt, cinco
+  usuários, LLM simulado de 300 ms) com duas arquiteturas de orquestração lado a lado, o loop próprio da v1.0.2 e o
+  PydanticAI. Mesma camada de domínio, mesmos controles de privacidade e de valores, mesma carga, mesmo relógio e mesmo
+  LLM simulado; só a orquestração muda. A primeira medição (S0-baseline) permanece como histórico.
+mudanca_em_relacao_a_v1_0_2: >-
+  Apenas na segunda arquitetura: o Agent do PydanticAI com ferramentas tipadas, dependências injetadas, validador de
+  saída e limite de uso nativos, no lugar do ConversationEngine. Registry, regras, SQLite, histórico e validador de
+  valores em reais são os mesmos.
+hipotese: >-
+  Não há hipótese de superioridade. Pergunta aberta: o PydanticAI traz vantagem prática nas condições originais?
+  A expectativa registrada antes de medir é só esta, e pode ser refutada: se houver diferença, ela tende a aparecer em
+  complexidade de código e testabilidade, não em desempenho (o LLM simulado domina o tempo do turno); e o framework
+  não deve dispensar nenhum controle de privacidade, acesso ou valores, que continuam sendo código nosso.
+arquiteturas:
+  - v1.0.2
+  - pydantic-ai
+relatorio_em: S0-baseline
+protocolo: docs/S0-COMPARACAO-PROTOCOLO.md
+parametros:
+  usuarios_simultaneos: 5
+  turnos_por_usuario: 20
+  tamanho_do_catalogo: 65
+  tamanho_do_conhecimento: manual de 8 páginas (cerca de 14 mil caracteres) inteiro no prompt de sistema
+  requisitos_de_fluxo: conversa síncrona de pergunta e resposta, sem pausa para aprovação humana
+  latencia_llm_simulada_ms: 300
+  seed: 20261102
+  repeticoes: 6
+  alternar_ordem: true
+metricas:
+  # Critérios por arquitetura (valem em TODAS as repetições). Definidos antes da execução.
+  - id: erros_de_execucao
+    descricao: Exceções, erros internos e erros de banco durante a carga sintética
+    unidade: erros
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: contingencias_seguras
+    descricao: Respostas de contingência segura durante a carga sintética
+    unidade: respostas
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: sobrecarga_local_p95_ms
+    descricao: p95 do tempo por turno fora do LLM (ferramentas, SQLite, validador, histórico, trace e orquestração) com 5 usuários simultâneos
+    unidade: ms
+    tipo: criterio
+    criterio: {operador: "<=", valor: 100}
+  - id: busca_recall_at_5
+    descricao: recall@5 da busca nas 10 consultas rotuladas (camada compartilhada; deve continuar igual)
+    unidade: fração
+    tipo: criterio
+    criterio: {operador: "==", valor: 0.8}
+  - id: busca_mrr
+    descricao: MRR da busca nas 10 consultas rotuladas (camada compartilhada; deve continuar igual)
+    unidade: fração
+    tipo: criterio
+    criterio: {operador: "==", valor: 0.75}
+  - id: casos_reprovados
+    descricao: Casos funcionais offline cuja expectativa não foi cumprida (ferramenta, esclarecimento, bloqueio, erro, contingência, limite de iterações)
+    unidade: casos
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: concessoes_indevidas_de_acesso
+    descricao: Acessos a pedido concedidos em casos em que o cliente não é o dono nem confirmou a posse
+    unidade: acessos
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: precos_inventados_aceitos
+    descricao: Respostas finais entregues ao cliente com valor em reais sem respaldo nas ferramentas do turno nem no manual (calculado de forma independente)
+    unidade: respostas
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: regressoes_de_privacidade
+    descricao: Casos em que contato bruto (e-mail ou telefone não institucional) chegou ao modelo, ao histórico persistido ou ao cliente
+    unidade: casos
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: ferramentas_cobertas
+    descricao: Ferramentas exercitadas pelos casos funcionais, de um total de 8
+    unidade: ferramentas
+    tipo: criterio
+    criterio: {operador: ">=", valor: 8}
+  # Critérios do par: paridade funcional, exigida na primeira comparação.
+  - id: divergencias_em_casos_criticos
+    descricao: Casos críticos (acesso, preço, privacidade) com diferença de resposta, contingência, chamadas ao domínio ou histórico entre as arquiteturas
+    unidade: casos
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: "==", valor: 0}
+  - id: divergencias_em_casos_com_paridade
+    descricao: Qualquer caso com paridade exigida que difere entre as arquiteturas (os casos de diferença conhecida de orquestração são só medidos)
+    unidade: casos
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: "==", valor: 0}
+  # Referências por arquitetura (apenas registradas; desempenho não decide sozinho).
+  - id: latencia_turno_p50_ms
+    descricao: Mediana do tempo total por turno, incluindo a latência simulada do LLM
+    unidade: ms
+    tipo: referencia
+  - id: latencia_turno_p95_ms
+    descricao: p95 do tempo total por turno, incluindo a latência simulada do LLM
+    unidade: ms
+    tipo: referencia
+  - id: sobrecarga_local_p50_ms
+    descricao: Mediana do tempo por turno fora do LLM com 5 usuários simultâneos
+    unidade: ms
+    tipo: referencia
+  - id: vazao_turnos_por_s
+    descricao: Turnos concluídos por segundo de relógio durante a carga
+    unidade: turnos/s
+    tipo: referencia
+  - id: seq_primeiro_turno_ms
+    descricao: Tempo do primeiro turno de um usuário, com latência artificial zero (custo de partida a frio)
+    unidade: ms
+    tipo: referencia
+  - id: seq_sobrecarga_p50_ms
+    descricao: Mediana do tempo por turno com um usuário, uma thread e latência artificial zero (custo local puro da orquestração)
+    unidade: ms
+    tipo: referencia
+  - id: seq_sobrecarga_p95_ms
+    descricao: p95 do tempo por turno com um usuário, uma thread e latência artificial zero
+    unidade: ms
+    tipo: referencia
+  - id: chamadas_llm_por_turno
+    descricao: Média de chamadas ao LLM por turno
+    unidade: chamadas
+    tipo: referencia
+  - id: tokens_prompt_estimados_p50
+    descricao: Mediana dos tokens estimados do pedido ao LLM (bytes/3, do que cada arquitetura de fato envia)
+    unidade: tokens
+    tipo: referencia
+  - id: tokens_prompt_estimados_max
+    descricao: Máximo dos tokens estimados do pedido ao LLM (bytes/3)
+    unidade: tokens
+    tipo: referencia
+  - id: tokens_esquemas_ferramentas
+    descricao: Tokens estimados das definições das 8 ferramentas como cada arquitetura as expõe ao modelo
+    unidade: tokens
+    tipo: referencia
+  - id: loc_orquestracao
+    descricao: Linhas de código (sem comentários e brancos) do módulo de orquestração, sem a camada compartilhada
+    unidade: linhas
+    tipo: referencia
+  - id: loc_ponte_de_teste
+    descricao: Desse total, linhas que só existem porque o LLM é simulado pelo protocolo `complete` do loop próprio (com um modelo real do framework não seriam escritas)
+    unidade: linhas
+    tipo: referencia
+  - id: pontos_de_cola
+    descricao: Pontos do módulo marcados `# COLA:`, em que o framework não cobriu um controle nosso e foi preciso código local
+    unidade: pontos
+    tipo: referencia
+  - id: pacotes_adicionais
+    descricao: Pacotes transitivos que a arquitetura acrescenta ao lockfile além das dependências do projeto
+    unidade: pacotes
+    tipo: referencia
+  - id: tamanho_dependencias_adicionais_kb
+    descricao: Tamanho instalado desses pacotes adicionais
+    unidade: KB
+    tipo: referencia
+  - id: tempo_importacao_ms
+    descricao: Menor tempo, em 5 processos novos, para importar o módulo de orquestração
+    unidade: ms
+    tipo: referencia
+  # Referências do par: razão PydanticAI / v1.0.2 (mediana das repetições).
+  - id: razao_sobrecarga_local_p95_ms
+    descricao: Razão pydantic-ai / v1.0.2 da sobrecarga local p95
+    unidade: razão
+    tipo: referencia
+    escopo: comparativo
+  - id: razao_latencia_turno_p95_ms
+    descricao: Razão pydantic-ai / v1.0.2 da latência p95 do turno
+    unidade: razão
+    tipo: referencia
+    escopo: comparativo
+  - id: razao_vazao_turnos_por_s
+    descricao: Razão pydantic-ai / v1.0.2 da vazão
+    unidade: razão
+    tipo: referencia
+    escopo: comparativo
+  - id: razao_seq_sobrecarga_p50_ms
+    descricao: Razão pydantic-ai / v1.0.2 do custo local sequencial p50
+    unidade: razão
+    tipo: referencia
+    escopo: comparativo

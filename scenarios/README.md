@@ -30,6 +30,7 @@ Critério reprovado é resultado, não erro: o comando sai com 0 e registra. Com
 | Cenário | Status | Resumo |
 | --- | --- | --- |
 | S0-baseline | medido | condições da v1.0.2: 65 produtos, manual de 8 páginas, poucos usuários |
+| S0-baseline-comparacao | medido | S0 com loop próprio × PydanticAI, 6 repetições alternadas, casos funcionais offline |
 | S1-mil-usuarios | planejado | 1.000 usuários simultâneos |
 | S2-catalogo-grande | planejado | 50 mil produtos sintéticos |
 | S3-conhecimento-grande | planejado | manual expandido e múltiplos documentos |
@@ -48,6 +49,12 @@ Referência de todos os outros cenários: a v1.0.2 como entregue, sem alternativ
 - A carga sorteia entre os 61 produtos disponíveis (ativos e com estoque) dos 65 do catálogo.
 
 **Conclusão:** Se o cenário mudar para 5 usuários simultâneos, catálogo de 65 produtos e manual de 8 páginas (cerca de 14 mil caracteres) inteiro no prompt de sistema, o gargalo medido foi o LLM e o tamanho do prompt: a sobrecarga local foi 20.1 ms no p95 contra 531 ms de latência simulada do LLM por turno, e o pedido ao LLM tem cerca de 9611 tokens estimados; o código local não é gargalo, e a arquitetura recomendada é v1.0.2 (cenário de referência, sem alternativa medida), pelos números: erros 0, contingências 0, sobrecarga local p95 20.1 ms, latência do turno p95 620.41 ms, 8.329 turnos/s, tokens estimados p50 9611, recall@5 0.8, MRR 0.75.
+
+## S0-baseline-comparacao
+
+Segunda medição do S0 com duas arquiteturas de orquestração (loop próprio da v1.0.2 e PydanticAI) sobre a mesma camada de domínio, privacidade e valores, mesma carga, relógio e LLM simulado, em estado isolado. Protocolo: [`docs/S0-COMPARACAO-PROTOCOLO.md`](../docs/S0-COMPARACAO-PROTOCOLO.md); o pré-registro (SHA do commit e hash dos critérios) fica em `reports/scenarios/S0-baseline/preregistration.json`. O relatório original do S0 (`report.md`) é preservado.
+
+**Resultado:** ainda não executado. Quando for, o relatório lado a lado será [`reports/scenarios/S0-baseline/comparison.md`](../reports/scenarios/S0-baseline/comparison.md) e a decisão, `decision.md` na mesma pasta.
 
 ## S1-mil-usuarios
 
@@ -73,4 +80,4 @@ Hipótese: o loop próprio não persiste o estado do fluxo entre a pausa e a ret
 
 Status: planejado, critérios pendentes. **Conclusão: nenhuma (sem medição).**
 
-A comparação loop próprio × PydanticAI é transversal: roda primeiro no S0 e, havendo tempo, nos demais. Ainda não foi feita.
+A comparação loop próprio × PydanticAI é transversal: o S0 é o primeiro (veja acima); nos demais cenários só depois de decidida a recomendação do S0.

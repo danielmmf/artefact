@@ -125,7 +125,7 @@ def test_comparison_demands_three_repetitions_with_alternating_order(tmp_path):
 def test_scenario_list_shows_one_short_line_per_scenario(capsys):
     assert lab_main(['scenario', 'list']) == 0
     lines = capsys.readouterr().out.strip().splitlines()
-    assert len(lines) == 5 and lines[0].startswith('S0-baseline') and all(len(l) < 160 for l in lines)
+    assert len(lines) == 6 and lines[0].startswith('S0-baseline') and all(len(l) < 160 for l in lines)
     assert sum('planejado' in l for l in lines) == 4
 
 

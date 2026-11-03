@@ -19,6 +19,9 @@ def test_every_scenario_has_a_section_and_only_measured_ones_have_a_conclusion()
     for s in sc.list_all(ROOT):
         body = section(s.nome)
         report = ROOT / 'reports/scenarios' / s.nome / 'report.json'
+        if s.relatorio_em:                       # comparação: o resultado vive em comparison.md do cenário-base, não em report.json
+            assert f'reports/scenarios/{s.relatorio_em}/comparison.md' in body
+            continue
         if s.status == 'mensuravel' and report.exists():
             assert '**Conclusão:** Se o cenário mudar para' in body
         else:

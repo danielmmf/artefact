@@ -27,8 +27,8 @@ def write(tmp_path, data, name='S9-teste'):
 
 def test_the_five_initial_scenarios_load_and_only_s0_is_measurable():
     scenarios = {s.nome: s for s in sc.list_all(ROOT)}
-    assert list(scenarios) == ['S0-baseline', 'S1-mil-usuarios', 'S2-catalogo-grande', 'S3-conhecimento-grande', 'S4-fluxo-com-aprovacao']
-    assert [n for n, s in scenarios.items() if s.status == 'mensuravel'] == ['S0-baseline']
+    assert list(scenarios) == ['S0-baseline-comparacao', 'S0-baseline', 'S1-mil-usuarios', 'S2-catalogo-grande', 'S3-conhecimento-grande', 'S4-fluxo-com-aprovacao']
+    assert [n for n, s in scenarios.items() if s.status == 'mensuravel'] == ['S0-baseline-comparacao', 'S0-baseline']
     for name in ('S1-mil-usuarios', 'S2-catalogo-grande', 'S3-conhecimento-grande', 'S4-fluxo-com-aprovacao'):
         assert scenarios[name].status == 'planejado' and scenarios[name].metricas == [] and scenarios[name].hipotese
 
