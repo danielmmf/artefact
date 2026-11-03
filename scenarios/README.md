@@ -54,7 +54,7 @@ Referência de todos os outros cenários: a v1.0.2 como entregue, sem alternativ
 
 Segunda medição do S0 com duas arquiteturas de orquestração (loop próprio da v1.0.2 e PydanticAI) sobre a mesma camada de domínio, privacidade e valores, mesma carga, relógio e LLM simulado, em estado isolado. Protocolo: [`docs/S0-COMPARACAO-PROTOCOLO.md`](../docs/S0-COMPARACAO-PROTOCOLO.md); o pré-registro (SHA do commit e hash dos critérios) fica em `reports/scenarios/S0-baseline/preregistration.json`. O relatório original do S0 (`report.md`) é preservado.
 
-**Resultado:** ainda não executado. Quando for, o relatório lado a lado será [`reports/scenarios/S0-baseline/comparison.md`](../reports/scenarios/S0-baseline/comparison.md) e a decisão, `decision.md` na mesma pasta.
+**Resultado (relatório lado a lado [`reports/scenarios/S0-baseline/comparison.md`](../reports/scenarios/S0-baseline/comparison.md), decisão em [`decision.md`](../reports/scenarios/S0-baseline/decision.md)):** todos os critérios pré-registrados foram atendidos pelas duas arquiteturas, sem regressão funcional (0 divergências nos 20 casos com paridade exigida, 8 de 8 ferramentas). O PydanticAI não reduziu complexidade (257 contra 201 linhas, 10 pontos de cola, 16 pacotes novos) e custou mais tempo local (sobrecarga p95 19,5 ms contra 7,5 ms; 2% no turno inteiro com LLM de 300 ms). **Recomendação: manter o loop próprio na v1.x.** Vale só para as condições do S0, com LLM simulado.
 
 ## S1-mil-usuarios
 

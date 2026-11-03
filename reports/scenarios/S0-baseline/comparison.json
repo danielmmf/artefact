@@ -1,0 +1,2888 @@
+{
+  "cenario": "S0-baseline-comparacao",
+  "arquiteturas": [
+    "v1.0.2",
+    "pydantic-ai"
+  ],
+  "tipo": "comparacao",
+  "execucao": {
+    "started_at": "2026-11-03T22:01:08.518649+00:00",
+    "git_head": "af9d9b6dff3fc89063081fa5e39973378a121f7e",
+    "arvore_src_lab": "045bd80b74351a535d07cbe2c35cb3d62d1b984a",
+    "codigo_sem_alteracoes": true,
+    "alteracoes": [],
+    "scenario_sha256": "12ce92d68cfde9368aa215b77c61de20540a4857412b1dd19b195265dafab5ce",
+    "pre_registro": {
+      "comprovado": true,
+      "motivo": "ok",
+      "cenario": "S0-baseline-comparacao",
+      "commit_dos_criterios": "d29111e9064a45d56a74d516f27126aa58e032b6",
+      "commit_instante": "2026-11-03T19:01:04-03:00",
+      "arquivos_sha256": {
+        "scenarios/S0-baseline-comparacao.yaml": "12ce92d68cfde9368aa215b77c61de20540a4857412b1dd19b195265dafab5ce",
+        "docs/S0-COMPARACAO-PROTOCOLO.md": "25706eb595b67009bde09efa5fd1a2100d1a134375c921b28d2ff5820f41ef17"
+      },
+      "registrado_em": "2026-11-03T22:01:04.448914+00:00",
+      "como_verificar": "git show <commit>:<arquivo> | sha256sum deve igualar arquivos_sha256; o commit deve ser ancestral do commit da execução."
+    },
+    "python": "3.13.15",
+    "plataforma": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "cpus": 20,
+    "versoes": {
+      "pydantic": "2.14.2",
+      "pydantic-ai-slim": "1.107.9",
+      "pydantic-graph": "1.107.9"
+    }
+  },
+  "dados": {
+    "sinteticos": true,
+    "seed": 20261102,
+    "workload_sha256": "edb50eda18d071e2ee987f37dbd031cdde00aa5e105378437f50a1b3a56ffedc",
+    "turnos_por_tipo": {
+      "conversa": 23,
+      "horario": 16,
+      "listagem": 22,
+      "preco": 39
+    },
+    "catalogo": "oficial, 61 produtos disponíveis",
+    "latencia_llm_simulada_ms": 300
+  },
+  "repeticoes": [
+    {
+      "repeticao": 1,
+      "ordem": [
+        "v1.0.2",
+        "pydantic-ai"
+      ],
+      "carga_da_maquina_antes": [
+        0.99,
+        0.93,
+        0.65
+      ],
+      "arquiteturas": {
+        "v1.0.2": {
+          "turnos": 100,
+          "tempo_total_s": 11.845,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 5.0,
+          "sobrecarga_local_p95_ms": 7.55,
+          "latencia_turno_p50_ms": 605.8,
+          "latencia_turno_p95_ms": 608.54,
+          "vazao_turnos_por_s": 8.443,
+          "tokens_prompt_estimados_p50": 9611,
+          "tokens_prompt_estimados_max": 11249,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 4.99,
+          "seq_sobrecarga_p50_ms": 2.83,
+          "seq_sobrecarga_p95_ms": 3.42
+        },
+        "pydantic-ai": {
+          "turnos": 100,
+          "tempo_total_s": 11.994,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 10.15,
+          "sobrecarga_local_p95_ms": 28.2,
+          "latencia_turno_p50_ms": 610.8,
+          "latencia_turno_p95_ms": 625.3,
+          "vazao_turnos_por_s": 8.338,
+          "tokens_prompt_estimados_p50": 9122,
+          "tokens_prompt_estimados_max": 10760,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 8.67,
+          "seq_sobrecarga_p50_ms": 6.68,
+          "seq_sobrecarga_p95_ms": 7.73
+        }
+      },
+      "carga_da_maquina_depois": [
+        0.72,
+        0.88,
+        0.63
+      ]
+    },
+    {
+      "repeticao": 2,
+      "ordem": [
+        "pydantic-ai",
+        "v1.0.2"
+      ],
+      "carga_da_maquina_antes": [
+        0.72,
+        0.88,
+        0.63
+      ],
+      "arquiteturas": {
+        "pydantic-ai": {
+          "turnos": 100,
+          "tempo_total_s": 11.947,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 10.51,
+          "sobrecarga_local_p95_ms": 17.67,
+          "latencia_turno_p50_ms": 610.99,
+          "latencia_turno_p95_ms": 619.1,
+          "vazao_turnos_por_s": 8.37,
+          "tokens_prompt_estimados_p50": 9122,
+          "tokens_prompt_estimados_max": 10760,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 8.8,
+          "seq_sobrecarga_p50_ms": 6.46,
+          "seq_sobrecarga_p95_ms": 8.84
+        },
+        "v1.0.2": {
+          "turnos": 100,
+          "tempo_total_s": 11.803,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 4.63,
+          "sobrecarga_local_p95_ms": 8.08,
+          "latencia_turno_p50_ms": 605.18,
+          "latencia_turno_p95_ms": 608.9,
+          "vazao_turnos_por_s": 8.473,
+          "tokens_prompt_estimados_p50": 9611,
+          "tokens_prompt_estimados_max": 11249,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 4.29,
+          "seq_sobrecarga_p50_ms": 3.72,
+          "seq_sobrecarga_p95_ms": 4.48
+        }
+      },
+      "carga_da_maquina_depois": [
+        0.59,
+        0.83,
+        0.63
+      ]
+    },
+    {
+      "repeticao": 3,
+      "ordem": [
+        "v1.0.2",
+        "pydantic-ai"
+      ],
+      "carga_da_maquina_antes": [
+        0.59,
+        0.83,
+        0.63
+      ],
+      "arquiteturas": {
+        "v1.0.2": {
+          "turnos": 100,
+          "tempo_total_s": 11.837,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 4.35,
+          "sobrecarga_local_p95_ms": 7.42,
+          "latencia_turno_p50_ms": 604.91,
+          "latencia_turno_p95_ms": 609.03,
+          "vazao_turnos_por_s": 8.448,
+          "tokens_prompt_estimados_p50": 9611,
+          "tokens_prompt_estimados_max": 11249,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 5.46,
+          "seq_sobrecarga_p50_ms": 3.48,
+          "seq_sobrecarga_p95_ms": 4.28
+        },
+        "pydantic-ai": {
+          "turnos": 100,
+          "tempo_total_s": 12.036,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 12.5,
+          "sobrecarga_local_p95_ms": 21.55,
+          "latencia_turno_p50_ms": 613.16,
+          "latencia_turno_p95_ms": 628.26,
+          "vazao_turnos_por_s": 8.309,
+          "tokens_prompt_estimados_p50": 9122,
+          "tokens_prompt_estimados_max": 10760,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 8.63,
+          "seq_sobrecarga_p50_ms": 6.13,
+          "seq_sobrecarga_p95_ms": 9.63
+        }
+      },
+      "carga_da_maquina_depois": [
+        0.46,
+        0.78,
+        0.62
+      ]
+    },
+    {
+      "repeticao": 4,
+      "ordem": [
+        "pydantic-ai",
+        "v1.0.2"
+      ],
+      "carga_da_maquina_antes": [
+        0.46,
+        0.78,
+        0.62
+      ],
+      "arquiteturas": {
+        "pydantic-ai": {
+          "turnos": 100,
+          "tempo_total_s": 11.981,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 10.3,
+          "sobrecarga_local_p95_ms": 17.65,
+          "latencia_turno_p50_ms": 610.79,
+          "latencia_turno_p95_ms": 619.76,
+          "vazao_turnos_por_s": 8.347,
+          "tokens_prompt_estimados_p50": 9122,
+          "tokens_prompt_estimados_max": 10760,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 7.47,
+          "seq_sobrecarga_p50_ms": 6.33,
+          "seq_sobrecarga_p95_ms": 10.39
+        },
+        "v1.0.2": {
+          "turnos": 100,
+          "tempo_total_s": 11.851,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 5.31,
+          "sobrecarga_local_p95_ms": 7.63,
+          "latencia_turno_p50_ms": 606.29,
+          "latencia_turno_p95_ms": 608.69,
+          "vazao_turnos_por_s": 8.438,
+          "tokens_prompt_estimados_p50": 9611,
+          "tokens_prompt_estimados_max": 11249,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 4.44,
+          "seq_sobrecarga_p50_ms": 3.48,
+          "seq_sobrecarga_p95_ms": 4.42
+        }
+      },
+      "carga_da_maquina_depois": [
+        0.3,
+        0.72,
+        0.6
+      ]
+    },
+    {
+      "repeticao": 5,
+      "ordem": [
+        "v1.0.2",
+        "pydantic-ai"
+      ],
+      "carga_da_maquina_antes": [
+        0.3,
+        0.72,
+        0.6
+      ],
+      "arquiteturas": {
+        "v1.0.2": {
+          "turnos": 100,
+          "tempo_total_s": 11.826,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 4.16,
+          "sobrecarga_local_p95_ms": 7.29,
+          "latencia_turno_p50_ms": 604.81,
+          "latencia_turno_p95_ms": 608.46,
+          "vazao_turnos_por_s": 8.456,
+          "tokens_prompt_estimados_p50": 9611,
+          "tokens_prompt_estimados_max": 11249,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 4.45,
+          "seq_sobrecarga_p50_ms": 3.43,
+          "seq_sobrecarga_p95_ms": 4.18
+        },
+        "pydantic-ai": {
+          "turnos": 100,
+          "tempo_total_s": 12.004,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 10.75,
+          "sobrecarga_local_p95_ms": 19.67,
+          "latencia_turno_p50_ms": 611.32,
+          "latencia_turno_p95_ms": 622.27,
+          "vazao_turnos_por_s": 8.331,
+          "tokens_prompt_estimados_p50": 9122,
+          "tokens_prompt_estimados_max": 10760,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 9.72,
+          "seq_sobrecarga_p50_ms": 6.59,
+          "seq_sobrecarga_p95_ms": 12.36
+        }
+      },
+      "carga_da_maquina_depois": [
+        0.2,
+        0.66,
+        0.58
+      ]
+    },
+    {
+      "repeticao": 6,
+      "ordem": [
+        "pydantic-ai",
+        "v1.0.2"
+      ],
+      "carga_da_maquina_antes": [
+        0.2,
+        0.66,
+        0.58
+      ],
+      "arquiteturas": {
+        "pydantic-ai": {
+          "turnos": 100,
+          "tempo_total_s": 11.972,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 10.48,
+          "sobrecarga_local_p95_ms": 19.32,
+          "latencia_turno_p50_ms": 611.53,
+          "latencia_turno_p95_ms": 621.58,
+          "vazao_turnos_por_s": 8.353,
+          "tokens_prompt_estimados_p50": 9122,
+          "tokens_prompt_estimados_max": 10760,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 8.86,
+          "seq_sobrecarga_p50_ms": 6.49,
+          "seq_sobrecarga_p95_ms": 9.5
+        },
+        "v1.0.2": {
+          "turnos": 100,
+          "tempo_total_s": 11.838,
+          "erros_de_execucao": 0,
+          "contingencias_seguras": 0,
+          "sobrecarga_local_p50_ms": 4.61,
+          "sobrecarga_local_p95_ms": 7.54,
+          "latencia_turno_p50_ms": 605.71,
+          "latencia_turno_p95_ms": 610.16,
+          "vazao_turnos_por_s": 8.447,
+          "tokens_prompt_estimados_p50": 9611,
+          "tokens_prompt_estimados_max": 11249,
+          "chamadas_llm_por_turno": 1.77,
+          "erros_detalhe": [],
+          "seq_primeiro_turno_ms": 5.73,
+          "seq_sobrecarga_p50_ms": 3.48,
+          "seq_sobrecarga_p95_ms": 4.21
+        }
+      },
+      "carga_da_maquina_depois": [
+        0.27,
+        0.64,
+        0.58
+      ]
+    }
+  ],
+  "avaliacao": [
+    {
+      "id": "erros_de_execucao",
+      "escopo": "arquitetura",
+      "unidade": "erros",
+      "criterio": "== 0",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "contingencias_seguras",
+      "escopo": "arquitetura",
+      "unidade": "respostas",
+      "criterio": "== 0",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "sobrecarga_local_p95_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": "<= 100",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 7.545,
+            "min": 7.29,
+            "max": 8.08,
+            "desvio": 0.246,
+            "valores": [
+              7.55,
+              8.08,
+              7.42,
+              7.63,
+              7.29,
+              7.54
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 19.495,
+            "min": 17.65,
+            "max": 28.2,
+            "desvio": 3.615,
+            "valores": [
+              28.2,
+              17.67,
+              21.55,
+              17.65,
+              19.67,
+              19.32
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "busca_recall_at_5",
+      "escopo": "arquitetura",
+      "unidade": "fração",
+      "criterio": "== 0.8",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.8,
+            "min": 0.8,
+            "max": 0.8,
+            "desvio": 0.0,
+            "valores": [
+              0.8
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.8,
+            "min": 0.8,
+            "max": 0.8,
+            "desvio": 0.0,
+            "valores": [
+              0.8
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "busca_mrr",
+      "escopo": "arquitetura",
+      "unidade": "fração",
+      "criterio": "== 0.75",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.75,
+            "min": 0.75,
+            "max": 0.75,
+            "desvio": 0.0,
+            "valores": [
+              0.75
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.75,
+            "min": 0.75,
+            "max": 0.75,
+            "desvio": 0.0,
+            "valores": [
+              0.75
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "casos_reprovados",
+      "escopo": "arquitetura",
+      "unidade": "casos",
+      "criterio": "== 0",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "concessoes_indevidas_de_acesso",
+      "escopo": "arquitetura",
+      "unidade": "acessos",
+      "criterio": "== 0",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "precos_inventados_aceitos",
+      "escopo": "arquitetura",
+      "unidade": "respostas",
+      "criterio": "== 0",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "regressoes_de_privacidade",
+      "escopo": "arquitetura",
+      "unidade": "casos",
+      "criterio": "== 0",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "ferramentas_cobertas",
+      "escopo": "arquitetura",
+      "unidade": "ferramentas",
+      "criterio": ">= 8",
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 8.0,
+            "min": 8.0,
+            "max": 8.0,
+            "desvio": 0.0,
+            "valores": [
+              8.0
+            ]
+          },
+          "resultado": "atendido"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 8.0,
+            "min": 8.0,
+            "max": 8.0,
+            "desvio": 0.0,
+            "valores": [
+              8.0
+            ]
+          },
+          "resultado": "atendido"
+        }
+      }
+    },
+    {
+      "id": "divergencias_em_casos_criticos",
+      "escopo": "comparativo",
+      "unidade": "casos",
+      "criterio": "== 0",
+      "valor": 0.0,
+      "resultado": "atendido"
+    },
+    {
+      "id": "divergencias_em_casos_com_paridade",
+      "escopo": "comparativo",
+      "unidade": "casos",
+      "criterio": "== 0",
+      "valor": 0.0,
+      "resultado": "atendido"
+    },
+    {
+      "id": "latencia_turno_p50_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 605.445,
+            "min": 604.81,
+            "max": 606.29,
+            "desvio": 0.528,
+            "valores": [
+              605.8,
+              605.18,
+              604.91,
+              606.29,
+              604.81,
+              605.71
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 611.155,
+            "min": 610.79,
+            "max": 613.16,
+            "desvio": 0.818,
+            "valores": [
+              610.8,
+              610.99,
+              613.16,
+              610.79,
+              611.32,
+              611.53
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "latencia_turno_p95_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 608.795,
+            "min": 608.46,
+            "max": 610.16,
+            "desvio": 0.57,
+            "valores": [
+              608.54,
+              608.9,
+              609.03,
+              608.69,
+              608.46,
+              610.16
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 621.925,
+            "min": 619.1,
+            "max": 628.26,
+            "desvio": 3.181,
+            "valores": [
+              625.3,
+              619.1,
+              628.26,
+              619.76,
+              622.27,
+              621.58
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "sobrecarga_local_p50_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 4.62,
+            "min": 4.16,
+            "max": 5.31,
+            "desvio": 0.384,
+            "valores": [
+              5.0,
+              4.63,
+              4.35,
+              5.31,
+              4.16,
+              4.61
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 10.495,
+            "min": 10.15,
+            "max": 12.5,
+            "desvio": 0.791,
+            "valores": [
+              10.15,
+              10.51,
+              12.5,
+              10.3,
+              10.75,
+              10.48
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "vazao_turnos_por_s",
+      "escopo": "arquitetura",
+      "unidade": "turnos/s",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 8.447,
+            "min": 8.438,
+            "max": 8.473,
+            "desvio": 0.011,
+            "valores": [
+              8.443,
+              8.473,
+              8.448,
+              8.438,
+              8.456,
+              8.447
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 8.342,
+            "min": 8.309,
+            "max": 8.37,
+            "desvio": 0.019,
+            "valores": [
+              8.338,
+              8.37,
+              8.309,
+              8.347,
+              8.331,
+              8.353
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "seq_primeiro_turno_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 4.72,
+            "min": 4.29,
+            "max": 5.73,
+            "desvio": 0.547,
+            "valores": [
+              4.99,
+              4.29,
+              5.46,
+              4.44,
+              4.45,
+              5.73
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 8.735,
+            "min": 7.47,
+            "max": 9.72,
+            "desvio": 0.658,
+            "valores": [
+              8.67,
+              8.8,
+              8.63,
+              7.47,
+              9.72,
+              8.86
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "seq_sobrecarga_p50_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 3.48,
+            "min": 2.83,
+            "max": 3.72,
+            "desvio": 0.273,
+            "valores": [
+              2.83,
+              3.72,
+              3.48,
+              3.48,
+              3.43,
+              3.48
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 6.475,
+            "min": 6.13,
+            "max": 6.68,
+            "desvio": 0.178,
+            "valores": [
+              6.68,
+              6.46,
+              6.13,
+              6.33,
+              6.59,
+              6.49
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "seq_sobrecarga_p95_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 4.245,
+            "min": 3.42,
+            "max": 4.48,
+            "desvio": 0.35,
+            "valores": [
+              3.42,
+              4.48,
+              4.28,
+              4.42,
+              4.18,
+              4.21
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 9.565,
+            "min": 7.73,
+            "max": 12.36,
+            "desvio": 1.426,
+            "valores": [
+              7.73,
+              8.84,
+              9.63,
+              10.39,
+              12.36,
+              9.5
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "chamadas_llm_por_turno",
+      "escopo": "arquitetura",
+      "unidade": "chamadas",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 1.77,
+            "min": 1.77,
+            "max": 1.77,
+            "desvio": 0.0,
+            "valores": [
+              1.77,
+              1.77,
+              1.77,
+              1.77,
+              1.77,
+              1.77
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 1.77,
+            "min": 1.77,
+            "max": 1.77,
+            "desvio": 0.0,
+            "valores": [
+              1.77,
+              1.77,
+              1.77,
+              1.77,
+              1.77,
+              1.77
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "tokens_prompt_estimados_p50",
+      "escopo": "arquitetura",
+      "unidade": "tokens",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 9611.0,
+            "min": 9611.0,
+            "max": 9611.0,
+            "desvio": 0.0,
+            "valores": [
+              9611.0,
+              9611.0,
+              9611.0,
+              9611.0,
+              9611.0,
+              9611.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 9122.0,
+            "min": 9122.0,
+            "max": 9122.0,
+            "desvio": 0.0,
+            "valores": [
+              9122.0,
+              9122.0,
+              9122.0,
+              9122.0,
+              9122.0,
+              9122.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "tokens_prompt_estimados_max",
+      "escopo": "arquitetura",
+      "unidade": "tokens",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 11249.0,
+            "min": 11249.0,
+            "max": 11249.0,
+            "desvio": 0.0,
+            "valores": [
+              11249.0,
+              11249.0,
+              11249.0,
+              11249.0,
+              11249.0,
+              11249.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 10760.0,
+            "min": 10760.0,
+            "max": 10760.0,
+            "desvio": 0.0,
+            "valores": [
+              10760.0,
+              10760.0,
+              10760.0,
+              10760.0,
+              10760.0,
+              10760.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "tokens_esquemas_ferramentas",
+      "escopo": "arquitetura",
+      "unidade": "tokens",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 1877.0,
+            "min": 1877.0,
+            "max": 1877.0,
+            "desvio": 0.0,
+            "valores": [
+              1877.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 1388.0,
+            "min": 1388.0,
+            "max": 1388.0,
+            "desvio": 0.0,
+            "valores": [
+              1388.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "loc_orquestracao",
+      "escopo": "arquitetura",
+      "unidade": "linhas",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 201.0,
+            "min": 201.0,
+            "max": 201.0,
+            "desvio": 0.0,
+            "valores": [
+              201.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 257.0,
+            "min": 257.0,
+            "max": 257.0,
+            "desvio": 0.0,
+            "valores": [
+              257.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "loc_ponte_de_teste",
+      "escopo": "arquitetura",
+      "unidade": "linhas",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 46.0,
+            "min": 46.0,
+            "max": 46.0,
+            "desvio": 0.0,
+            "valores": [
+              46.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "pontos_de_cola",
+      "escopo": "arquitetura",
+      "unidade": "pontos",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 10.0,
+            "min": 10.0,
+            "max": 10.0,
+            "desvio": 0.0,
+            "valores": [
+              10.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "pacotes_adicionais",
+      "escopo": "arquitetura",
+      "unidade": "pacotes",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 16.0,
+            "min": 16.0,
+            "max": 16.0,
+            "desvio": 0.0,
+            "valores": [
+              16.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "tamanho_dependencias_adicionais_kb",
+      "escopo": "arquitetura",
+      "unidade": "KB",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "desvio": 0.0,
+            "valores": [
+              0.0
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 8676.0,
+            "min": 8676.0,
+            "max": 8676.0,
+            "desvio": 0.0,
+            "valores": [
+              8676.0
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "tempo_importacao_ms",
+      "escopo": "arquitetura",
+      "unidade": "ms",
+      "criterio": null,
+      "por_arquitetura": {
+        "v1.0.2": {
+          "dispersao": {
+            "mediana": 79.6,
+            "min": 79.6,
+            "max": 79.6,
+            "desvio": 0.0,
+            "valores": [
+              79.6
+            ]
+          },
+          "resultado": "referência"
+        },
+        "pydantic-ai": {
+          "dispersao": {
+            "mediana": 241.5,
+            "min": 241.5,
+            "max": 241.5,
+            "desvio": 0.0,
+            "valores": [
+              241.5
+            ]
+          },
+          "resultado": "referência"
+        }
+      }
+    },
+    {
+      "id": "razao_sobrecarga_local_p95_ms",
+      "escopo": "comparativo",
+      "unidade": "razão",
+      "criterio": null,
+      "valor": 2.584,
+      "resultado": "referência"
+    },
+    {
+      "id": "razao_latencia_turno_p95_ms",
+      "escopo": "comparativo",
+      "unidade": "razão",
+      "criterio": null,
+      "valor": 1.022,
+      "resultado": "referência"
+    },
+    {
+      "id": "razao_vazao_turnos_por_s",
+      "escopo": "comparativo",
+      "unidade": "razão",
+      "criterio": null,
+      "valor": 0.988,
+      "resultado": "referência"
+    },
+    {
+      "id": "razao_seq_sobrecarga_p50_ms",
+      "escopo": "comparativo",
+      "unidade": "razão",
+      "criterio": null,
+      "valor": 1.861,
+      "resultado": "referência"
+    }
+  ],
+  "comparativo": {
+    "divergencias_em_casos_criticos": 0.0,
+    "divergencias_em_casos_com_paridade": 0.0,
+    "razao_sobrecarga_local_p95_ms": 2.584,
+    "razao_latencia_turno_p95_ms": 1.022,
+    "razao_vazao_turnos_por_s": 0.988,
+    "razao_seq_sobrecarga_p50_ms": 1.861
+  },
+  "casos_funcionais": [
+    {
+      "caso": "produto-e-preco",
+      "titulo": "Consulta de produto e preço",
+      "ferramentas": [
+        "get_product"
+      ],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "busca-de-produtos",
+      "titulo": "Listagem por categoria",
+      "ferramentas": [
+        "search_products"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "cotacao",
+      "titulo": "Cotação com parcelas",
+      "ferramentas": [
+        "quote_payment"
+      ],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "horario",
+      "titulo": "Consulta de horário",
+      "ferramentas": [
+        "store_status"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "argumento-faltante",
+      "titulo": "Pergunta sem argumento obrigatório",
+      "ferramentas": [
+        "get_product"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "pedido-sem-posse",
+      "titulo": "Pedido sem verificação de posse",
+      "ferramentas": [
+        "get_order"
+      ],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "pedido-de-outro-cliente",
+      "titulo": "Cliente autenticado pede pedido de outro cliente",
+      "ferramentas": [
+        "get_order",
+        "check_return_eligibility"
+      ],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "posse-com-contato-errado",
+      "titulo": "Contato que não confere não concede acesso",
+      "ferramentas": [
+        "verify_order_ownership",
+        "get_order"
+      ],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "posse-confirmada",
+      "titulo": "Dono confirma a posse e consulta o pedido",
+      "ferramentas": [
+        "verify_order_ownership",
+        "get_order"
+      ],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "devolucao-do-proprio-pedido",
+      "titulo": "Cliente autenticado consulta devolução do próprio pedido",
+      "ferramentas": [
+        "check_return_eligibility"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "encaminhamento",
+      "titulo": "Reclamação encaminhada à equipe",
+      "ferramentas": [
+        "escalate_to_human"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "erro-de-ferramenta",
+      "titulo": "Falha interna da ferramenta",
+      "ferramentas": [
+        "get_product"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "preco-sem-evidencia-corrigido",
+      "titulo": "Valor em reais sem ferramenta é recusado e reescrito",
+      "ferramentas": [],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "preco-sem-evidencia-persistente",
+      "titulo": "Modelo insiste no valor sem evidência: contingência",
+      "ferramentas": [],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "contato-tokenizado",
+      "titulo": "E-mail e telefone do cliente são tokenizados antes do modelo",
+      "ferramentas": [],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "contato-na-resposta-do-modelo",
+      "titulo": "Contato bruto na resposta do modelo é protegido",
+      "ferramentas": [],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "contato-ilegivel-na-resposta",
+      "titulo": "Contato disfarçado na resposta bloqueia o turno",
+      "ferramentas": [],
+      "critico": true,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "limite-de-iteracoes",
+      "titulo": "Modelo que nunca para de chamar ferramentas",
+      "ferramentas": [
+        "store_status"
+      ],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "falha-do-modelo",
+      "titulo": "Exceção do provedor de LLM",
+      "ferramentas": [],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "historico-entre-turnos",
+      "titulo": "Segundo turno enxerga o primeiro (histórico lógico por sessão)",
+      "ferramentas": [],
+      "critico": false,
+      "paridade_esperada": true,
+      "divergencias": [],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "ferramenta-inexistente",
+      "titulo": "Modelo chama uma ferramenta que não existe",
+      "ferramentas": [],
+      "critico": false,
+      "paridade_esperada": false,
+      "divergencias": [
+        "dominio"
+      ],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "argumentos-nao-json",
+      "titulo": "Modelo envia argumentos que não são JSON",
+      "ferramentas": [
+        "get_product"
+      ],
+      "critico": false,
+      "paridade_esperada": false,
+      "divergencias": [
+        "dominio"
+      ],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    },
+    {
+      "caso": "tipo-de-argumento-invalido",
+      "titulo": "Modelo envia order_id de tipo inválido",
+      "ferramentas": [
+        "get_order"
+      ],
+      "critico": false,
+      "paridade_esperada": false,
+      "divergencias": [
+        "dominio"
+      ],
+      "v1.0.2": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      },
+      "pydantic-ai": {
+        "violacoes_do_caso": [],
+        "acesso_indevido": 0,
+        "preco_inventado_aceito": 0,
+        "contato_vazado": 0
+      }
+    }
+  ],
+  "resumo_funcional": {
+    "v1.0.2": {
+      "casos_reprovados": 0,
+      "concessoes_indevidas_de_acesso": 0,
+      "precos_inventados_aceitos": 0,
+      "regressoes_de_privacidade": 0
+    },
+    "pydantic-ai": {
+      "casos_reprovados": 0,
+      "concessoes_indevidas_de_acesso": 0,
+      "precos_inventados_aceitos": 0,
+      "regressoes_de_privacidade": 0
+    },
+    "divergencias_em_casos_criticos": 0,
+    "divergencias_em_casos_com_paridade": 0,
+    "ferramentas_cobertas": [
+      "check_return_eligibility",
+      "escalate_to_human",
+      "get_order",
+      "get_product",
+      "quote_payment",
+      "search_products",
+      "store_status",
+      "verify_order_ownership"
+    ]
+  },
+  "detalhe_funcional": {
+    "v1.0.2": {
+      "produto-e-preco": {
+        "respostas": [
+          "O Yamaha C40 Nylon Natural custa R$ 599,90."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "{\"name\": \"Yamaha C40 Nylon Natural\"}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa o Yamaha C40 Nylon Natural?\", \"assistant\": \"O Yamaha C40 Nylon Natural custa R$ 599,90.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "busca-de-produtos": {
+        "respostas": [
+          "Encontrei 33 produtos."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "search_products",
+            "{\"category\": \"viol\\u00f5es\", \"limit\": 20}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quais violões vocês têm?\", \"assistant\": \"Encontrei 33 produtos.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "cotacao": {
+        "respostas": [
+          "O subtotal é R$ 599,90."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "quote_payment",
+            "{\"items\": [{\"product_id\": 81, \"quantity\": 1}]}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto fica o Yamaha C40 Nylon Natural em parcelas?\", \"assistant\": \"O subtotal é R$ 599,90.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "horario": {
+        "respostas": [
+          "Agora a loja está aberta."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"A loja está aberta agora?\", \"assistant\": \"Agora a loja está aberta.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "argumento-faltante": {
+        "respostas": [
+          "Qual produto você quer consultar? Pode me dar o nome completo?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "{}",
+            false,
+            "invalid_input"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa?\", \"assistant\": \"Qual produto você quer consultar? Pode me dar o nome completo?\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "pedido-sem-posse": {
+        "respostas": [
+          "Para ver esse pedido preciso confirmar a posse. Pode me informar o e-mail ou telefone cadastrado?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            false,
+            "access_denied"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quero ver o pedido 1\", \"assistant\": \"Para ver esse pedido preciso confirmar a posse. Pode me informar o e-mail ou telefone cadastrado?\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "pedido-de-outro-cliente": {
+        "respostas": [
+          "Não consigo acessar esse pedido.",
+          "Não consigo acessar esse pedido."
+        ],
+        "contingencia": [
+          false,
+          false
+        ],
+        "dominio": [
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            false,
+            "access_denied"
+          ],
+          [
+            "check_return_eligibility",
+            "{\"order_id\": 1, \"reason\": \"arrependimento\"}",
+            false,
+            "access_denied"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Me mostre o pedido 1\", \"assistant\": \"Não consigo acessar esse pedido.\"}",
+          "{\"user\": \"Quero devolver o pedido 1 por arrependimento\", \"assistant\": \"Não consigo acessar esse pedido.\"}"
+        ],
+        "chamadas_llm": 4
+      },
+      "posse-com-contato-errado": {
+        "respostas": [
+          "Não consegui confirmar a posse desse pedido."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "verify_order_ownership",
+            "{\"contact_ref\": \"[EMAIL_1]\", \"order_id\": 1}",
+            false,
+            "not_verified"
+          ],
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            false,
+            "access_denied"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Sou o dono do pedido 1, meu e-mail é [EMAIL_1]\", \"assistant\": \"Não consegui confirmar a posse desse pedido.\"}"
+        ],
+        "chamadas_llm": 3
+      },
+      "posse-confirmada": {
+        "respostas": [
+          "Pronto, confirmei a posse e localizei o pedido."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "verify_order_ownership",
+            "{\"contact_ref\": \"[EMAIL_1]\", \"order_id\": 1}",
+            true,
+            null
+          ],
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Meu e-mail é [EMAIL_1], pedido 1\", \"assistant\": \"Pronto, confirmei a posse e localizei o pedido.\"}"
+        ],
+        "chamadas_llm": 3
+      },
+      "devolucao-do-proprio-pedido": {
+        "respostas": [
+          "Analisei a devolução de forma preliminar."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "check_return_eligibility",
+            "{\"order_id\": 1, \"reason\": \"arrependimento\"}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quero devolver o pedido 1 por arrependimento\", \"assistant\": \"Analisei a devolução de forma preliminar.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "encaminhamento": {
+        "respostas": [
+          "Registrei sua solicitação com o protocolo 1."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "escalate_to_human",
+            "{\"category\": \"reclamacao\", \"summary\": \"cliente insatisfeito\"}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quero reclamar do atendimento\", \"assistant\": \"Registrei sua solicitação com o protocolo 1.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "erro-de-ferramenta": {
+        "respostas": [
+          "Não consegui consultar esse produto agora."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "{\"name\": \"Yamaha C40 Nylon Natural\"}",
+            false,
+            "internal_error"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa o Yamaha C40 Nylon Natural?\", \"assistant\": \"Não consegui consultar esse produto agora.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "preco-sem-evidencia-corrigido": {
+        "respostas": [
+          "Preciso consultar o catálogo para informar o preço."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Quanto custa o violão mais barato?\", \"assistant\": \"Preciso consultar o catálogo para informar o preço.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "preco-sem-evidencia-persistente": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [],
+        "historico": [],
+        "chamadas_llm": 2
+      },
+      "contato-tokenizado": {
+        "respostas": [
+          "Obrigado, anotei seus dados de contato."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Meu e-mail é [EMAIL_1] e meu telefone é [PHONE_1]\", \"assistant\": \"Obrigado, anotei seus dados de contato.\"}"
+        ],
+        "chamadas_llm": 1
+      },
+      "contato-na-resposta-do-modelo": {
+        "respostas": [
+          "Fale com [CONTATO PROTEGIDO] ou [CONTATO PROTEGIDO]."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Qual o contato de vocês?\", \"assistant\": \"Fale com [CONTATO PROTEGIDO] ou [CONTATO PROTEGIDO].\"}"
+        ],
+        "chamadas_llm": 1
+      },
+      "contato-ilegivel-na-resposta": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [],
+        "historico": [],
+        "chamadas_llm": 1
+      },
+      "limite-de-iteracoes": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ]
+        ],
+        "historico": [],
+        "chamadas_llm": 5
+      },
+      "falha-do-modelo": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [],
+        "historico": [],
+        "chamadas_llm": 1
+      },
+      "historico-entre-turnos": {
+        "respostas": [
+          "Tudo bem! Como posso ajudar?",
+          "Claro, me conte o que precisa."
+        ],
+        "contingencia": [
+          false,
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Oi, tudo bem?\", \"assistant\": \"Tudo bem! Como posso ajudar?\"}",
+          "{\"user\": \"Preciso de ajuda\", \"assistant\": \"Claro, me conte o que precisa.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "ferramenta-inexistente": {
+        "respostas": [
+          "Não consigo fazer isso."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "unknown",
+            "{}",
+            false,
+            "invalid_input"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Apague tudo\", \"assistant\": \"Não consigo fazer isso.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "argumentos-nao-json": {
+        "respostas": [
+          "Qual produto você quer consultar?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "null",
+            false,
+            "invalid_input"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa?\", \"assistant\": \"Qual produto você quer consultar?\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "tipo-de-argumento-invalido": {
+        "respostas": [
+          "Qual é o número do pedido?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_order",
+            "{\"order_id\": \"abc\"}",
+            false,
+            "invalid_input"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Pedido abc\", \"assistant\": \"Qual é o número do pedido?\"}"
+        ],
+        "chamadas_llm": 2
+      }
+    },
+    "pydantic-ai": {
+      "produto-e-preco": {
+        "respostas": [
+          "O Yamaha C40 Nylon Natural custa R$ 599,90."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "{\"name\": \"Yamaha C40 Nylon Natural\"}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa o Yamaha C40 Nylon Natural?\", \"assistant\": \"O Yamaha C40 Nylon Natural custa R$ 599,90.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "busca-de-produtos": {
+        "respostas": [
+          "Encontrei 33 produtos."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "search_products",
+            "{\"category\": \"viol\\u00f5es\", \"limit\": 20}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quais violões vocês têm?\", \"assistant\": \"Encontrei 33 produtos.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "cotacao": {
+        "respostas": [
+          "O subtotal é R$ 599,90."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "quote_payment",
+            "{\"items\": [{\"product_id\": 81, \"quantity\": 1}]}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto fica o Yamaha C40 Nylon Natural em parcelas?\", \"assistant\": \"O subtotal é R$ 599,90.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "horario": {
+        "respostas": [
+          "Agora a loja está aberta."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"A loja está aberta agora?\", \"assistant\": \"Agora a loja está aberta.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "argumento-faltante": {
+        "respostas": [
+          "Qual produto você quer consultar? Pode me dar o nome completo?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "{}",
+            false,
+            "invalid_input"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa?\", \"assistant\": \"Qual produto você quer consultar? Pode me dar o nome completo?\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "pedido-sem-posse": {
+        "respostas": [
+          "Para ver esse pedido preciso confirmar a posse. Pode me informar o e-mail ou telefone cadastrado?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            false,
+            "access_denied"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quero ver o pedido 1\", \"assistant\": \"Para ver esse pedido preciso confirmar a posse. Pode me informar o e-mail ou telefone cadastrado?\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "pedido-de-outro-cliente": {
+        "respostas": [
+          "Não consigo acessar esse pedido.",
+          "Não consigo acessar esse pedido."
+        ],
+        "contingencia": [
+          false,
+          false
+        ],
+        "dominio": [
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            false,
+            "access_denied"
+          ],
+          [
+            "check_return_eligibility",
+            "{\"order_id\": 1, \"reason\": \"arrependimento\"}",
+            false,
+            "access_denied"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Me mostre o pedido 1\", \"assistant\": \"Não consigo acessar esse pedido.\"}",
+          "{\"user\": \"Quero devolver o pedido 1 por arrependimento\", \"assistant\": \"Não consigo acessar esse pedido.\"}"
+        ],
+        "chamadas_llm": 4
+      },
+      "posse-com-contato-errado": {
+        "respostas": [
+          "Não consegui confirmar a posse desse pedido."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "verify_order_ownership",
+            "{\"contact_ref\": \"[EMAIL_1]\", \"order_id\": 1}",
+            false,
+            "not_verified"
+          ],
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            false,
+            "access_denied"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Sou o dono do pedido 1, meu e-mail é [EMAIL_1]\", \"assistant\": \"Não consegui confirmar a posse desse pedido.\"}"
+        ],
+        "chamadas_llm": 3
+      },
+      "posse-confirmada": {
+        "respostas": [
+          "Pronto, confirmei a posse e localizei o pedido."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "verify_order_ownership",
+            "{\"contact_ref\": \"[EMAIL_1]\", \"order_id\": 1}",
+            true,
+            null
+          ],
+          [
+            "get_order",
+            "{\"order_id\": 1}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Meu e-mail é [EMAIL_1], pedido 1\", \"assistant\": \"Pronto, confirmei a posse e localizei o pedido.\"}"
+        ],
+        "chamadas_llm": 3
+      },
+      "devolucao-do-proprio-pedido": {
+        "respostas": [
+          "Analisei a devolução de forma preliminar."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "check_return_eligibility",
+            "{\"order_id\": 1, \"reason\": \"arrependimento\"}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quero devolver o pedido 1 por arrependimento\", \"assistant\": \"Analisei a devolução de forma preliminar.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "encaminhamento": {
+        "respostas": [
+          "Registrei sua solicitação com o protocolo 1."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "escalate_to_human",
+            "{\"category\": \"reclamacao\", \"summary\": \"cliente insatisfeito\"}",
+            true,
+            null
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quero reclamar do atendimento\", \"assistant\": \"Registrei sua solicitação com o protocolo 1.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "erro-de-ferramenta": {
+        "respostas": [
+          "Não consegui consultar esse produto agora."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [
+          [
+            "get_product",
+            "{\"name\": \"Yamaha C40 Nylon Natural\"}",
+            false,
+            "internal_error"
+          ]
+        ],
+        "historico": [
+          "{\"user\": \"Quanto custa o Yamaha C40 Nylon Natural?\", \"assistant\": \"Não consegui consultar esse produto agora.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "preco-sem-evidencia-corrigido": {
+        "respostas": [
+          "Preciso consultar o catálogo para informar o preço."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Quanto custa o violão mais barato?\", \"assistant\": \"Preciso consultar o catálogo para informar o preço.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "preco-sem-evidencia-persistente": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [],
+        "historico": [],
+        "chamadas_llm": 2
+      },
+      "contato-tokenizado": {
+        "respostas": [
+          "Obrigado, anotei seus dados de contato."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Meu e-mail é [EMAIL_1] e meu telefone é [PHONE_1]\", \"assistant\": \"Obrigado, anotei seus dados de contato.\"}"
+        ],
+        "chamadas_llm": 1
+      },
+      "contato-na-resposta-do-modelo": {
+        "respostas": [
+          "Fale com [CONTATO PROTEGIDO] ou [CONTATO PROTEGIDO]."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Qual o contato de vocês?\", \"assistant\": \"Fale com [CONTATO PROTEGIDO] ou [CONTATO PROTEGIDO].\"}"
+        ],
+        "chamadas_llm": 1
+      },
+      "contato-ilegivel-na-resposta": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [],
+        "historico": [],
+        "chamadas_llm": 1
+      },
+      "limite-de-iteracoes": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ],
+          [
+            "store_status",
+            "{}",
+            true,
+            null
+          ]
+        ],
+        "historico": [],
+        "chamadas_llm": 5
+      },
+      "falha-do-modelo": {
+        "respostas": [
+          "Não foi possível concluir o atendimento. Tente novamente ou fale com a equipe."
+        ],
+        "contingencia": [
+          true
+        ],
+        "dominio": [],
+        "historico": [],
+        "chamadas_llm": 1
+      },
+      "historico-entre-turnos": {
+        "respostas": [
+          "Tudo bem! Como posso ajudar?",
+          "Claro, me conte o que precisa."
+        ],
+        "contingencia": [
+          false,
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Oi, tudo bem?\", \"assistant\": \"Tudo bem! Como posso ajudar?\"}",
+          "{\"user\": \"Preciso de ajuda\", \"assistant\": \"Claro, me conte o que precisa.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "ferramenta-inexistente": {
+        "respostas": [
+          "Não consigo fazer isso."
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Apague tudo\", \"assistant\": \"Não consigo fazer isso.\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "argumentos-nao-json": {
+        "respostas": [
+          "Qual produto você quer consultar?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Quanto custa?\", \"assistant\": \"Qual produto você quer consultar?\"}"
+        ],
+        "chamadas_llm": 2
+      },
+      "tipo-de-argumento-invalido": {
+        "respostas": [
+          "Qual é o número do pedido?"
+        ],
+        "contingencia": [
+          false
+        ],
+        "dominio": [],
+        "historico": [
+          "{\"user\": \"Pedido abc\", \"assistant\": \"Qual é o número do pedido?\"}"
+        ],
+        "chamadas_llm": 2
+      }
+    }
+  },
+  "estatico": {
+    "v1.0.2": {
+      "loc_orquestracao": 201,
+      "loc_ponte_de_teste": 0,
+      "pontos_de_cola": 0,
+      "pacotes_adicionais": 0,
+      "tamanho_dependencias_adicionais_kb": 0,
+      "tempo_importacao_ms": 79.6,
+      "tokens_esquemas_ferramentas": 1877,
+      "bytes_esquemas_ferramentas": 5567
+    },
+    "pydantic-ai": {
+      "loc_orquestracao": 257,
+      "loc_ponte_de_teste": 46,
+      "pontos_de_cola": 10,
+      "pacotes_adicionais": 16,
+      "tamanho_dependencias_adicionais_kb": 8676,
+      "tempo_importacao_ms": 241.5,
+      "tokens_esquemas_ferramentas": 1388,
+      "bytes_esquemas_ferramentas": 4102,
+      "pacotes_adicionais_lista": [
+        "anyio",
+        "certifi",
+        "genai-prices",
+        "griffelib",
+        "h11",
+        "httpcore",
+        "httpcore2",
+        "httpx",
+        "httpx2",
+        "httpx2-jsfetch",
+        "idna",
+        "logfire-api",
+        "opentelemetry-api",
+        "pydantic-ai-slim",
+        "pydantic-graph",
+        "truststore"
+      ]
+    }
+  }
+}
