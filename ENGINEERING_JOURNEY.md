@@ -109,6 +109,8 @@ Esses limites são parte explícita da entrega. Não devem ser apagados de uma a
 
 O relatório deve explicar **em quais cenários** cada solução ganhou, perdeu ou empatou; apresentar a versão exata das dependências; separar medições reproduzíveis de impressões; não usar testes ajustados depois das respostas como validação independente; e não declarar framework vencedor antes dos resultados.
 
+> **Adendo (2026-11-03):** Etapa S0 (loop próprio × PydanticAI) executada; resultado e limitações em `reports/scenarios/S0-baseline/decision.md`.
+
 ## 8. Referências verificáveis
 
 - [Código entregue — `v1.0.2`](https://github.com/danielmmf/artefact/tree/v1.0.2)
