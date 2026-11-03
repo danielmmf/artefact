@@ -152,13 +152,13 @@ def run(name: str, root: Path = Path('.'), *, scenarios_root: Path | None = None
     if s.status != 'mensuravel':
         out(f'\nERRO: o cenário {name} está "planejado": defina as métricas e os critérios antes de executar. Sem medição não há conclusão.')
         return EXIT_INVALID
-    if len(s.arquiteturas) != 1:
-        out('\nERRO: a comparação entre várias arquiteturas ainda não está implementada; este lab só executa a v1.0.2 (S0).')
-        return EXIT_INVALID
     unknown = [a for a in s.arquiteturas if a not in ARCHITECTURES]
     if unknown:
         out(f'\nERRO: arquitetura desconhecida: {unknown}')
         return EXIT_INVALID
+    if len(s.arquiteturas) > 1:
+        from emporio_lab.compare import run_comparison
+        return run_comparison(s, root, scenarios_root, reports_root, allow_dirty, strict, out)
     pre = preregistered(name, scenarios_root)
     if not pre and not allow_dirty:
         out(f'\nERRO: scenarios/{name}.yaml não está commitado (ou tem mudanças). Os critérios precisam estar no histórico antes da execução.')

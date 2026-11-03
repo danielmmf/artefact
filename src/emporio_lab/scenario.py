@@ -36,6 +36,7 @@ class Metrica(BaseModel):
     unidade: str
     tipo: Literal['criterio', 'referencia']
     criterio: Criterio | None = None
+    escopo: Literal['arquitetura', 'comparativo'] = 'arquitetura'   # 'comparativo' = uma medida do par de arquiteturas, não de cada uma
 
     @model_validator(mode='after')
     def criterio_so_quando_tipo_criterio(self):
@@ -55,6 +56,8 @@ class Parametros(BaseModel):
     requisitos_de_fluxo: str
     latencia_llm_simulada_ms: int = Field(ge=0)
     seed: int
+    repeticoes: int = Field(default=1, ge=1)                         # execuções completas de cada arquitetura
+    alternar_ordem: bool = False                                     # repetições pares: A,B; ímpares: B,A
 
 
 class Scenario(BaseModel):
@@ -66,6 +69,8 @@ class Scenario(BaseModel):
     hipotese: str
     arquitetura_candidata: str | None = None
     arquiteturas: list[str] = Field(default_factory=list)
+    relatorio_em: str | None = None                                  # diretório de relatório (padrão: o nome do cenário)
+    protocolo: str | None = None                                     # documento do protocolo, também pré-registrado
     parametros: Parametros | None = None
     metricas: list[Metrica] = Field(default_factory=list)
 
@@ -78,6 +83,8 @@ class Scenario(BaseModel):
                 raise ValueError('cenário mensurável exige ao menos uma métrica com critério definido antes da execução')
             if not self.arquiteturas:
                 raise ValueError('cenário mensurável exige a lista de arquiteturas a rodar')
+            if len(self.arquiteturas) > 1 and (self.parametros.repeticoes < 3 or not self.parametros.alternar_ordem):
+                raise ValueError('comparação entre arquiteturas exige ao menos 3 repetições com ordem alternada')
             ids = [m.id for m in self.metricas]
             if len(ids) != len(set(ids)):
                 raise ValueError('ids de métricas duplicados')

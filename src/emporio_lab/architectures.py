@@ -8,6 +8,7 @@ from pathlib import Path
 
 from emporio.agent.loop import SAFE, ConversationEngine
 from emporio.cli import open_registry
+from emporio_lab.pydanticai_agent import PydanticAIAgent
 from emporio_lab.simllm import SimulatedLLM
 from emporio_lab.synthetic import Turn
 
@@ -30,6 +31,7 @@ class TurnResult:
 class V102:
     """A v1.0.2 como foi entregue: loop próprio, SQLite, validador, histórico e trace, com o LLM trocado pelo simulado."""
     name = 'v1.0.2'
+    orchestrator = staticmethod(ConversationEngine)
 
     def run_user(self, root: Path, turns: list[Turn], latency_ms: int) -> list[TurnResult]:
         results: list[TurnResult] = []
@@ -38,7 +40,7 @@ class V102:
             trace = Path(tmp) / 'trace.jsonl'
             try:
                 with open_registry(root, None, lambda: FIXED_NOW) as registry:
-                    engine = ConversationEngine(registry, llm, trace)
+                    engine = self.orchestrator(registry, llm, trace)
                     for turn in turns:
                         busy_before, calls_before = llm.busy_seconds, llm.calls
                         started = time.perf_counter()
@@ -59,4 +61,10 @@ class V102:
         return results
 
 
-ARCHITECTURES = {V102.name: V102}
+class PydanticAI(V102):
+    """Mesma carga, mesmo registry, mesmo LLM simulado e mesmo histórico; a orquestração é do PydanticAI."""
+    name = 'pydantic-ai'
+    orchestrator = staticmethod(PydanticAIAgent)
+
+
+ARCHITECTURES = {V102.name: V102, PydanticAI.name: PydanticAI}

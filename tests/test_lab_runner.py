@@ -110,10 +110,16 @@ def test_failed_criterion_is_reported_and_only_strict_mode_turns_it_into_an_erro
     assert code == runner.EXIT_CRITERIA_FAILED
 
 
-def test_multiple_architectures_are_refused_until_the_comparison_exists(tmp_path):
-    tiny_scenario(tmp_path, arquiteturas=['v1.0.2', 'outra'])
+def test_unknown_architecture_is_refused(tmp_path):
+    tiny_scenario(tmp_path, arquiteturas=['v1.0.2', 'outra'], parametros={**yaml.safe_load(open(ROOT / 'scenarios/S0-baseline.yaml'))['parametros'], 'repeticoes': 3, 'alternar_ordem': True})
     code, output = run_tiny(tmp_path, allow_dirty=True)
-    assert code == runner.EXIT_INVALID and 'ainda não está implementada' in output
+    assert code == runner.EXIT_INVALID and 'arquitetura desconhecida' in output
+
+
+def test_comparison_demands_three_repetitions_with_alternating_order(tmp_path):
+    tiny_scenario(tmp_path, arquiteturas=['v1.0.2', 'pydantic-ai'])
+    code, output = run_tiny(tmp_path, allow_dirty=True)
+    assert code == runner.EXIT_INVALID and 'ao menos 3 repetições' in output
 
 
 def test_scenario_list_shows_one_short_line_per_scenario(capsys):
