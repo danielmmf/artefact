@@ -1,0 +1,11 @@
+{
+  "cenario": "S0-baseline-comparacao",
+  "commit_dos_criterios": "d29111e9064a45d56a74d516f27126aa58e032b6",
+  "commit_instante": "2026-11-03T19:01:04-03:00",
+  "arquivos_sha256": {
+    "scenarios/S0-baseline-comparacao.yaml": "12ce92d68cfde9368aa215b77c61de20540a4857412b1dd19b195265dafab5ce",
+    "docs/S0-COMPARACAO-PROTOCOLO.md": "25706eb595b67009bde09efa5fd1a2100d1a134375c921b28d2ff5820f41ef17"
+  },
+  "registrado_em": "2026-11-03T22:01:04.448914+00:00",
+  "como_verificar": "git show <commit>:<arquivo> | sha256sum deve igualar arquivos_sha256; o commit deve ser ancestral do commit da execução."
+}
