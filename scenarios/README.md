@@ -54,7 +54,7 @@ Referência de todos os outros cenários: a v1.0.2 como entregue, sem alternativ
 
 Segunda medição do S0 com duas arquiteturas de orquestração (loop próprio da v1.0.2 e PydanticAI) sobre a mesma camada de domínio, privacidade e valores, mesma carga, relógio e LLM simulado, em estado isolado. Protocolo: [`docs/S0-COMPARACAO-PROTOCOLO.md`](../docs/S0-COMPARACAO-PROTOCOLO.md); o pré-registro (SHA do commit e hash dos critérios) fica em `reports/scenarios/S0-baseline/preregistration.json`. O relatório original do S0 (`report.md`) é preservado.
 
-**Resultado (relatório lado a lado [`reports/scenarios/S0-baseline/comparison.md`](../reports/scenarios/S0-baseline/comparison.md), decisão em [`decision.md`](../reports/scenarios/S0-baseline/decision.md)):** todos os critérios pré-registrados foram atendidos pelas duas arquiteturas, sem regressão funcional (0 divergências nos 20 casos com paridade exigida, 8 de 8 ferramentas). O PydanticAI não reduziu complexidade (257 contra 201 linhas, 10 pontos de cola, 16 pacotes novos) e custou mais tempo local (sobrecarga p95 19,5 ms contra 7,5 ms; 2% no turno inteiro com LLM de 300 ms). **Recomendação: manter o loop próprio na v1.x.** Vale só para as condições do S0, com LLM simulado.
+**Resultado (relatório lado a lado [`reports/scenarios/S0-baseline/comparison.md`](../reports/scenarios/S0-baseline/comparison.md), decisão em [`decision.md`](../reports/scenarios/S0-baseline/decision.md)):** todos os critérios pré-registrados foram atendidos pelas duas arquiteturas, sem regressão funcional (0 divergências nos 20 casos com paridade exigida, 8 de 8 ferramentas). Sobre complexidade, sem declarar vencedor por linhas: 201 no loop próprio contra 257 no arquivo do PydanticAI, ou 211 de orquestração mais 46 de adaptação ao LLM simulado, e 10 pontos de cola; 16 pacotes novos. Custou mais tempo local (sobrecarga p95 19,5 ms contra 7,5 ms; cerca de 2% do turno com LLM de 300 ms). **Conclusão: migrar a v1 para o PydanticAI não trouxe ganho suficiente nas condições do S0, e o experimento responde só a essa pergunta; não conclui que o PydanticAI seria pior num projeto iniciado do zero.** Limitações: LLM simulado; os esquemas de ferramenta não eram equivalentes (`reason` e `category` ficaram como `str` em vez de `Literal`), então a diferença de tokens não é atribuível ao framework; a hipótese de que a instrumentação OpenTelemetry nativa recuperaria a visibilidade sobre argumentos inválidos é **NÃO TESTADA**.
 
 ## S1-mil-usuarios
 
@@ -80,4 +80,8 @@ Hipótese: o loop próprio não persiste o estado do fluxo entre a pausa e a ret
 
 Status: planejado, critérios pendentes. **Conclusão: nenhuma (sem medição).**
 
-A comparação loop próprio × PydanticAI é transversal: o S0 é o primeiro (veja acima); nos demais cenários só depois de decidida a recomendação do S0.
+## Próximos passos
+
+- A entrega à Artefact tem prioridade. O branch `lab/cenarios` **congela junto com a entrega**.
+- O S1-mil-usuarios (e qualquer experimento posterior) **não** é executado neste branch: será publicado num repositório separado, criado a partir do `lab/cenarios` congelado, com critérios pré-registrados antes da execução.
+- A comparação loop próprio × PydanticAI nos demais cenários só será considerada depois de conhecido o gargalo do S1.

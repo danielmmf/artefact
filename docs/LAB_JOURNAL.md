@@ -38,12 +38,23 @@ Sem hipótese de superioridade. Expectativa registrada antes de medir (no YAML):
 - 410 testes passando. Novos: arquitetura nativa (não encapsula o engine), as 8 ferramentas expostas com esquemas tipados, `TestModel` sem credenciais (com `ALLOW_MODEL_REQUESTS=False`), paridade nos 20 casos, diferenças conhecidas medidas, três mutações que o conjunto precisa detectar (validador monetário desligado, barreira de privacidade desligada, acesso concedido a quem não é dono), isolamento de estado e as regras do pré-registro.
 - Execução oficial: 6 repetições, relatório em `reports/scenarios/S0-baseline/comparison.md`. Todos os critérios atendidos pelas duas; sobrecarga local p95 19,5 ms (17,7–28,2) contra 7,5 ms (7,3–8,1); turno p95 622 contra 609 ms; vazão −1,2%; 257 contra 201 linhas; 16 pacotes e ~8,7 MB a mais; importação 242 contra 80 ms.
 
-### Interpretação
+### Interpretação (revisada no fechamento, 2026-11-03)
 
-Sem regressão funcional e sem ganho prático: o framework cobre o encanamento (laço, retries, validação de argumentos), e os controles que dão valor ao produto continuam sendo código nosso. O desempenho piora pouco em termos absolutos (cerca de 12 ms no p95 local, 2% do turno com LLM de 300 ms). Decisão e limites em `reports/scenarios/S0-baseline/decision.md`: manter o loop próprio na v1.x; resultado conclusivo apenas para as condições do S0, com LLM simulado, uma máquina e implementação feita por quem conhece melhor o loop próprio.
+**Duas perguntas distintas.** (1) Vale migrar a v1 existente para PydanticAI? (2) Teria sido melhor começar do zero com ele? O experimento responde só à primeira: migrar não trouxe ganho suficiente nas condições do S0. Nada se conclui sobre a segunda, e não se afirma que o PydanticAI seria pior num projeto novo.
+
+Originalmente registrado: sem regressão funcional e sem ganho prático: o framework cobre o encanamento (laço, retries, validação de argumentos), e os controles que dão valor ao produto continuam sendo código nosso. O desempenho piora pouco em termos absolutos (cerca de 12 ms no p95 local, 2% do turno com LLM de 300 ms). Decisão e limites em `reports/scenarios/S0-baseline/decision.md`: manter o loop próprio na v1.x; resultado conclusivo apenas para as condições do S0, com LLM simulado, uma máquina e implementação feita por quem conhece melhor o loop próprio.
+
+### Fechamento: contagem de linhas, esquemas e observabilidade
+
+- **Linhas.** 201 no loop próprio; 257 no arquivo do PydanticAI, dos quais 46 são a adaptação ao LLM simulado (`# >>> PONTE`) e 211 são orquestração. As duas contagens ficam registradas e nenhum vencedor é declarado por quantidade de código.
+- **Esquemas não equivalentes.** `reason`, `category` e `purchase_channel` ficaram como `str` nas ferramentas do PydanticAI, enquanto o registry os declara como `Literal`; restrições numéricas e de tamanho também não aparecem. Uma comparação ideal exigiria contratos equivalentes. Por isso a diferença de tokens (1.388 contra 1.877) não é vantagem do framework. Não corrigido para não alterar o código medido.
+- **OpenTelemetry nativo (NÃO TESTADA).** A documentação descreve trace por execução e spans por requisição ao modelo e por chamada de ferramenta, com argumentos e resultados de ferramenta como atributos, exceções nos spans e `include_content=False` para excluir conteúdo; não descreve erros de validação como evento próprio. Fica registrada, **sem teste**, a hipótese de que isso recuperaria a visibilidade perdida sobre argumentos inválidos; há tensão com a política de privacidade do trace.
+- **Limitações da comparação.** LLM simulado; uma máquina; 6 repetições; implementação feita por quem conhece melhor o loop próprio; controles de privacidade escritos para o loop próprio e portados; contratos de ferramenta não equivalentes; sem qualidade de linguagem, concorrência na mesma sessão, streaming ou provedor real.
+- **Calendário.** O `lab/cenarios` congela junto com a entrega à Artefact. S1 e experimentos posteriores serão publicados em repositório separado, criado a partir do branch congelado, com critérios pré-registrados. O S1 não foi executado.
+- Medições, critérios, hashes e relatórios originais, e o código medido, permanecem inalterados.
 
 ### Pendências
 
 - `Literal` e restrições nos esquemas do PydanticAI, caso ele seja reavaliado depois do S1.
 - Concorrência dentro da mesma sessão, streaming e provedor real não foram exercitados.
-- `ENGINEERING_JOURNEY.md` entrou no repositório como estava na cópia local, sem edição.
+- `ENGINEERING_JOURNEY.md` entrou no repositório como estava na cópia local; no fechamento recebeu apenas um adendo datado ao final da seção 7, sem editar o corpo.
