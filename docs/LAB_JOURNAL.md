@@ -58,3 +58,39 @@ Originalmente registrado: sem regressão funcional e sem ganho prático: o frame
 - `Literal` e restrições nos esquemas do PydanticAI, caso ele seja reavaliado depois do S1.
 - Concorrência dentro da mesma sessão, streaming e provedor real não foram exercitados.
 - `ENGINEERING_JOURNEY.md` entrou no repositório como estava na cópia local; no fechamento recebeu apenas um adendo datado ao final da seção 7, sem editar o corpo.
+
+## 2026-11-03 · S2-catalogo-grande: protocolo, critérios e ensaio de desenvolvimento
+
+### Hipótese e pergunta
+
+A busca FTS5 perde qualidade nas consultas por intenção (a hipótese do cenário desde o início do lab). O desenho separa duas perguntas: (1) os embeddings ajudam? (D contra A) e (2) o Qdrant se justifica? (C contra D). Se D empatar com C, o registro será que os embeddings valem a pena e o Qdrant ainda não. Não há expectativa de que o Qdrant vença; o cenário existe para descobrir se vale a pena, não para provar que é necessário.
+
+### O que foi construído
+
+- `src/emporio_lab/s2/`: léxicos (`lexicon.py`), gerador de catálogo por atributos (`catalog.py`), consultas rotuladas (`queries.py`), verificação de vocabulário (`vocab.py`), as quatro estratégias e a confirmação no SQLite (`strategies.py`), indexação (`build.py`), worker de medição por processo (`worker.py`), métricas, avaliação e orquestração (`metrics.py`, `evaluate.py`, `run.py`).
+- `scenarios/S2-catalogo-grande.yaml` (parâmetros e critérios), `docs/S2-PROTOCOLO.md`, `docker/qdrant/s2-servers.sh` (Qdrant `v1.20.0` fixado por digest, um servidor por estratégia), `evals/s2_consultas.json` (450 consultas rotuladas, verificadas por hash contra o gerador).
+- Dependências do extra `lab`: fastembed 0.8.1, qdrant-client 1.20.0, numpy 2.5.4 (lockfile atualizado). O modelo (`paraphrase-multilingual-MiniLM-L12-v2`, ONNX quantizado, 384 dim, Apache-2.0, 0,22 GB) e o BM25 português do FastEmbed foram baixados uma vez; indexação e consultas são locais.
+- A implementação original de busca (`SQLiteRepository.search_product_ids`) e as regras comerciais não foram alteradas; a estratégia A chama o código original.
+
+### Verificações feitas antes de medir
+
+- **BM25 do Qdrant em português:** o modelo `Qdrant/bm25` do FastEmbed aceita `language='portuguese'` e carrega o stemmer Snowball português e uma lista de stopwords portuguesa (verificado no código e numa consulta de teste: "violões confortáveis para iniciante" virou 3 termos, sem "para"). Não é uma limitação.
+- **Confusão declarada:** o ramo lexical de C (BM25 com stemming) e o de D (FTS5 sem stemming) são diferentes; parte de uma diferença C−D pode ser do léxico, não do Qdrant.
+- **Separação de vocabulário:** as frases de nível e uso das consultas são disjuntas das das descrições (radicais Snowball, exceto 9 radicais de domínio listados em `ALLOWED_STEMS`), verificado na fonte e no catálogo realizado de 50.000. A primeira versão dos léxicos tinha 43 colisões (palavras como "grave", "casa", "linha" estavam nas frases de ruído e de preço das descrições); foram reescritas até a verificação passar. Os sinônimos de tipo repetem palavras genéricas do catálogo ("grave", "escala"): fração média de radicais presentes 0,42, registrada como informativa.
+- **HNSW:** abaixo de ~10 MB de vetores densos o Qdrant não constrói o grafo; em 5.000 produtos (7,7 MB) B e C varrem os vetores sem HNSW. Só a escala de 50.000 exercita o índice aproximado.
+
+### Erros e dificuldades
+
+- O contêiner do Qdrant não subiu como usuário comum (`Permission denied` ao criar `.qdrant-initialized` no diretório de trabalho) nem com o `entrypoint.sh` (caminho relativo); resolvido com `--workdir` no volume de dados, `--entrypoint /qdrant/qdrant` e `--config-path`. `docker compose` não existe nesta máquina, então o servidor sobe por script.
+- O Docker Compose pareceu a escolha natural, mas não está instalado: o arquivo `docker-compose` que escrevi primeiro foi descartado sem uso.
+- **Contenção de threads:** com BLAS em várias threads o produto escalar de D ficou 2 a 3 vezes mais lento depois que o ONNX Runtime foi carregado (microbenchmark: 2,3 ms com 1 thread contra 4,2 a 5,3 ms), e o embedding da consulta em D levou 17 ms contra 3,5 ms em B. Todos os processos de medição rodam com BLAS em 1 thread (registrado no YAML e no protocolo).
+- **Desempate do RRF do Qdrant (achado):** no ensaio de desenvolvimento, a mesma consulta no mesmo índice híbrido devolveu ordens diferentes em 91 de 450 consultas (5 execuções cada, no mesmo processo); com 65 produtos, 33% das consultas variavam entre execuções. Não é o modelo nem o índice: B (só denso) estável, D estável. Os empates de score do RRF não têm ordem definida no servidor 1.20.0. B e C passaram a reordenar no cliente por `(-score, id)`; com isso 0 de 450 consultas variam. O critério `instabilidade_top5 <= 0.01` fica como foi escrito.
+- `du` somando tamanhos aparentes dava 622 MB para 65 pontos (arquivos esparsos do Qdrant); a medição de disco usa blocos alocados.
+
+### Ensaio de desenvolvimento (descartado)
+
+Um ensaio com as escalas de 65 e 5.000 produtos, relatórios gravados fora do repositório, serviu para encontrar os erros acima. **Eu li os números de validação desse ensaio antes do pré-registro.** Nenhum critério, limite ou consulta foi alterado em função dos números de qualidade; as mudanças pós-ensaio foram o desempate no cliente, BLAS em 1 thread e rótulos de relatório. Um ajuste de consultas foi feito antes do ensaio final de verificação (consultas de sinônimo com nível exigem pelo menos 8 relevantes em 5.000 produtos). O ensaio rodou com outros processos pesados na máquina e seus tempos não valem.
+
+### Limitações declaradas antes da execução
+
+Rótulos sintéticos por atributos (medem generalização neste gerador, não clientes reais); léxicos diferentes em C e D; modelo denso quantizado; abstenção por limiar não calibrada (consultas sem correspondência medem só se algo foi devolvido); vazão com um cliente sequencial; uma máquina de 20 CPUs com Docker local; no 5.000 o Qdrant não usa HNSW.

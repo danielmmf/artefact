@@ -32,7 +32,7 @@ Critério reprovado é resultado, não erro: o comando sai com 0 e registra. Com
 | S0-baseline | medido | condições da v1.0.2: 65 produtos, manual de 8 páginas, poucos usuários |
 | S0-baseline-comparacao | medido | S0 com loop próprio × PydanticAI, 6 repetições alternadas, casos funcionais offline |
 | S1-mil-usuarios | planejado | 1.000 usuários simultâneos |
-| S2-catalogo-grande | planejado | 50 mil produtos sintéticos |
+| S2-catalogo-grande | pré-registrado | Qdrant × SQLite FTS5 com 65, 5.000 e 50.000 produtos sintéticos |
 | S3-conhecimento-grande | planejado | manual expandido e múltiplos documentos |
 | S4-fluxo-com-aprovacao | planejado | pausa para aprovação humana e retomada após reinício |
 
@@ -64,9 +64,14 @@ Status: planejado, critérios pendentes. **Conclusão: nenhuma (sem medição).*
 
 ## S2-catalogo-grande
 
-Hipótese: a busca FTS5 perde recall em consultas por intenção. Candidata: Qdrant local com busca híbrida (RRF). Métricas: recall@5, MRR e latência, com dataset de consultas rotulado antes.
+Hipótese: a busca FTS5 perde qualidade nas consultas por intenção. Duas perguntas separadas: os embeddings ajudam (D contra A)? O Qdrant se justifica sobre embeddings em numpy (C contra D)? Quatro estratégias: A (busca original), B (Qdrant denso), C (Qdrant híbrido, BM25 + denso, RRF), D (SQLite FTS5 + numpy exato + RRF). Escalas: 65, 5.000 e 50.000 produtos sintéticos, com o Qdrant Server local `v1.20.0` fixado por digest. Protocolo: [`docs/S2-PROTOCOLO.md`](../docs/S2-PROTOCOLO.md); critérios em [`S2-catalogo-grande.yaml`](S2-catalogo-grande.yaml); consultas rotuladas em [`evals/s2_consultas.json`](../evals/s2_consultas.json).
 
-Status: planejado, critérios pendentes. **Conclusão: nenhuma (sem medição).**
+```sh
+docker/qdrant/s2-servers.sh up   # os dois servidores Qdrant (o make scenario também sobe)
+make scenario S=S2-catalogo-grande
+```
+
+Status: critérios e protocolo registrados antes da execução. **Conclusão: nenhuma (sem medição).**
 
 ## S3-conhecimento-grande
 

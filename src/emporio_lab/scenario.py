@@ -64,6 +64,7 @@ class Scenario(BaseModel):
     model_config = ConfigDict(extra='forbid')
     nome: str = Field(pattern=r'^S\d+-[a-z0-9-]+$')
     status: Literal['mensuravel', 'planejado']
+    tipo: Literal['agente', 'busca'] = 'agente'                      # 'busca': experimento de recuperação de produtos (S2), com `experimento` no lugar de `parametros`
     descricao: str = Field(min_length=10)
     mudanca_em_relacao_a_v1_0_2: str
     hipotese: str
@@ -72,11 +73,20 @@ class Scenario(BaseModel):
     relatorio_em: str | None = None                                  # diretório de relatório (padrão: o nome do cenário)
     protocolo: str | None = None                                     # documento do protocolo, também pré-registrado
     parametros: Parametros | None = None
+    experimento: dict | None = None
     metricas: list[Metrica] = Field(default_factory=list)
 
     @model_validator(mode='after')
     def coerencia(self):
-        if self.status == 'mensuravel':
+        if self.status == 'mensuravel' and self.tipo == 'busca':
+            if self.experimento is None or not any(m.tipo == 'criterio' for m in self.metricas) or len(self.arquiteturas) < 2:
+                raise ValueError('cenário de busca mensurável exige experimento, arquiteturas e ao menos uma métrica com critério')
+            if self.experimento.get('repeticoes', 0) < 3 or not self.experimento.get('alternar_ordem'):
+                raise ValueError('comparação entre estratégias exige ao menos 3 repetições com ordem alternada')
+            ids = [m.id for m in self.metricas]
+            if len(ids) != len(set(ids)):
+                raise ValueError('ids de métricas duplicados')
+        elif self.status == 'mensuravel':
             if self.parametros is None:
                 raise ValueError('cenário mensurável exige parametros')
             if not any(m.tipo == 'criterio' for m in self.metricas):

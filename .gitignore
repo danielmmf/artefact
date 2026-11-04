@@ -1,6 +1,10 @@
 .env
 .venv/
 var/
+# S2: catálogos sintéticos, embeddings, dados do Qdrant, modelos baixados e caches (regeneráveis; só hashes e código são versionados)
+var/s2/
+.cache/
+__pycache__/
 __pycache__/
 *.pyc
 .pytest_cache/

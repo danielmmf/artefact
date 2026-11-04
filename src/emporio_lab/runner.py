@@ -141,13 +141,16 @@ def write_report(directory: Path, report: dict) -> None:
 
 
 def run(name: str, root: Path = Path('.'), *, scenarios_root: Path | None = None, reports_root: Path | None = None,
-        allow_dirty: bool = False, strict: bool = False, out=print) -> int:
+        allow_dirty: bool = False, strict: bool = False, only_scales: list[str] | None = None, out=print) -> int:
     scenarios_root = scenarios_root or root
     try:
         s = sc.load(name, scenarios_root)
     except sc.ScenarioError as error:
         out(f'ERRO: {error}')
         return EXIT_INVALID
+    if s.tipo == 'busca' and s.status == 'mensuravel':
+        from emporio_lab.s2 import run as s2run
+        return s2run.run(name, root, scenarios_root=scenarios_root, reports_root=reports_root, allow_dirty=allow_dirty, strict=strict, only_scales=only_scales, out=out)
     out(explain(s))
     if s.status != 'mensuravel':
         out(f'\nERRO: o cenário {name} está "planejado": defina as métricas e os critérios antes de executar. Sem medição não há conclusão.')

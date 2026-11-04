@@ -22,7 +22,11 @@ def test_every_scenario_has_a_section_and_only_measured_ones_have_a_conclusion()
         if s.relatorio_em:                       # comparação: o resultado vive em comparison.md do cenário-base, não em report.json
             assert f'reports/scenarios/{s.relatorio_em}/comparison.md' in body
             continue
-        if s.status == 'mensuravel' and report.exists():
+        if s.tipo == 'busca' and report.exists():       # S2: a conclusão é o veredito do decision.md, copiado sem edição
+            decision = (ROOT / 'reports/scenarios' / s.nome / 'decision.md').read_text(encoding='utf-8')
+            verdict = decision.split('## Veredito', 1)[1].split('\n## ', 1)[0].strip().splitlines()[0]
+            assert f'**Veredito:** {verdict}' in body and f'reports/scenarios/{s.nome}/decision.md' in body
+        elif s.status == 'mensuravel' and report.exists():
             assert '**Conclusão:** Se o cenário mudar para' in body
         else:
             assert 'Conclusão: nenhuma (sem medição)' in body and 'Se o cenário mudar para' not in body
@@ -39,5 +43,6 @@ def test_s0_conclusion_in_the_readme_is_the_one_in_the_report_and_has_the_requir
 
 def test_the_status_table_matches_the_scenario_files():
     for s in sc.list_all(ROOT):
-        label = 'medido' if s.status == 'mensuravel' else 'planejado'
+        measured = s.relatorio_em or (ROOT / 'reports/scenarios' / s.nome / 'report.json').exists()
+        label = ('medido' if measured else 'pré-registrado') if s.status == 'mensuravel' else 'planejado'
         assert re.search(rf'\| {re.escape(s.nome)} \| {label} \|', README), s.nome

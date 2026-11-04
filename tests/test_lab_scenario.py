@@ -25,11 +25,11 @@ def write(tmp_path, data, name='S9-teste'):
     (tmp_path / 'scenarios' / f'{name}.yaml').write_text(yaml.safe_dump(data, allow_unicode=True), encoding='utf-8')
 
 
-def test_the_five_initial_scenarios_load_and_only_s0_is_measurable():
+def test_the_initial_scenarios_load_and_only_s0_and_s2_are_measurable():
     scenarios = {s.nome: s for s in sc.list_all(ROOT)}
     assert list(scenarios) == ['S0-baseline-comparacao', 'S0-baseline', 'S1-mil-usuarios', 'S2-catalogo-grande', 'S3-conhecimento-grande', 'S4-fluxo-com-aprovacao']
-    assert [n for n, s in scenarios.items() if s.status == 'mensuravel'] == ['S0-baseline-comparacao', 'S0-baseline']
-    for name in ('S1-mil-usuarios', 'S2-catalogo-grande', 'S3-conhecimento-grande', 'S4-fluxo-com-aprovacao'):
+    assert [n for n, s in scenarios.items() if s.status == 'mensuravel'] == ['S0-baseline-comparacao', 'S0-baseline', 'S2-catalogo-grande']
+    for name in ('S1-mil-usuarios', 'S3-conhecimento-grande', 'S4-fluxo-com-aprovacao'):
         assert scenarios[name].status == 'planejado' and scenarios[name].metricas == [] and scenarios[name].hipotese
 
 

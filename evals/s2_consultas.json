@@ -1,0 +1,9133 @@
+{
+"seed": 20261103,
+"sha256": "ff8f879261e315c7a2c9ad34b9fce972bb097ff8d234c24b015f4c9360b7c427",
+"consultas": [
+{
+"id": "nome_codigo-001",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Meridiano AK-89 Sintetizador Nogueira",
+"full": {
+"product_id": [
+2226
+]
+},
+"partial": [
+{
+"series_name": [
+"Meridiano AK-89"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-002",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "orvalho ce-27 sintetizador natural",
+"full": {
+"product_id": [
+3641
+]
+},
+"partial": [
+{
+"series_name": [
+"Orvalho CE-27"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-003",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Bemol BF-87 Baixo passivo Natural",
+"full": {
+"product_id": [
+1714
+]
+},
+"partial": [
+{
+"series_name": [
+"Bemol BF-87"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-004",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "rubato se-39 guitarra single coil vermelho cereja",
+"full": {
+"product_id": [
+3320
+]
+},
+"partial": [
+{
+"series_name": [
+"Rubato SE-39"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-005",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Fortezza SV-16 Flauta transversal Branco Pérola",
+"full": {
+"product_id": [
+4437
+]
+},
+"partial": [
+{
+"series_name": [
+"Fortezza SV-16"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-006",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "lumera gr-94 violino verde floresta",
+"full": {
+"product_id": [
+3941
+]
+},
+"partial": [
+{
+"series_name": [
+"Lumera GR-94"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-007",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Nortelli NM-99 Baixo fretless Azul Cobalto",
+"full": {
+"product_id": [
+3967
+]
+},
+"partial": [
+{
+"series_name": [
+"Nortelli NM-99"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-008",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "meridiano le-40 violao eletroacustico verde floresta",
+"full": {
+"product_id": [
+2931
+]
+},
+"partial": [
+{
+"series_name": [
+"Meridiano LE-40"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-009",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Orvalho DD-89 Flauta transversal Vermelho Cereja",
+"full": {
+"product_id": [
+3980
+]
+},
+"partial": [
+{
+"series_name": [
+"Orvalho DD-89"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-010",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "sonaris rn-83 clarinete natural",
+"full": {
+"product_id": [
+3709
+]
+},
+"partial": [
+{
+"series_name": [
+"Sonaris RN-83"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-011",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Lumera BK-10 Flauta transversal Preto Fosco",
+"full": {
+"product_id": [
+2529
+]
+},
+"partial": [
+{
+"series_name": [
+"Lumera BK-10"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-012",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "fortezza jk-96 guitarra baritone mel",
+"full": {
+"product_id": [
+2308
+]
+},
+"partial": [
+{
+"series_name": [
+"Fortezza JK-96"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-013",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Zefiro XR-61 Bateria eletrônica Natural",
+"full": {
+"product_id": [
+1738
+]
+},
+"partial": [
+{
+"series_name": [
+"Zefiro XR-61"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-014",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "sonaris me-20 violao folk aco grafite",
+"full": {
+"product_id": [
+3293
+]
+},
+"partial": [
+{
+"series_name": [
+"Sonaris ME-20"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-015",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Quirino GE-46 Trompa Nogueira",
+"full": {
+"product_id": [
+2341
+]
+},
+"partial": [
+{
+"series_name": [
+"Quirino GE-46"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-016",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "tonale zx-55 controlador midi sunburst",
+"full": {
+"product_id": [
+4964
+]
+},
+"partial": [
+{
+"series_name": [
+"Tonale ZX-55"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-017",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Sonaris KG-35 Guitarra baritone Marfim",
+"full": {
+"product_id": [
+1937
+]
+},
+"partial": [
+{
+"series_name": [
+"Sonaris KG-35"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-018",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "ventura ab-84 trombone de vara branco perola",
+"full": {
+"product_id": [
+4301
+]
+},
+"partial": [
+{
+"series_name": [
+"Ventura AB-84"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-019",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Rubato PD-12 Saxofone alto Cinza Lunar",
+"full": {
+"product_id": [
+2344
+]
+},
+"partial": [
+{
+"series_name": [
+"Rubato PD-12"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-020",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "ventura le-46 saxofone alto grafite",
+"full": {
+"product_id": [
+3178
+]
+},
+"partial": [
+{
+"series_name": [
+"Ventura LE-46"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-021",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Fortezza CG-33 Trompa Nogueira",
+"full": {
+"product_id": [
+3234
+]
+},
+"partial": [
+{
+"series_name": [
+"Fortezza CG-33"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-022",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "cadenza pe-55 violao eletroacustico nogueira",
+"full": {
+"product_id": [
+2649
+]
+},
+"partial": [
+{
+"series_name": [
+"Cadenza PE-55"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-023",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Tonale HE-97 Guitarra single coil Verde Floresta",
+"full": {
+"product_id": [
+3185
+]
+},
+"partial": [
+{
+"series_name": [
+"Tonale HE-97"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-024",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "cadenza kd-48 controlador midi verde floresta",
+"full": {
+"product_id": [
+1576
+]
+},
+"partial": [
+{
+"series_name": [
+"Cadenza KD-48"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-025",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Rubato KM-50 Ukulele concert Vermelho Cereja",
+"full": {
+"product_id": [
+4879
+]
+},
+"partial": [
+{
+"series_name": [
+"Rubato KM-50"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-026",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "pratense hm-82 teclado arranjador nogueira",
+"full": {
+"product_id": [
+4895
+]
+},
+"partial": [
+{
+"series_name": [
+"Pratense HM-82"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-027",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Bemol CF-39 Ukulele concert Nogueira",
+"full": {
+"product_id": [
+2442
+]
+},
+"partial": [
+{
+"series_name": [
+"Bemol CF-39"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-028",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "rubato eh-73 trompa sunburst",
+"full": {
+"product_id": [
+3868
+]
+},
+"partial": [
+{
+"series_name": [
+"Rubato EH-73"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-029",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Ventura TS-50 Violão de 12 cordas Natural",
+"full": {
+"product_id": [
+3431
+]
+},
+"partial": [
+{
+"series_name": [
+"Ventura TS-50"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-030",
+"group": "nome_codigo",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "capella ae-71 guitarra single coil natural",
+"full": {
+"product_id": [
+2835
+]
+},
+"partial": [
+{
+"series_name": [
+"Capella AE-71"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-031",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "RF-72 Aurelia",
+"full": {
+"series_name": [
+"Aurelia RF-72"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-032",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "Orvalho KC-98",
+"full": {
+"series_name": [
+"Orvalho KC-98"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-033",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "NK-28 Trovador",
+"full": {
+"series_name": [
+"Trovador NK-28"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-034",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Bemol XE-38",
+"full": {
+"series_name": [
+"Bemol XE-38"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-035",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "NR-32 Cadenza",
+"full": {
+"series_name": [
+"Cadenza NR-32"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-036",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Cadenza MP-81",
+"full": {
+"series_name": [
+"Cadenza MP-81"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-037",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "JV-88 Meridiano",
+"full": {
+"series_name": [
+"Meridiano JV-88"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-038",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Zefiro SX-64",
+"full": {
+"series_name": [
+"Zefiro SX-64"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-039",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "AP-89 Capella",
+"full": {
+"series_name": [
+"Capella AP-89"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-040",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Bemol BA-20",
+"full": {
+"series_name": [
+"Bemol BA-20"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-041",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "JH-40 Brasilo",
+"full": {
+"series_name": [
+"Brasilo JH-40"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-042",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "Meridiano CX-42",
+"full": {
+"series_name": [
+"Meridiano CX-42"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-043",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "MX-35 Capella",
+"full": {
+"series_name": [
+"Capella MX-35"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-044",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "Vallori PR-48",
+"full": {
+"series_name": [
+"Vallori PR-48"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-045",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "JH-40 Brasilo",
+"full": {
+"series_name": [
+"Brasilo JH-40"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-046",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Harmonix SH-70",
+"full": {
+"series_name": [
+"Harmonix SH-70"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-047",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "BV-65 Quirino",
+"full": {
+"series_name": [
+"Quirino BV-65"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-048",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Aurelia KD-17",
+"full": {
+"series_name": [
+"Aurelia KD-17"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-049",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "NX-51 Rubato",
+"full": {
+"series_name": [
+"Rubato NX-51"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-050",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "Allegra AA-65",
+"full": {
+"series_name": [
+"Allegra AA-65"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-051",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "DM-18 Vallori",
+"full": {
+"series_name": [
+"Vallori DM-18"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-052",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "Brasilo CN-64",
+"full": {
+"series_name": [
+"Brasilo CN-64"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-053",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "GM-15 Meridiano",
+"full": {
+"series_name": [
+"Meridiano GM-15"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-054",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "val",
+"text": "Capella NC-45",
+"full": {
+"series_name": [
+"Capella NC-45"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-055",
+"group": "nome_codigo",
+"subgroup": "serie",
+"split": "dev",
+"text": "JV-48 Ventura",
+"full": {
+"series_name": [
+"Ventura JV-48"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-056",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "EC-44",
+"full": {
+"code": [
+"EC-44"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-057",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "VJ-80",
+"full": {
+"code": [
+"VJ-80"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-058",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "ES-43",
+"full": {
+"code": [
+"ES-43"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-059",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "RS-12",
+"full": {
+"code": [
+"RS-12"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-060",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "KS-49",
+"full": {
+"code": [
+"KS-49"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-061",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "NH-25",
+"full": {
+"code": [
+"NH-25"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-062",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "FP-29",
+"full": {
+"code": [
+"FP-29"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-063",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "GK-73",
+"full": {
+"code": [
+"GK-73"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-064",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "DS-67",
+"full": {
+"code": [
+"DS-67"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-065",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "ZE-47",
+"full": {
+"code": [
+"ZE-47"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-066",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "MK-38",
+"full": {
+"code": [
+"MK-38"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-067",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "BX-91",
+"full": {
+"code": [
+"BX-91"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-068",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "EC-36",
+"full": {
+"code": [
+"EC-36"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-069",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "PF-29",
+"full": {
+"code": [
+"PF-29"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-070",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "RX-71",
+"full": {
+"code": [
+"RX-71"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-071",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "VV-32",
+"full": {
+"code": [
+"VV-32"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-072",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "RS-79",
+"full": {
+"code": [
+"RS-79"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-073",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "CZ-54",
+"full": {
+"code": [
+"CZ-54"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-074",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "BG-48",
+"full": {
+"code": [
+"BG-48"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-075",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "ME-26",
+"full": {
+"code": [
+"ME-26"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-076",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "TV-45",
+"full": {
+"code": [
+"TV-45"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-077",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "VZ-91",
+"full": {
+"code": [
+"VZ-91"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-078",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "LK-70",
+"full": {
+"code": [
+"LK-70"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-079",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "val",
+"text": "NC-45",
+"full": {
+"code": [
+"NC-45"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "nome_codigo-080",
+"group": "nome_codigo",
+"subgroup": "codigo",
+"split": "dev",
+"text": "XD-50",
+"full": {
+"code": [
+"XD-50"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-001",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Solferion VB-30 Cajón Nogueira",
+"full": {
+"product_id": [
+2450
+]
+},
+"partial": [
+{
+"series_name": [
+"Solferino VB-30"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-002",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Capella RE-33 Teclao arranjador Branco Pérola",
+"full": {
+"product_id": [
+1596
+]
+},
+"partial": [
+{
+"series_name": [
+"Capella RE-33"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-003",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Aurelia PF-29 Vnolino Mel",
+"full": {
+"product_id": [
+4612
+]
+},
+"partial": [
+{
+"series_name": [
+"Aurelia PF-29"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-004",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Fortezza LF-25 Vilão folk aço Preto Fosco",
+"full": {
+"product_id": [
+1896
+]
+},
+"partial": [
+{
+"series_name": [
+"Fortezza LF-25"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-005",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Ulisses MN-16 Sintetiazdor Nogueira",
+"full": {
+"product_id": [
+4030
+]
+},
+"partial": [
+{
+"series_name": [
+"Ulisses MN-16"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-006",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Ventura AB-84 Trombone de vara Cinza Lnuar",
+"full": {
+"product_id": [
+4302
+]
+},
+"partial": [
+{
+"series_name": [
+"Ventura AB-84"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-007",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Capeloa AP-89 Sintetizador Natural",
+"full": {
+"product_id": [
+3033
+]
+},
+"partial": [
+{
+"series_name": [
+"Capella AP-89"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-008",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Harmonix LL-39 Baixxo fretless Cinza Lunar",
+"full": {
+"product_id": [
+2245
+]
+},
+"partial": [
+{
+"series_name": [
+"Harmonix LL-39"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-009",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Blmol EP-74 Guitarra humbucker Mel",
+"full": {
+"product_id": [
+1560
+]
+},
+"partial": [
+{
+"series_name": [
+"Bemol EP-74"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-010",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Lumera NV-12 Bateira eletrônica Azul Cobalto",
+"full": {
+"product_id": [
+1293
+]
+},
+"partial": [
+{
+"series_name": [
+"Lumera NV-12"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-011",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Trovador FJ-62 Gutiarra humbucker Vermelho Cereja",
+"full": {
+"product_id": [
+1883
+]
+},
+"partial": [
+{
+"series_name": [
+"Trovador FJ-62"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-012",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Brasilo XT-23 Violão folk aço Marfm",
+"full": {
+"product_id": [
+1201
+]
+},
+"partial": [
+{
+"series_name": [
+"Brasilo XT-23"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-013",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Trovdaor RS-87 Violão folk aço Nogueira",
+"full": {
+"product_id": [
+3403
+]
+},
+"partial": [
+{
+"series_name": [
+"Trovador RS-87"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-014",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Cadenza RV-20 Guitrara baritone Natural",
+"full": {
+"product_id": [
+4653
+]
+},
+"partial": [
+{
+"series_name": [
+"Cadenza RV-20"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-015",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Ulisses AH-15 Baaixo de 5 cordas Nogueira",
+"full": {
+"product_id": [
+2169
+]
+},
+"partial": [
+{
+"series_name": [
+"Ulisses AH-15"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-016",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Venttura TS-50 Violão de 12 cordas Natural",
+"full": {
+"product_id": [
+3431
+]
+},
+"partial": [
+{
+"series_name": [
+"Ventura TS-50"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-017",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Vibrato HJ-15 Guitarra baritone Grafise",
+"full": {
+"product_id": [
+1084
+]
+},
+"partial": [
+{
+"series_name": [
+"Vibrato HJ-15"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-018",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Quirino EB-53 Saxoffone alto Cinza Lunar",
+"full": {
+"product_id": [
+4401
+]
+},
+"partial": [
+{
+"series_name": [
+"Quirino EB-53"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-019",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Allegra VX-28 Controlador midi Azul Cbalto",
+"full": {
+"product_id": [
+3547
+]
+},
+"partial": [
+{
+"series_name": [
+"Allegra VX-28"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-020",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Quirino PZ-32 Flauta transversal Nattural",
+"full": {
+"product_id": [
+2288
+]
+},
+"partial": [
+{
+"series_name": [
+"Quirino PZ-32"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-021",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Prratense JB-37 Ukulele barítono Sunburst",
+"full": {
+"product_id": [
+1114
+]
+},
+"partial": [
+{
+"series_name": [
+"Pratense JB-37"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-022",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Ventura SJ-43 Baixo atio Mel",
+"full": {
+"product_id": [
+4597
+]
+},
+"partial": [
+{
+"series_name": [
+"Ventura SJ-43"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-023",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "val",
+"text": "Pratense XP-61 Baixo frettless Azul Cobalto",
+"full": {
+"product_id": [
+2844
+]
+},
+"partial": [
+{
+"series_name": [
+"Pratense XP-61"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-024",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Brasilo HC-22 Unulele barítono Cinza Lunar",
+"full": {
+"product_id": [
+1806
+]
+},
+"partial": [
+{
+"series_name": [
+"Brasilo HC-22"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-025",
+"group": "digitacao",
+"subgroup": "nome_completo",
+"split": "dev",
+"text": "Meridiano VJ-80 Tromap Azul Cobalto",
+"full": {
+"product_id": [
+4080
+]
+},
+"partial": [
+{
+"series_name": [
+"Meridiano VJ-80"
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-026",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Cadenzza SS-66",
+"full": {
+"series_name": [
+"Cadenza SS-66"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-027",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Meridinao BF-67",
+"full": {
+"series_name": [
+"Meridiano BF-67"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-028",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Hsrmonix EM-82",
+"full": {
+"series_name": [
+"Harmonix EM-82"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-029",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Troavdor AA-67",
+"full": {
+"series_name": [
+"Trovador AA-67"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-030",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Ulises EG-84",
+"full": {
+"series_name": [
+"Ulisses EG-84"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-031",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Sonaros PE-70",
+"full": {
+"series_name": [
+"Sonaris PE-70"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-032",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Soiaris BF-18",
+"full": {
+"series_name": [
+"Sonaris BF-18"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-033",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Troador FV-82",
+"full": {
+"series_name": [
+"Trovador FV-82"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-034",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Trovdor FH-24",
+"full": {
+"series_name": [
+"Trovador FH-24"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-035",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Allega RK-96",
+"full": {
+"series_name": [
+"Allegra RK-96"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-036",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Zefiso DB-93",
+"full": {
+"series_name": [
+"Zefiro DB-93"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-037",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Foortezza CT-19",
+"full": {
+"series_name": [
+"Fortezza CT-19"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-038",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Bsmol BF-28",
+"full": {
+"series_name": [
+"Bemol BF-28"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-039",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Ulsises VD-93",
+"full": {
+"series_name": [
+"Ulisses VD-93"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-040",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Ulsises ZC-80",
+"full": {
+"series_name": [
+"Ulisses ZC-80"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-041",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Brrasilo TA-67",
+"full": {
+"series_name": [
+"Brasilo TA-67"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-042",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "dev",
+"text": "Virbato CZ-19",
+"full": {
+"series_name": [
+"Vibrato CZ-19"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-043",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Orvalso RT-68",
+"full": {
+"series_name": [
+"Orvalho RT-68"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-044",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Rubao XE-13",
+"full": {
+"series_name": [
+"Rubato XE-13"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-045",
+"group": "digitacao",
+"subgroup": "serie",
+"split": "val",
+"text": "Quirnio EE-48",
+"full": {
+"series_name": [
+"Quirino EE-48"
+]
+},
+"partial": [],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "digitacao-046",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "dev",
+"text": "guitarra semiacústica Ventuia",
+"full": {
+"type": [
+2
+],
+"brand": [
+9
+]
+},
+"partial": [
+{
+"type": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-047",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "clarinete Toale",
+"full": {
+"type": [
+21
+],
+"brand": [
+1
+]
+},
+"partial": [
+{
+"type": [
+21
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-048",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "dev",
+"text": "guiarra semiacústica Allegra",
+"full": {
+"type": [
+2
+],
+"brand": [
+21
+]
+},
+"partial": [
+{
+"type": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-049",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "dev",
+"text": "trompete Aruelia",
+"full": {
+"type": [
+24
+],
+"brand": [
+6
+]
+},
+"partial": [
+{
+"type": [
+24
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-050",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "violãão de 12 cordas Allegra",
+"full": {
+"type": [
+19
+],
+"brand": [
+21
+]
+},
+"partial": [
+{
+"type": [
+19
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-051",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "tuba Uisses",
+"full": {
+"type": [
+26
+],
+"brand": [
+18
+]
+},
+"partial": [
+{
+"type": [
+26
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-052",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "dev",
+"text": "guitarra semiacústica Uliisses",
+"full": {
+"type": [
+2
+],
+"brand": [
+18
+]
+},
+"partial": [
+{
+"type": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-053",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "dev",
+"text": "controlador MIDI Sonnris",
+"full": {
+"type": [
+15
+],
+"brand": [
+2
+]
+},
+"partial": [
+{
+"type": [
+15
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-054",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "volão clássico nylon Trovador",
+"full": {
+"type": [
+16
+],
+"brand": [
+17
+]
+},
+"partial": [
+{
+"type": [
+16
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-055",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "vioa de arco Bemol",
+"full": {
+"type": [
+29
+],
+"brand": [
+22
+]
+},
+"partial": [
+{
+"type": [
+29
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-056",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "contrabaixo acústco Trovador",
+"full": {
+"type": [
+31
+],
+"brand": [
+17
+]
+},
+"partial": [
+{
+"type": [
+31
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-057",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "controlador MIDI Tonile",
+"full": {
+"type": [
+15
+],
+"brand": [
+1
+]
+},
+"partial": [
+{
+"type": [
+15
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-058",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "dev",
+"text": "bateeria acústica Lumera",
+"full": {
+"type": [
+8
+],
+"brand": [
+10
+]
+},
+"partial": [
+{
+"type": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-059",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "tuba Ulissses",
+"full": {
+"type": [
+26
+],
+"brand": [
+18
+]
+},
+"partial": [
+{
+"type": [
+26
+]
+}
+],
+"filters": {}
+},
+{
+"id": "digitacao-060",
+"group": "digitacao",
+"subgroup": "tipo_marca",
+"split": "val",
+"text": "baixo fretless Zesiro",
+"full": {
+"type": [
+7
+],
+"brand": [
+20
+]
+},
+"partial": [
+{
+"type": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-001",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "guitarra segundo instrumento da trajetória, para quem mora em prédio e quer discrição",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+],
+"level": [
+1
+]
+},
+{
+"category": [
+1
+],
+"use": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-002",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "violão para quem toca há muito tempo e é exigente, para meninos em idade escolar",
+"full": {
+"category": [
+5
+],
+"level": [
+2
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+5
+],
+"level": [
+2
+]
+},
+{
+"category": [
+5
+],
+"use": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-003",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para produzir o disco no home studio",
+"full": {
+"use": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-004",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "bateria para fixar a matéria da escola de música",
+"full": {
+"category": [
+3
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-005",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "bateria acústica para quem atua como músico de ofício",
+"full": {
+"type": [
+8
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"type": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-006",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para treinar de madrugada sem acordar ninguém",
+"full": {
+"use": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-007",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "teclado para quem atua como músico de ofício",
+"full": {
+"category": [
+4
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-008",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "ukulele para guardar canções direto no computador",
+"full": {
+"category": [
+9
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-009",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento upgrade para músico calejado",
+"full": {
+"level": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-010",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "teclado para presente do filho caçula",
+"full": {
+"category": [
+4
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-011",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "baixo para principiante absoluto",
+"full": {
+"category": [
+2
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-012",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "violão para exercitar os dedos sem parar",
+"full": {
+"category": [
+5
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-013",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "ukulele para dar a largada na música",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-014",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "guitarra para o músico que está crescendo",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-015",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "val",
+"text": "instrumento para tocador veterano de percepção afiada",
+"full": {
+"level": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-016",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "teclado para guardar canções direto no computador",
+"full": {
+"category": [
+4
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-017",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "teclado para quem já toca há uns dois anos",
+"full": {
+"category": [
+4
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-018",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para meninos em idade escolar",
+"full": {
+"use": [
+6
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-019",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "teclado para quem nunca tocou, para fazer demo de canções",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+0
+]
+},
+{
+"category": [
+4
+],
+"use": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-020",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "baixo para guardar canções direto no computador",
+"full": {
+"category": [
+2
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-021",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "guitarra humbucker para quem faz disso profissão",
+"full": {
+"type": [
+1
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"type": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-022",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento para quem encara a música com seriedade",
+"full": {
+"level": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-023",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "trombone de vara para principiante absoluto",
+"full": {
+"type": [
+25
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+25
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-024",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "ukulele para quem nunca tocou",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-025",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "bateria segundo instrumento da trajetória",
+"full": {
+"category": [
+3
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-026",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "teclado para tocar diante da plateia",
+"full": {
+"category": [
+4
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-027",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "guitarra para guardar canções direto no computador",
+"full": {
+"category": [
+1
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-028",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para treinar lições no quarto",
+"full": {
+"use": [
+0
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-029",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "baixo para ajudar no curso de música",
+"full": {
+"category": [
+2
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-030",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "guitarra para dar a largada na música",
+"full": {
+"category": [
+1
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-031",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "trombone de vara upgrade para músico calejado",
+"full": {
+"type": [
+25
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+25
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-032",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "teclado para subir no tablado com a banda",
+"full": {
+"category": [
+4
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-033",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "baixo dá para aprender sem professor",
+"full": {
+"category": [
+2
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-034",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "teclado para produzir o disco no home studio",
+"full": {
+"category": [
+4
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-035",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "ukulele para começar do zero sem complicação, para guardar canções direto no computador",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+9
+],
+"level": [
+0
+]
+},
+{
+"category": [
+9
+],
+"use": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-036",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento para principiante absoluto",
+"full": {
+"level": [
+0
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-037",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para a banda do templo",
+"full": {
+"use": [
+5
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-038",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para despachar na bagagem de avião",
+"full": {
+"use": [
+4
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-039",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "tuba para começar do zero sem complicação",
+"full": {
+"type": [
+26
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+26
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-040",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "bateria para sustentar o canto do coral da capela",
+"full": {
+"category": [
+3
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-041",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "teclado para principiante absoluto, para sustentar o canto do coral da capela",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+0
+]
+},
+{
+"category": [
+4
+],
+"use": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-042",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "bateria para quem nunca tocou",
+"full": {
+"category": [
+3
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-043",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "flauta doce para quem atua como músico de ofício",
+"full": {
+"type": [
+23
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"type": [
+23
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-044",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "ukulele a cúpula do ofício para artista de carreira",
+"full": {
+"category": [
+9
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-045",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "baixo upgrade para músico calejado, para fazer demo de canções",
+"full": {
+"category": [
+2
+],
+"level": [
+2
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+2
+],
+"level": [
+2
+]
+},
+{
+"category": [
+2
+],
+"use": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-046",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "bateria ferramenta de trabalho de músico contratado, para tocar em boates e bares",
+"full": {
+"category": [
+3
+],
+"level": [
+3
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+3
+],
+"level": [
+3
+]
+},
+{
+"category": [
+3
+],
+"use": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-047",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "teclado instrumento de estreia, para guardar canções direto no computador",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+0
+]
+},
+{
+"category": [
+4
+],
+"use": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-048",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "guitarra semiacústica a cúpula do ofício para artista de carreira",
+"full": {
+"type": [
+2
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"type": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-049",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "val",
+"text": "instrumento etapa seguinte para quem já se vira",
+"full": {
+"level": [
+1
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-050",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "violão clássico nylon upgrade para músico calejado",
+"full": {
+"type": [
+16
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+16
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-051",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "baixo para a banda do templo",
+"full": {
+"category": [
+2
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-052",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento para quem já toca há uns dois anos",
+"full": {
+"level": [
+1
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-053",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "ukulele para exercitar os dedos sem parar",
+"full": {
+"category": [
+9
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-054",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "teclado para tocador veterano de percepção afiada, para tocar diante da plateia",
+"full": {
+"category": [
+4
+],
+"level": [
+2
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+2
+]
+},
+{
+"category": [
+4
+],
+"use": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-055",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "guitarra para o músico que está crescendo, para a missa de domingo",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+1
+],
+"level": [
+1
+]
+},
+{
+"category": [
+1
+],
+"use": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-056",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para tocar em boates e bares",
+"full": {
+"use": [
+1
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-057",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "baixo para treinar lições no quarto",
+"full": {
+"category": [
+2
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-058",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "guitarra para quem atua como músico de ofício",
+"full": {
+"category": [
+1
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-059",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "teclado para treinar de madrugada sem acordar ninguém",
+"full": {
+"category": [
+4
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-060",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "bateria para ajudar no curso de música",
+"full": {
+"category": [
+3
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-061",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "ukulele para começar do zero sem complicação",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-062",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para fazer demo de canções",
+"full": {
+"use": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-063",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento para quem toca há muito tempo e é exigente",
+"full": {
+"level": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-064",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "baixo para quem encara a música com seriedade",
+"full": {
+"category": [
+2
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-065",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "bateria etapa seguinte para quem já se vira, para meu sobrinho de oito anos",
+"full": {
+"category": [
+3
+],
+"level": [
+1
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+3
+],
+"level": [
+1
+]
+},
+{
+"category": [
+3
+],
+"use": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-066",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "ukulele para tocador veterano de percepção afiada",
+"full": {
+"category": [
+9
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-067",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para a menina começar a brincar de música",
+"full": {
+"use": [
+6
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-068",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "teclado para a missa de domingo",
+"full": {
+"category": [
+4
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-069",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "ukulele para fazer demo de canções",
+"full": {
+"category": [
+9
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-070",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "guitarra para fazer apresentação em churrasco",
+"full": {
+"category": [
+1
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-071",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "teclado para quem encara a música com seriedade, para meu sobrinho de oito anos",
+"full": {
+"category": [
+4
+],
+"level": [
+2
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+2
+]
+},
+{
+"category": [
+4
+],
+"use": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-072",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para tocar nas férias de verão",
+"full": {
+"use": [
+4
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-073",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "baixo etapa seguinte para quem já se vira",
+"full": {
+"category": [
+2
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-074",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para sustentar o canto do coral da capela",
+"full": {
+"use": [
+5
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-075",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "guitarra bem baixinho para não incomodar o condomínio",
+"full": {
+"category": [
+1
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-076",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "bateria para principiante absoluto",
+"full": {
+"category": [
+3
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-077",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "ukulele para meninos em idade escolar",
+"full": {
+"category": [
+9
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-078",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento a cúpula do ofício para artista de carreira",
+"full": {
+"level": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-079",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "bateria segundo instrumento da trajetória, para fazer apresentação em churrasco",
+"full": {
+"category": [
+3
+],
+"level": [
+1
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+3
+],
+"level": [
+1
+]
+},
+{
+"category": [
+3
+],
+"use": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-080",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "teclado para o músico que está crescendo, para quem mora em prédio e quer discrição",
+"full": {
+"category": [
+4
+],
+"level": [
+1
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+1
+]
+},
+{
+"category": [
+4
+],
+"use": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-081",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "guitarra segundo instrumento da trajetória",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-082",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "baixo para quem encara a música com seriedade, para fazer demo de canções",
+"full": {
+"category": [
+2
+],
+"level": [
+2
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+2
+],
+"level": [
+2
+]
+},
+{
+"category": [
+2
+],
+"use": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-083",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "ukulele para meu sobrinho de oito anos",
+"full": {
+"category": [
+9
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-084",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "teclado para despachar na bagagem de avião",
+"full": {
+"category": [
+4
+],
+"use": [
+4
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-085",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "baixo para dar a largada na música, para fazer apresentação em churrasco",
+"full": {
+"category": [
+2
+],
+"level": [
+0
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+2
+],
+"level": [
+0
+]
+},
+{
+"category": [
+2
+],
+"use": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-086",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "guitarra para fixar a matéria da escola de música",
+"full": {
+"category": [
+1
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-087",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "violão segundo instrumento da trajetória",
+"full": {
+"category": [
+5
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-088",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "val",
+"text": "instrumento ferramenta de trabalho de músico contratado",
+"full": {
+"level": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-089",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "guitarra para fazer demo de canções",
+"full": {
+"category": [
+1
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-090",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "violão etapa seguinte para quem já se vira, para tocar no grupo da paróquia",
+"full": {
+"category": [
+5
+],
+"level": [
+1
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+5
+],
+"level": [
+1
+]
+},
+{
+"category": [
+5
+],
+"use": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-091",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "teclado para fixar a matéria da escola de música",
+"full": {
+"category": [
+4
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-092",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "val",
+"text": "baixo para exercitar os dedos sem parar",
+"full": {
+"category": [
+2
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-093",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "teclado para o músico que está crescendo",
+"full": {
+"category": [
+4
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-094",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "teclado para quem encara a música com seriedade",
+"full": {
+"category": [
+4
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-095",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para ajudar no curso de música",
+"full": {
+"use": [
+0
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-096",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "dev",
+"text": "baixo a cúpula do ofício para artista de carreira, para sustentar o canto do coral da capela",
+"full": {
+"category": [
+2
+],
+"level": [
+3
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+2
+],
+"level": [
+3
+]
+},
+{
+"category": [
+2
+],
+"use": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-097",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "guitarra para quem encara a música com seriedade",
+"full": {
+"category": [
+1
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-098",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para acampar com os amigos",
+"full": {
+"use": [
+4
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-099",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "teclado bem baixinho para não incomodar o condomínio",
+"full": {
+"category": [
+4
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-100",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "baixo upgrade para músico calejado",
+"full": {
+"category": [
+2
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-101",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "guitarra etapa seguinte para quem já se vira",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-102",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "ukulele instrumento de estreia",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-103",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "bateria para começar do zero sem complicação, para despachar na bagagem de avião",
+"full": {
+"category": [
+3
+],
+"level": [
+0
+],
+"use": [
+4
+]
+},
+"partial": [
+{
+"category": [
+3
+],
+"level": [
+0
+]
+},
+{
+"category": [
+3
+],
+"use": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-104",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "guitarra para quem já toca há uns dois anos",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-105",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "piano digital para dar a largada na música",
+"full": {
+"type": [
+12
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+12
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-106",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "ukulele para quem já toca há uns dois anos",
+"full": {
+"category": [
+9
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-107",
+"group": "intencao",
+"subgroup": "cat_nivel_uso",
+"split": "val",
+"text": "teclado para começar do zero sem complicação, para tocar diante da plateia",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+],
+"level": [
+0
+]
+},
+{
+"category": [
+4
+],
+"use": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-108",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "dev",
+"text": "instrumento para exercitar os dedos sem parar",
+"full": {
+"use": [
+0
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-109",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "trompete instrumento de estreia",
+"full": {
+"type": [
+24
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+24
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-110",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "teclado dá para aprender sem professor",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-111",
+"group": "intencao",
+"subgroup": "inst_uso",
+"split": "val",
+"text": "instrumento para a missa de domingo",
+"full": {
+"use": [
+5
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-112",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "violão de 12 cordas para começar do zero sem complicação",
+"full": {
+"type": [
+19
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+19
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-113",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "dev",
+"text": "baixo para começar do zero sem complicação",
+"full": {
+"category": [
+2
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-114",
+"group": "intencao",
+"subgroup": "cat_nivel",
+"split": "val",
+"text": "bateria ferramenta de trabalho de músico contratado",
+"full": {
+"category": [
+3
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-115",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "contrabaixo acústico para quem já toca há uns dois anos",
+"full": {
+"type": [
+31
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"type": [
+31
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-116",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "piano digital para tocador veterano de percepção afiada",
+"full": {
+"type": [
+12
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+12
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-117",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "baixo fretless a cúpula do ofício para artista de carreira",
+"full": {
+"type": [
+7
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"type": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-118",
+"group": "intencao",
+"subgroup": "inst_nivel",
+"split": "dev",
+"text": "instrumento para quem atua como músico de ofício",
+"full": {
+"level": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "intencao-119",
+"group": "intencao",
+"subgroup": "cat_uso",
+"split": "dev",
+"text": "bateria para exercitar os dedos sem parar",
+"full": {
+"category": [
+3
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "intencao-120",
+"group": "intencao",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "flauta transversal para o músico que está crescendo",
+"full": {
+"type": [
+20
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"type": [
+20
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-001",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "guitarra de bobina simples",
+"full": {
+"type": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-002",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "guitarra de bobina dupla",
+"full": {
+"type": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-003",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "guitarra de caixa oca",
+"full": {
+"type": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-004",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "guitarra de escala longa e afinação grave",
+"full": {
+"type": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-005",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "graves elétrico com pré embutido",
+"full": {
+"type": [
+4
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-006",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "graves elétrico sem pré embutido",
+"full": {
+"type": [
+5
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-007",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "graves elétrico com cinco cordas",
+"full": {
+"type": [
+6
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-008",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "graves elétrico sem trastes",
+"full": {
+"type": [
+7
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-009",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "kit de tambores de madeira",
+"full": {
+"type": [
+8
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-010",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "kit de tambores com pads digitais",
+"full": {
+"type": [
+9
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-011",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "caixote de percussão para sentar em cima",
+"full": {
+"type": [
+10
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-012",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "tambor africano em forma de cálice",
+"full": {
+"type": [
+11
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-013",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "piano eletrônico de teclas com peso",
+"full": {
+"type": [
+12
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-014",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "teclado com acompanhamento automático embutido",
+"full": {
+"type": [
+13
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-015",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "gerador de timbres eletrônicos analógicos",
+"full": {
+"type": [
+14
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-016",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "teclas mudas para ligar no computador",
+"full": {
+"type": [
+15
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-017",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "violão de cordas macias",
+"full": {
+"type": [
+16
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-018",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "violão de cordas metálicas",
+"full": {
+"type": [
+17
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-019",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "violão com captação e saída para amplificador",
+"full": {
+"type": [
+18
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-020",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "violão de doze cordas",
+"full": {
+"type": [
+19
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-021",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "flauta lateral de metal prateado",
+"full": {
+"type": [
+20
+]
+},
+"partial": [
+{
+"category": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-022",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "sopro de palheta única",
+"full": {
+"type": [
+21
+]
+},
+"partial": [
+{
+"category": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-023",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "sax melódico em mi bemol",
+"full": {
+"type": [
+22
+]
+},
+"partial": [
+{
+"category": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-024",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "flauta de bisel",
+"full": {
+"type": [
+23
+]
+},
+"partial": [
+{
+"category": [
+6
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-025",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "metal agudo de três pistos",
+"full": {
+"type": [
+24
+]
+},
+"partial": [
+{
+"category": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-026",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "metal de tubo deslizante",
+"full": {
+"type": [
+25
+]
+},
+"partial": [
+{
+"category": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-027",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "metal grave de bocal largo",
+"full": {
+"type": [
+26
+]
+},
+"partial": [
+{
+"category": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-028",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "metal enrolado de timbre aveludado",
+"full": {
+"type": [
+27
+]
+},
+"partial": [
+{
+"category": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-029",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "instrumento de arco agudo",
+"full": {
+"type": [
+28
+]
+},
+"partial": [
+{
+"category": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-030",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "cordas friccionadas de registro médio",
+"full": {
+"type": [
+29
+]
+},
+"partial": [
+{
+"category": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-031",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "instrumento de arco que se toca entre as pernas",
+"full": {
+"type": [
+30
+]
+},
+"partial": [
+{
+"category": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-032",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "arcão de orquestra tocado em pé",
+"full": {
+"type": [
+31
+]
+},
+"partial": [
+{
+"category": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-033",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "cavaquinho havaiano miúdo",
+"full": {
+"type": [
+32
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-034",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "cavaquinho havaiano médio",
+"full": {
+"type": [
+33
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-035",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "cavaquinho havaiano grande",
+"full": {
+"type": [
+34
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-036",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "cavaquinho havaiano de afinação grave",
+"full": {
+"type": [
+35
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-037",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "violão com captação e saída para amplificador para quem toca há muito tempo e é exigente",
+"full": {
+"type": [
+18
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+18
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-038",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "graves elétrico com cinco cordas",
+"full": {
+"type": [
+6
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-039",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "caixote de percussão para sentar em cima a cúpula do ofício para artista de carreira",
+"full": {
+"type": [
+10
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"type": [
+10
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-040",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "guitarra de escala longa e afinação grave",
+"full": {
+"type": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-041",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "violão de doze cordas dá para aprender sem professor",
+"full": {
+"type": [
+19
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+19
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-042",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "cavaquinho havaiano de afinação grave",
+"full": {
+"type": [
+35
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-043",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "teclado com acompanhamento automático embutido para tocador veterano de percepção afiada",
+"full": {
+"type": [
+13
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+13
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-044",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "cavaquinho havaiano médio",
+"full": {
+"type": [
+33
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-045",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "violão com captação e saída para amplificador upgrade para músico calejado",
+"full": {
+"type": [
+18
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+18
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-046",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "arcão de orquestra tocado em pé",
+"full": {
+"type": [
+31
+]
+},
+"partial": [
+{
+"category": [
+8
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-047",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "gerador de timbres eletrônicos analógicos segundo instrumento da trajetória",
+"full": {
+"type": [
+14
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"type": [
+14
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-048",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "metal enrolado de timbre aveludado",
+"full": {
+"type": [
+27
+]
+},
+"partial": [
+{
+"category": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-049",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "tambor africano em forma de cálice dá para aprender sem professor",
+"full": {
+"type": [
+11
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+11
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-050",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "metal de tubo deslizante",
+"full": {
+"type": [
+25
+]
+},
+"partial": [
+{
+"category": [
+7
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-051",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "tambor africano em forma de cálice etapa seguinte para quem já se vira",
+"full": {
+"type": [
+11
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"type": [
+11
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-052",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "guitarra de caixa oca",
+"full": {
+"type": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-053",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "sopro de palheta única para tocador veterano de percepção afiada",
+"full": {
+"type": [
+21
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"type": [
+21
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-054",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "guitarra de escala longa e afinação grave",
+"full": {
+"type": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-055",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "cordas friccionadas de registro médio para o músico que está crescendo",
+"full": {
+"type": [
+29
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"type": [
+29
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-056",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "graves elétrico sem trastes",
+"full": {
+"type": [
+7
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-057",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "val",
+"text": "flauta lateral de metal prateado para começar do zero sem complicação",
+"full": {
+"type": [
+20
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"type": [
+20
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-058",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "val",
+"text": "kit de tambores com pads digitais",
+"full": {
+"type": [
+9
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-059",
+"group": "sinonimos",
+"subgroup": "tipo_nivel",
+"split": "dev",
+"text": "violão de cordas macias para quem já toca há uns dois anos",
+"full": {
+"type": [
+16
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"type": [
+16
+]
+}
+],
+"filters": {}
+},
+{
+"id": "sinonimos-060",
+"group": "sinonimos",
+"subgroup": "tipo",
+"split": "dev",
+"text": "teclado com acompanhamento automático embutido",
+"full": {
+"type": [
+13
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {}
+},
+{
+"id": "ambiguas-001",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Brasilo",
+"full": {
+"brand": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-002",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "dev",
+"text": "Nortelli",
+"full": {
+"brand": [
+8
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-003",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "dev",
+"text": "Bemol",
+"full": {
+"brand": [
+22
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-004",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Solferino",
+"full": {
+"brand": [
+16
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-005",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "dev",
+"text": "Cadenza",
+"full": {
+"brand": [
+7
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-006",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Pratense",
+"full": {
+"brand": [
+13
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-007",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Aurelia",
+"full": {
+"brand": [
+6
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-008",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Orvalho",
+"full": {
+"brand": [
+12
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-009",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Rubato",
+"full": {
+"brand": [
+15
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-010",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "dev",
+"text": "Sonaris",
+"full": {
+"brand": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-011",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Ulisses",
+"full": {
+"brand": [
+18
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-012",
+"group": "ambiguas",
+"subgroup": "marca",
+"split": "val",
+"text": "Harmonix",
+"full": {
+"brand": [
+5
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-013",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "dev",
+"text": "natural",
+"full": {
+"finish": [
+0
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-014",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "dev",
+"text": "preto fosco",
+"full": {
+"finish": [
+1
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-015",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "dev",
+"text": "sunburst",
+"full": {
+"finish": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-016",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "val",
+"text": "branco pérola",
+"full": {
+"finish": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-017",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "dev",
+"text": "azul cobalto",
+"full": {
+"finish": [
+4
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-018",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "dev",
+"text": "vermelho cereja",
+"full": {
+"finish": [
+5
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-019",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "val",
+"text": "verde floresta",
+"full": {
+"finish": [
+6
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-020",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "val",
+"text": "mel",
+"full": {
+"finish": [
+7
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-021",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "val",
+"text": "grafite",
+"full": {
+"finish": [
+8
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-022",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "dev",
+"text": "nogueira",
+"full": {
+"finish": [
+9
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-023",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "val",
+"text": "marfim",
+"full": {
+"finish": [
+10
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-024",
+"group": "ambiguas",
+"subgroup": "acabamento",
+"split": "val",
+"text": "cinza lunar",
+"full": {
+"finish": [
+11
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-025",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "violão",
+"full": {
+"category": [
+5
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-026",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "val",
+"text": "guitarra",
+"full": {
+"category": [
+1
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-027",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "baixo",
+"full": {
+"category": [
+2
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-028",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "bateria",
+"full": {
+"category": [
+3
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-029",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "val",
+"text": "teclado",
+"full": {
+"type": [
+13
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-030",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "ukulele",
+"full": {
+"category": [
+9
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-031",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "flauta",
+"full": {
+"type": [
+20,
+23
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-032",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "saxofone",
+"full": {
+"type": [
+22
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-033",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "val",
+"text": "trompete",
+"full": {
+"type": [
+24
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-034",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "val",
+"text": "violino",
+"full": {
+"type": [
+28
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-035",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "val",
+"text": "piano",
+"full": {
+"type": [
+12
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-036",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "sintetizador",
+"full": {
+"type": [
+14
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-037",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "cajón",
+"full": {
+"type": [
+10
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-038",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "val",
+"text": "violoncelo",
+"full": {
+"type": [
+30
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-039",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "clarinete",
+"full": {
+"type": [
+21
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "ambiguas-040",
+"group": "ambiguas",
+"subgroup": "instrumento",
+"split": "dev",
+"text": "trombone",
+"full": {
+"type": [
+25
+]
+},
+"partial": [],
+"filters": {}
+},
+{
+"id": "filtros-001",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para o músico que está crescendo",
+"full": {
+"category": [
+2
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"category": "Baixos",
+"only_available": true
+}
+},
+{
+"id": "filtros-002",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento a cúpula do ofício para artista de carreira",
+"full": {
+"category": [
+1
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"category": "Guitarras",
+"only_available": true
+}
+},
+{
+"id": "filtros-003",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento ferramenta de trabalho de músico contratado",
+"full": {
+"category": [
+5
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"category": "Violões",
+"only_available": true
+}
+},
+{
+"id": "filtros-004",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento dá para aprender sem professor",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"category": "Ukuleles",
+"only_available": true
+}
+},
+{
+"id": "filtros-005",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para dar a largada na música",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"category": "Teclados e Pianos",
+"only_available": true
+}
+},
+{
+"id": "filtros-006",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento upgrade para músico calejado",
+"full": {
+"category": [
+4
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"category": "Teclados e Pianos",
+"only_available": true
+}
+},
+{
+"id": "filtros-007",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento ferramenta de trabalho de músico contratado",
+"full": {
+"category": [
+1
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"category": "Guitarras",
+"only_available": true
+}
+},
+{
+"id": "filtros-008",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para quem faz disso profissão",
+"full": {
+"category": [
+2
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"category": "Baixos",
+"only_available": true
+}
+},
+{
+"id": "filtros-009",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento ferramenta de trabalho de músico contratado",
+"full": {
+"category": [
+5
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"category": "Violões",
+"only_available": true
+}
+},
+{
+"id": "filtros-010",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento instrumento de estreia",
+"full": {
+"category": [
+5
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"category": "Violões",
+"only_available": true
+}
+},
+{
+"id": "filtros-011",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento para quem já toca há uns dois anos",
+"full": {
+"category": [
+9
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"category": "Ukuleles",
+"only_available": true
+}
+},
+{
+"id": "filtros-012",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para dar a largada na música",
+"full": {
+"category": [
+5
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"category": "Violões",
+"only_available": true
+}
+},
+{
+"id": "filtros-013",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para começar do zero sem complicação",
+"full": {
+"category": [
+1
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"category": "Guitarras",
+"only_available": true
+}
+},
+{
+"id": "filtros-014",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento etapa seguinte para quem já se vira",
+"full": {
+"category": [
+4
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"category": "Teclados e Pianos",
+"only_available": true
+}
+},
+{
+"id": "filtros-015",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "dev",
+"text": "instrumento para principiante absoluto",
+"full": {
+"category": [
+3
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {
+"category": "Baterias e Percussão",
+"only_available": true
+}
+},
+{
+"id": "filtros-016",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento ferramenta de trabalho de músico contratado",
+"full": {
+"category": [
+3
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {
+"category": "Baterias e Percussão",
+"only_available": true
+}
+},
+{
+"id": "filtros-017",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para quem toca há muito tempo e é exigente",
+"full": {
+"category": [
+1
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"category": "Guitarras",
+"only_available": true
+}
+},
+{
+"id": "filtros-018",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento para tocador veterano de percepção afiada",
+"full": {
+"category": [
+2
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"category": "Baixos",
+"only_available": true
+}
+},
+{
+"id": "filtros-019",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento a cúpula do ofício para artista de carreira",
+"full": {
+"category": [
+4
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"category": "Teclados e Pianos",
+"only_available": true
+}
+},
+{
+"id": "filtros-020",
+"group": "filtros",
+"subgroup": "categoria",
+"split": "val",
+"text": "instrumento instrumento de estreia",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"category": "Teclados e Pianos",
+"only_available": true
+}
+},
+{
+"id": "filtros-021",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "ukulele para subir no tablado com a banda",
+"full": {
+"category": [
+9
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"max_price": 87000,
+"only_available": true
+}
+},
+{
+"id": "filtros-022",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "teclado para fazer demo de canções",
+"full": {
+"category": [
+4
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"max_price": 180000,
+"only_available": true
+}
+},
+{
+"id": "filtros-023",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "guitarra para tocar no grupo da paróquia",
+"full": {
+"category": [
+1
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"max_price": 180000,
+"only_available": true
+}
+},
+{
+"id": "filtros-024",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "ukulele para exercitar os dedos sem parar",
+"full": {
+"category": [
+9
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"max_price": 87000,
+"only_available": true
+}
+},
+{
+"id": "filtros-025",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "guitarra para guardar canções direto no computador",
+"full": {
+"category": [
+1
+],
+"use": [
+2
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"max_price": 84000,
+"only_available": true
+}
+},
+{
+"id": "filtros-026",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "teclado para subir no tablado com a banda",
+"full": {
+"category": [
+4
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"max_price": 180000,
+"only_available": true
+}
+},
+{
+"id": "filtros-027",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "bateria para ir de ônibus com ele nas costas",
+"full": {
+"category": [
+3
+],
+"use": [
+4
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {
+"max_price": 250000,
+"only_available": true
+}
+},
+{
+"id": "filtros-028",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "baixo para tocar no grupo da paróquia",
+"full": {
+"category": [
+2
+],
+"use": [
+5
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"max_price": 195000,
+"only_available": true
+}
+},
+{
+"id": "filtros-029",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "baixo para treinar lições no quarto",
+"full": {
+"category": [
+2
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"max_price": 130000,
+"only_available": true
+}
+},
+{
+"id": "filtros-030",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "teclado para subir no tablado com a banda",
+"full": {
+"category": [
+4
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"max_price": 270000,
+"only_available": true
+}
+},
+{
+"id": "filtros-031",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "teclado para meu sobrinho de oito anos",
+"full": {
+"category": [
+4
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"max_price": 450000,
+"only_available": true
+}
+},
+{
+"id": "filtros-032",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "guitarra bem baixinho para não incomodar o condomínio",
+"full": {
+"category": [
+1
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"max_price": 300000,
+"only_available": true
+}
+},
+{
+"id": "filtros-033",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "ukulele para despachar na bagagem de avião",
+"full": {
+"category": [
+9
+],
+"use": [
+4
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"max_price": 87000,
+"only_available": true
+}
+},
+{
+"id": "filtros-034",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "bateria para meu sobrinho de oito anos",
+"full": {
+"category": [
+3
+],
+"use": [
+6
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {
+"max_price": 375000,
+"only_available": true
+}
+},
+{
+"id": "filtros-035",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "baixo para subir no tablado com a banda",
+"full": {
+"category": [
+2
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"max_price": 325000,
+"only_available": true
+}
+},
+{
+"id": "filtros-036",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "teclado para treinar lições no quarto",
+"full": {
+"category": [
+4
+],
+"use": [
+0
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"max_price": 180000,
+"only_available": true
+}
+},
+{
+"id": "filtros-037",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "guitarra para quem mora em prédio e quer discrição",
+"full": {
+"category": [
+1
+],
+"use": [
+3
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"max_price": 300000,
+"only_available": true
+}
+},
+{
+"id": "filtros-038",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "guitarra para subir no tablado com a banda",
+"full": {
+"category": [
+1
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"max_price": 84000,
+"only_available": true
+}
+},
+{
+"id": "filtros-039",
+"group": "filtros",
+"subgroup": "preco",
+"split": "dev",
+"text": "ukulele para tocar nas férias de verão",
+"full": {
+"category": [
+9
+],
+"use": [
+4
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"max_price": 52000,
+"only_available": true
+}
+},
+{
+"id": "filtros-040",
+"group": "filtros",
+"subgroup": "preco",
+"split": "val",
+"text": "baixo para tocar diante da plateia",
+"full": {
+"category": [
+2
+],
+"use": [
+1
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"max_price": 325000,
+"only_available": true
+}
+},
+{
+"id": "filtros-041",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "dev",
+"text": "guitarra instrumento de estreia",
+"full": {
+"category": [
+1
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-042",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "val",
+"text": "ukulele para dar a largada na música",
+"full": {
+"category": [
+9
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-043",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "dev",
+"text": "baixo para dar a largada na música",
+"full": {
+"category": [
+2
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-044",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "dev",
+"text": "ukulele para quem atua como músico de ofício",
+"full": {
+"category": [
+9
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-045",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "dev",
+"text": "teclado para quem faz disso profissão",
+"full": {
+"category": [
+4
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-046",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "val",
+"text": "bateria para quem nunca tocou",
+"full": {
+"category": [
+3
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+3
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-047",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "val",
+"text": "ukulele para tocador veterano de percepção afiada",
+"full": {
+"category": [
+9
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-048",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "dev",
+"text": "violão para principiante absoluto",
+"full": {
+"category": [
+5
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-049",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "val",
+"text": "guitarra dá para aprender sem professor",
+"full": {
+"category": [
+1
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-050",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "dev",
+"text": "baixo para dar a largada na música",
+"full": {
+"category": [
+2
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+2
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-051",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "val",
+"text": "guitarra para o músico que está crescendo",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-052",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "val",
+"text": "guitarra segundo instrumento da trajetória",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-053",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "val",
+"text": "violão para quem já toca há uns dois anos",
+"full": {
+"category": [
+5
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-054",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "dev",
+"text": "guitarra para o músico que está crescendo",
+"full": {
+"category": [
+1
+],
+"level": [
+1
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-055",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "val",
+"text": "teclado para tocador veterano de percepção afiada",
+"full": {
+"category": [
+4
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-056",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "dev",
+"text": "teclado para quem nunca tocou",
+"full": {
+"category": [
+4
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+4
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-057",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "val",
+"text": "ukulele para quem toca há muito tempo e é exigente",
+"full": {
+"category": [
+9
+],
+"level": [
+2
+]
+},
+"partial": [
+{
+"category": [
+9
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-058",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "val",
+"text": "guitarra para começar do zero sem complicação",
+"full": {
+"category": [
+1
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "filtros-059",
+"group": "filtros",
+"subgroup": "disponibilidade_sim",
+"split": "dev",
+"text": "guitarra dá para aprender sem professor",
+"full": {
+"category": [
+1
+],
+"level": [
+0
+]
+},
+"partial": [
+{
+"category": [
+1
+]
+}
+],
+"filters": {
+"only_available": true
+}
+},
+{
+"id": "filtros-060",
+"group": "filtros",
+"subgroup": "disponibilidade_nao",
+"split": "dev",
+"text": "violão a cúpula do ofício para artista de carreira",
+"full": {
+"category": [
+5
+],
+"level": [
+3
+]
+},
+"partial": [
+{
+"category": [
+5
+]
+}
+],
+"filters": {
+"only_available": false
+}
+},
+{
+"id": "sem_correspondencia-001",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "cavaquinho de samba",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-002",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "gaita de foles escocesa",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-003",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "acordeon vermelho",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-004",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "harpa celta",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-005",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "mouse sem fio",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-006",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "receita de bolo de cenoura",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-007",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "teclado de computador gamer",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-008",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "capa de celular",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-009",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "bandolim",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-010",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "sitar indiano",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-011",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "banjo de cinco cordas",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-012",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "ocarina de cerâmica",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-013",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "carregador portátil",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-014",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "geladeira frost free",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-015",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "tênis de corrida",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-016",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "bicicleta de montanha",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-017",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "oboé",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-018",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "fagote",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-019",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "harmônica de boca cromática",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-020",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "berimbau de capoeira",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-021",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "caixa de som bluetooth",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-022",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "monitor de vídeo",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-023",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "previsão do tempo em Recife",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-024",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "curso de inglês online",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-025",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "cadeira de escritório",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-026",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "kit de ferramentas",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-027",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "cítara",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-028",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "steel drum",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-029",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "val",
+"text": "theremin",
+"full": {},
+"partial": [],
+"filters": {}
+},
+{
+"id": "sem_correspondencia-030",
+"group": "sem_correspondencia",
+"subgroup": "ausente",
+"split": "dev",
+"text": "mesa de bilhar",
+"full": {},
+"partial": [],
+"filters": {}
+}
+]
+}

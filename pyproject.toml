@@ -15,7 +15,13 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10"]
-lab = ["pyyaml>=6,<7", "pydantic-ai-slim>=1,<2"]
+lab = [
+    "pyyaml>=6,<7",
+    "pydantic-ai-slim>=1,<2",
+    "fastembed>=0.7,<0.9",
+    "qdrant-client>=1.15,<2",
+    "numpy>=2,<3",
+]
 
 [project.scripts]
 emporio = "emporio.cli:main"

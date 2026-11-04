@@ -126,7 +126,7 @@ def test_scenario_list_shows_one_short_line_per_scenario(capsys):
     assert lab_main(['scenario', 'list']) == 0
     lines = capsys.readouterr().out.strip().splitlines()
     assert len(lines) == 6 and lines[0].startswith('S0-baseline') and all(len(l) < 160 for l in lines)
-    assert sum('planejado' in l for l in lines) == 4
+    assert sum('planejado' in l for l in lines) == 3
 
 
 def test_percentile_is_nearest_rank():

@@ -1,8 +1,130 @@
 nome: S2-catalogo-grande
-status: planejado
+status: mensuravel
+tipo: busca
 descricao: >-
-  Catálogo de 50 mil produtos sintéticos. Os critérios das métricas (recall@5, MRR e latência, com
-  dataset de consultas rotulado antes) ainda não foram definidos; este cenário não pode ser executado antes disso.
-mudanca_em_relacao_a_v1_0_2: Catálogo de 50 mil produtos sintéticos, em vez de 65.
-hipotese: A busca FTS5 perde recall em consultas por intenção.
-arquitetura_candidata: Qdrant local com busca híbrida (RRF).
+  Busca de produtos com o catálogo crescendo de 65 para 50.000 produtos sintéticos. Compara a busca original (SQLite FTS5/BM25 com
+  RapidFuzz) com três alternativas que usam embeddings locais: Qdrant só denso, Qdrant híbrido (BM25 + denso, RRF) e SQLite FTS5 com
+  embeddings em numpy e RRF, sem banco vetorial. O Qdrant é só recuperação de candidatos; preço, estoque e promoções continuam
+  vindo do SQLite. Dados fictícios e sintéticos; nenhuma inferência fora da máquina.
+mudanca_em_relacao_a_v1_0_2: >-
+  O catálogo passa de 65 para 5.000 (escala intermediária) e 50.000 (escala principal) produtos sintéticos, gerados por atributos
+  estruturados, e a recuperação de candidatos ganha três alternativas com embeddings. A implementação original de busca e as regras
+  comerciais não são alteradas.
+hipotese: >-
+  A busca FTS5 perde qualidade nas consultas por intenção (que não repetem o vocabulário das descrições). Duas perguntas separadas:
+  (1) embeddings ajudam? (D contra A); (2) o Qdrant se justifica sobre os embeddings em numpy? (C contra D). Não se parte do
+  pressuposto de que o Qdrant é necessário; se D empatar com C, o resultado é que os embeddings valem a pena e o Qdrant ainda não.
+arquitetura_candidata: A decidir pelos critérios abaixo (nenhuma é presumida). C = Qdrant híbrido; D = SQLite FTS5 + numpy + RRF.
+arquiteturas: [A, B, C, D]
+protocolo: docs/S2-PROTOCOLO.md
+experimento:
+  seed: 20261103
+  repeticoes: 4
+  alternar_ordem: true
+  ordens: [[A, B, C, D], [D, C, B, A], [B, D, A, C], [C, A, D, B]]     # quadrado latino: cada estratégia em cada posição uma vez
+  escalas:
+    - {nome: smoke65, produtos: 65, papel: smoke, consultas: evals/search_queries.yaml}
+    - {nome: catalogo5k, produtos: 5000, papel: intermediaria, consultas: gerador}
+    - {nome: catalogo50k, produtos: 50000, papel: principal, consultas: gerador}
+  consultas_por_grupo: {nome_codigo: 80, digitacao: 60, intencao: 120, sinonimos: 60, ambiguas: 40, filtros: 60, sem_correspondencia: 30}
+  divisao: {desenvolvimento: 0.5, validacao: 0.5, regra: "embaralhamento com seed dentro de cada grupo; as decisões usam SÓ a validação"}
+  k: 5
+  decisao_na_escala: catalogo50k
+  relevancia: >-
+    Predicado sobre atributos (categoria, tipo, nível, uso, faixa de preço, disponibilidade, marca, série). Ganho 2 = satisfaz o
+    predicado completo e os filtros; ganho 1 = satisfaz o predicado parcial; 0 = demais. Precisão@5 = ganho-2 no top-5 / min(5, total de ganho-2).
+    nDCG@5 com ganho linear e ideal calculado pelas contagens do catálogo. Hit@5 = algum ganho-2 no top-5.
+  qdrant: {servidor: "qdrant/qdrant:v1.20.0", digest: "sha256:9bfc89f9914fc14876a88c05270685921a55b8877b254a98bcc1cc2f0a424cd2", modo: servidor local em Docker (não o modo em processo), cliente: "qdrant-client 1.20.0", hnsw: padrão do servidor, distancia: cosseno}
+  embeddings: {modelo: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", via: FastEmbed (ONNX quantizado, local), dimensao: 384, licenca: apache-2.0, normalizacao: L2}
+  bm25: {modelo: "Qdrant/bm25 (FastEmbed)", idioma: portuguese, stemmer_e_stopwords_em_portugues: verificado (SnowballStemmer portuguese e lista de stopwords portuguesa), idf: modifier IDF no servidor}
+  fusao: {tipo: RRF, aplicada_em: "C (servidor Qdrant, Query API) e D (processo Python)"}
+  grade_de_configuracao: {rrf_k: [10, 60], profundidade_por_ramo: [50, 100, 200], candidatos_para_o_sqlite: 30}
+  regra_de_selecao: >-
+    Escolhida só no subconjunto de DESENVOLVIMENTO, na escala de 5.000, com a estratégia D: a combinação (rrf_k, profundidade) que maximiza a
+    média das médias de nDCG@5 dos grupos intencao, sinonimos, nome_codigo e digitacao; empate: menor profundidade, depois maior rrf_k.
+    A mesma configuração vale para C. Nada é recalibrado depois de ver a validação.
+  blas_threads: 1
+  limitacoes_declaradas_antes: >-
+    (1) O ramo lexical de C (BM25 do FastEmbed, com stemming em português) e o de D (FTS5 unicode61, sem stemming) são diferentes: parte da
+    diferença C-D pode vir do léxico, não do Qdrant. (2) Rótulos sintéticos por atributos: medem generalização nesse gerador, não
+    comportamento de clientes reais. (3) O modelo denso é o quantizado do FastEmbed. (4) Abstenção (limiar de similaridade) não é
+    calibrada; consultas sem correspondência medem só a taxa de resultados devolvidos. (5) Vazão medida com um cliente sequencial.
+    (6) Uma máquina, 20 CPUs, Docker local.
+metricas:
+  # --- critérios de decisão, avaliados na escala principal (50.000), subconjunto de validação -------------------------------
+  - id: d_vs_a_delta_ndcg_intencao
+    descricao: nDCG@5 nas consultas de intenção, D menos A (embeddings ajudam?)
+    unidade: pontos de nDCG
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: ">=", valor: 0.05}
+  - id: d_vs_a_ic95_inferior_ndcg_intencao
+    descricao: limite inferior do IC95% (bootstrap pareado) da diferença D menos A em nDCG@5 de intenção
+    unidade: pontos de nDCG
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: ">", valor: 0.0}
+  - id: d_vs_a_delta_precisao_nome
+    descricao: precisão@5 nas consultas por nome e código de modelo, D menos A (sem perda)
+    unidade: pontos de precisão
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: ">=", valor: -0.02}
+  - id: c_vs_d_delta_ndcg_intencao
+    descricao: nDCG@5 nas consultas de intenção, C menos D (o Qdrant se justifica pela qualidade?)
+    unidade: pontos de nDCG
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: ">=", valor: 0.03}
+  - id: c_vs_d_ic95_inferior_ndcg_intencao
+    descricao: limite inferior do IC95% da diferença C menos D em nDCG@5 de intenção
+    unidade: pontos de nDCG
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: ">", valor: 0.0}
+  - id: c_vs_d_delta_precisao_nome
+    descricao: precisão@5 nas consultas por nome e código de modelo, C menos D (sem perda)
+    unidade: pontos de precisão
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: ">=", valor: -0.02}
+  - id: p95_e2e_ms
+    descricao: latência ponta a ponta p95 (embedding da consulta + índice + confirmação no SQLite), com índice pronto e cache aquecido
+    unidade: ms
+    tipo: criterio
+    criterio: {operador: "<=", valor: 200}
+  - id: violacoes_de_filtro
+    descricao: resultados devolvidos que violam categoria, preço final ou disponibilidade no estado atual do SQLite
+    unidade: resultados
+    tipo: criterio
+    criterio: {operador: "==", valor: 0}
+  - id: instabilidade_top5
+    descricao: fração de consultas cujo top-5 muda entre repetições (indexação aproximada deve ser estável)
+    unidade: fração
+    tipo: criterio
+    criterio: {operador: "<=", valor: 0.01}
+  - id: smoke_a_recall_at_5
+    descricao: recall@5 de A nas 10 consultas do smoke de 65 produtos (precisa reproduzir o valor publicado da v1.0.2)
+    unidade: fração
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: "==", valor: 0.8}
+  - id: smoke_a_mrr
+    descricao: MRR de A no smoke de 65 produtos (valor publicado da v1.0.2)
+    unidade: fração
+    tipo: criterio
+    escopo: comparativo
+    criterio: {operador: "==", valor: 0.75}
+  # --- referências (registradas, sem critério) --------------------------------------------------------------------------------------
+  - {id: precisao_at_5_por_grupo, descricao: "precisão@5 por grupo de consulta e estratégia", unidade: fração, tipo: referencia}
+  - {id: ndcg_at_5_por_grupo, descricao: "nDCG@5 por grupo de consulta e estratégia", unidade: fração, tipo: referencia}
+  - {id: hit_at_5_por_grupo, descricao: "hit@5 por grupo de consulta e estratégia", unidade: fração, tipo: referencia}
+  - {id: latencia_por_componente, descricao: "p50 e p95 de embedding da consulta, consulta ao índice, confirmação no SQLite e ponta a ponta", unidade: ms, tipo: referencia}
+  - {id: primeira_consulta_fria, descricao: "latência da primeira consulta de um processo novo", unidade: ms, tipo: referencia}
+  - {id: vazao_sequencial, descricao: "consultas por segundo com um cliente sequencial", unidade: consultas/s, tipo: referencia}
+  - {id: tempo_de_indexacao, descricao: "tempo para embeddings, para o índice de cada estratégia e total", unidade: s, tipo: referencia}
+  - {id: ram_e_disco, descricao: "RSS de pico do processo, RSS do servidor Qdrant e bytes em disco por índice", unidade: MB, tipo: referencia}
+  - {id: falso_positivo_sem_correspondencia, descricao: "fração das consultas sem correspondência que devolvem algum resultado", unidade: fração, tipo: referencia}
+  - {id: sem_resposta, descricao: "fração das consultas com resposta possível que devolvem lista vazia", unidade: fração, tipo: referencia}
+  - {id: qualidade_com_filtros, descricao: "precisão@5 e nDCG@5 das consultas com filtro de categoria, preço e disponibilidade", unidade: fração, tipo: referencia}
+  - {id: recall_mrr_smoke, descricao: "recall@5 e MRR das quatro estratégias no smoke de 65 produtos", unidade: fração, tipo: referencia}
