@@ -32,7 +32,7 @@ Critério reprovado é resultado, não erro: o comando sai com 0 e registra. Com
 | S0-baseline | medido | condições da v1.0.2: 65 produtos, manual de 8 páginas, poucos usuários |
 | S0-baseline-comparacao | medido | S0 com loop próprio × PydanticAI, 6 repetições alternadas, casos funcionais offline |
 | S1-mil-usuarios | planejado | 1.000 usuários simultâneos |
-| S2-catalogo-grande | pré-registrado | Qdrant × SQLite FTS5 com 65, 5.000 e 50.000 produtos sintéticos |
+| S2-catalogo-grande | medido | Qdrant × SQLite FTS5 com 65, 5.000 e 50.000 produtos sintéticos |
 | S3-conhecimento-grande | planejado | manual expandido e múltiplos documentos |
 | S4-fluxo-com-aprovacao | planejado | pausa para aprovação humana e retomada após reinício |
 
@@ -71,7 +71,11 @@ docker/qdrant/s2-servers.sh up   # os dois servidores Qdrant (o make scenario ta
 make scenario S=S2-catalogo-grande
 ```
 
-Status: critérios e protocolo registrados antes da execução. **Conclusão: nenhuma (sem medição).**
+Status: medido (4 repetições com ordem alternada; relatório [`reports/scenarios/S2-catalogo-grande/report.md`](../reports/scenarios/S2-catalogo-grande/report.md), decisão em [`decision.md`](../reports/scenarios/S2-catalogo-grande/decision.md)).
+
+**Veredito:** Os embeddings não demonstraram o ganho mínimo pré-registrado sobre a busca original; nenhuma alternativa é recomendada por esta medição.
+
+Em 50.000 produtos (validação): nDCG@5 de intenção D−A = +0,001 (IC95% −0,047 a +0,052) e C−D = +0,038 (IC95% −0,020 a +0,098); a precisão@5 por nome e código cai bastante com embeddings (A 1,00; D 0,63; C 0,60; B 0,24). Latência p95 ponta a ponta: A 36 ms, B 14, C 16, D 30; zero violações de filtro. Ressalvas: no Qdrant o HNSW não chegou a ser construído nem com 50.000 pontos (`indexed_vectors_count` 0 com os padrões; B e C fizeram varredura exata no servidor); rótulos sintéticos; léxicos de C e D diferentes; um único modelo denso, quantizado.
 
 ## S3-conhecimento-grande
 

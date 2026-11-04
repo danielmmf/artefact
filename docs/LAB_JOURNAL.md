@@ -94,3 +94,21 @@ Um ensaio com as escalas de 65 e 5.000 produtos, relatórios gravados fora do re
 ### Limitações declaradas antes da execução
 
 Rótulos sintéticos por atributos (medem generalização neste gerador, não clientes reais); léxicos diferentes em C e D; modelo denso quantizado; abstenção por limiar não calibrada (consultas sem correspondência medem só se algo foi devolvido); vazão com um cliente sequencial; uma máquina de 20 CPUs com Docker local; no 5.000 o Qdrant não usa HNSW.
+
+## 2026-11-04 · S2-catalogo-grande: medição oficial
+
+Pré-registro em `8b83aa8` (critérios em `6564570`); execução com código sem alterações. 4 repetições, quadrado latino, 450 consultas por passe. Duração e ambiente no `report.md`.
+
+### Medições (50.000 produtos, validação)
+
+- **Embeddings ajudam? Não demonstrado.** nDCG@5 de intenção D−A = +0,0011 (IC95% −0,0465 a +0,0523), contra o mínimo de +0,05. Precisão@5 por nome D−A = −0,373: A acerta 100% dos nomes e códigos; D 0,63, C 0,60, B 0,24. Em hit@5 de intenção B e D chegam a 0,60 e C a 0,55 contra 0,53 de A, dentro do ruído.
+- **Qdrant se justifica? Não.** C−D em intenção = +0,0379 (atinge o mínimo de +0,03 no ponto, mas o IC95% vai de −0,020 a +0,098) e em nome = −0,025 (abaixo do limite de −0,02). Via latência: D p95 30 ms, longe do limite de 200 ms.
+- Latência p95 ponta a ponta: A 36 ms, B 14, C 16, D 30. A piora com o tamanho (p50 2 ms em 5.000, 21 ms em 50.000: FTS5 com OR de todos os termos ordena todos os casamentos); D segue o mesmo custo no ramo lexical. Memória do processo: A 68 MB, B/C ~720 MB, D 755 MB (modelo ONNX); servidor Qdrant ocioso 380 MB (B) e 164 MB (C). Embeddings de 50.000 documentos: 368 s. Disco: Qdrant 191/213 MB, numpy 77 MB, SQLite 44 MB.
+- Zero violações de filtro e zero instabilidade em todas; consultas sem correspondência: A devolve algo em 67%, B/C/D em 100% (sem limiar de abstenção). Smoke de 65: A reproduz 0,8/0,75.
+
+### Erros, ressalvas e o que não se conclui
+
+- **O HNSW nunca foi construído.** Nos padrões do servidor (`indexing_threshold` 10.000 KB por segmento, vários segmentos por causa dos 20 CPUs) `indexed_vectors_count` ficou 0 mesmo com 50.000 pontos; a concordância de B com a busca exata é 1,0 porque B também foi exata. A entrada de 2026-11-03 dizia que 50.000 exercitaria o HNSW: estava errada. Medir o índice aproximado exige configuração explícita (fora do protocolo; fica como pendência).
+- A queda de precisão por nome nas estratégias com embeddings vem em parte do modelo denso (MiniLM multilíngue dilui códigos de modelo como "KR-48"); a fusão RRF recupera parte do que A acerta. Uma variante com peso maior no ramo lexical não foi testada e não deve ser ajustada sobre estes resultados.
+- Rótulos sintéticos por atributos; descrições geradas por frases e 8% sem nível/uso; léxicos de C e D diferentes; um modelo denso quantizado; abstenção não calibrada; vazão sequencial; uma máquina.
+- Nenhum vencedor global é declarado. O resultado é: nas condições medidas, os embeddings não melhoraram as consultas por intenção o suficiente e pioraram nome/código; o Qdrant não se justificou, e a pergunta com HNSW real continua aberta.
