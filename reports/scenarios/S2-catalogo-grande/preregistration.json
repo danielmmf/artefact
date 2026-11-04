@@ -1,0 +1,67 @@
+{
+  "cenario": "S2-catalogo-grande",
+  "commit_dos_criterios": "6564570e3c8d7985ad831ab87cbbb5262a69d5f6",
+  "commit_instante": "2026-11-03T21:28:19-03:00",
+  "arquivos_sha256": {
+    "scenarios/S2-catalogo-grande.yaml": "ed998b6401348ca5f4a4c154a9c28d6708a724a713115b3dc2fee510daaede2f",
+    "docs/S2-PROTOCOLO.md": "d6d4affefc8a1358d4acb992e21f6afeab19620e62e402eae652d776429bccb3"
+  },
+  "registrado_em": "2026-11-04T00:28:24.286509+00:00",
+  "como_verificar": "git show <commit>:<arquivo> | sha256sum deve igualar arquivos_sha256; o commit deve ser ancestral do commit da execução.",
+  "dados": {
+    "catalogo_sha256": {
+      "5000": "00145fbcdf765d0e6b63f59888e61dbe98b1e102b65ed230f4a12cb3f8fa73ca",
+      "50000": "a93f06e9ea42861c8ccab225166bd12e1fdb165bd3afad0154b4712dcc9dfa53"
+    },
+    "consultas_sha256": "ff8f879261e315c7a2c9ad34b9fce972bb097ff8d234c24b015f4c9360b7c427",
+    "consultas_por_grupo_e_divisao": {
+      "nome_codigo/dev": 40,
+      "nome_codigo/val": 40,
+      "digitacao/dev": 30,
+      "digitacao/val": 30,
+      "intencao/dev": 60,
+      "intencao/val": 60,
+      "sinonimos/dev": 30,
+      "sinonimos/val": 30,
+      "ambiguas/dev": 20,
+      "ambiguas/val": 20,
+      "filtros/dev": 30,
+      "filtros/val": 30,
+      "sem_correspondencia/dev": 15,
+      "sem_correspondencia/val": 15
+    },
+    "sobreposicao_de_vocabulario": {
+      "nivel_uso_fonte": {},
+      "nivel_uso_no_catalogo_50k": {}
+    },
+    "seed": 20261103,
+    "gerador": "src/emporio_lab/s2/catalog.py",
+    "consultas_smoke_sha256": "95938cf48c085ca4967a080e6c4c4e0681d28c1923f1accf20eeba603aafc855"
+  },
+  "versoes": {
+    "fastembed": "0.8.1",
+    "qdrant-client": "1.20.0",
+    "numpy": "2.5.4",
+    "onnxruntime": "1.31.1",
+    "rapidfuzz": "3.14.6",
+    "py-rust-stemmers": "0.1.8",
+    "python": "3.13.15",
+    "qdrant_servidor_imagem": "qdrant/qdrant:v1.20.0",
+    "qdrant_digest": "sha256:9bfc89f9914fc14876a88c05270685921a55b8877b254a98bcc1cc2f0a424cd2"
+  },
+  "modelos": {
+    "denso": {
+      "modelo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "repositorio_onnx": "qdrant/paraphrase-multilingual-MiniLM-L12-v2-onnx-Q",
+      "arquivo": "model_optimized.onnx",
+      "dim": 384,
+      "licenca": "apache-2.0",
+      "tamanho_gb": 0.22,
+      "descricao": "Text embeddings, Unimodal (text), Multilingual (~50 languages), 512 input tokens truncation, Prefixes for queries/documents: not necessary, 2019 year."
+    },
+    "esparso": {
+      "modelo": "Qdrant/bm25",
+      "idioma": "portuguese"
+    }
+  }
+}
